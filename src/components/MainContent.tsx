@@ -3,15 +3,14 @@ import CaseCard from "./CaseCard";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import RecipeDialog from "./RecipeDialog";
-import { useTranslation } from "react-i18next";
-import { translateDirectly } from "./translateAI";
+
 // import { generateImage } from "./imageAI"; // unused
 import { useDispatch } from "react-redux";
 import { addRecipeThunk, delRecipeThunk, updateRecipeThunk } from "../store/dataSlice";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
-import type { Category, Recipe } from "../utils/storage";
+import type { Category, Recipe } from "../utils/types";
 import type { AppDispatch } from "../store/store";
 
 // --- Types ---
@@ -32,10 +31,11 @@ const MainContent: React.FC<MainContentProps> = ({
   desktop,
   isDarkMode,
 }) => {
-  const { t, i18n } = useTranslation();
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState<number>(1);
-  const [translatedCategory, setTranslatedCategory] = useState<string>(selectedCategory?.translatedCategory?.[0] || selectedCategory?.category);
+  const [translatedCategory, setTranslatedCategory] = useState<string>(
+    (selectedCategory?.translatedCategory?.[0]?.value) || selectedCategory?.category || ""
+  );
   const itemsPerPage: number = 8;
   const [openView, setOpenView] = useState<boolean>(!!selectedRecipe);
   const [openAdd, setOpenAdd] = useState<boolean>(!!addRecipe);
@@ -49,11 +49,7 @@ const MainContent: React.FC<MainContentProps> = ({
   // Removed unused: setEditOrder
   // Remove all usage of editOrder
   const [rowJustify, setRowJustify] = useState<string>(
-    window.innerWidth <= 770
-      ? "center"
-      : (i18n.dir && i18n.dir() === "rtl")
-      ? "flex-end"
-      : "flex-start"
+    window.innerWidth <= 770 ? "center" : "flex-start"
   );
   const [recipes, setRecipes] = useState<Recipe[]>(selectedCategory?.itemPage || []);
   const navigate = useNavigate();
@@ -65,7 +61,7 @@ const MainContent: React.FC<MainContentProps> = ({
 
   useEffect(() => {
     const itemPage = selectedCategory?.itemPage || [];
-    const translated = selectedCategory?.translatedCategory?.[0] || selectedCategory?.category;
+    const translated = selectedCategory?.translatedCategory?.[0]?.value || selectedCategory?.category;
     setRecipes(itemPage);
     setTranslatedCategory(translated);
   }, [selectedCategory, setRecipes, setTranslatedCategory]);
@@ -74,21 +70,15 @@ const MainContent: React.FC<MainContentProps> = ({
   useEffect(() => {
     const category = selectedCategory?.category;
     const translatedArr = selectedCategory?.translatedCategory;
-    const lang = i18n.language;
-    const translateCategory = async () => {
-      if (category && lang !== "en") {
-        if (Array.isArray(translatedArr) && translatedArr.length > 0) {
-          setTranslatedCategory(translatedArr[0]);
-          return;
-        }
-        const translated = await translateDirectly(category, lang);
-        setTranslatedCategory(translated);
-      } else {
-        setTranslatedCategory(category);
-      }
-    };
-    translateCategory();
-  }, [selectedCategory, i18n, setTranslatedCategory]);
+    
+    // Use English translation if available, otherwise use original category
+    if (Array.isArray(translatedArr) && translatedArr.length > 0) {
+      const englishTranslation = translatedArr.find(t => t.lang === "en");
+      setTranslatedCategory(englishTranslation?.value || category || "");
+    } else {
+      setTranslatedCategory(category || "");
+    }
+  }, [selectedCategory, setTranslatedCategory]);
 
 // Removed unused sensors and handleRecipeDragEnd
 
@@ -101,21 +91,7 @@ const MainContent: React.FC<MainContentProps> = ({
       imageUrl: recipe?.imageUrl || "",
       category: selectedCategory?.category,
     };
-    if (i18n.language !== "en") {
-      try {
-        const [titleEn, ingredientsEn, preparationEn] = await Promise.all([
-          translateDirectly(newRecipeData.title, "en"),
-          translateDirectly(newRecipeData.ingredients, "en"),
-          translateDirectly(newRecipeData.preparation, "en"),
-        ]);
-        newRecipeData = {
-          ...newRecipeData,
-          title: titleEn,
-          ingredients: ingredientsEn,
-          preparation: preparationEn,
-        };
-      } catch (e) {}
-    }
+    
     try {
       await dispatch(addRecipeThunk({ recipe: newRecipeData, category: selectedCategory }) as any).unwrap();
       setRecipes([...recipes, newRecipeData]);
@@ -144,7 +120,7 @@ const MainContent: React.FC<MainContentProps> = ({
 
   const handleDeleteRecipe = (recipe: Recipe) => {
     if (!recipe._id) return;
-    if (window.confirm(t("Are you sure you want to delete this recipe? ID:" + recipe._id + " " + recipe.title))) {
+    if (window.confirm(`Are you sure you want to delete this recipe? ID: ${recipe._id} ${recipe.title}`)) {
       dispatch(delRecipeThunk(recipe._id) as any)
         .unwrap()
         .then(() => {
@@ -181,17 +157,13 @@ const MainContent: React.FC<MainContentProps> = ({
   useEffect(() => {
     const handleResize = () => {
       setRowJustify(
-        window.innerWidth <= 770
-          ? "center"
-          : (i18n.dir && i18n.dir() === "rtl")
-          ? "flex-end"
-          : "flex-start"
+        window.innerWidth <= 770 ? "center" : "flex-start"
       );
     };
     window.addEventListener("resize", handleResize);
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
-  }, [i18n]);
+  }, []);
 
   const handleCloseDialog = () => {
     setOpenView(false);
@@ -268,47 +240,17 @@ const MainContent: React.FC<MainContentProps> = ({
                   backgroundColor: "#145214",
                 },
               }}
-              title={t("addRecipe")}
+              title="Add Recipe"
             >
               <AddIcon sx={{ fontSize: 28 }} />
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                setOpenFill(true);
-                setOpenAdd(true);
-              }}
-              sx={{
-                minWidth: "56px",
-                minHeight: "56px",
-                width: "56px",
-                height: "56px",
-                borderRadius: "16px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                p: 0,
-                fontWeight: "bold",
-                fontSize: "0.85rem",
-                gap: "0.25rem",
-                backgroundColor: "darkgreen",
-                "&:hover": {
-                  backgroundColor: "#145214",
-                },
-              }}
-              title={`AI ${t("addRecipe")}`}
-            >
-              <AddIcon sx={{ fontSize: 20, mr: 0.5 }} />
-              <SmartToyIcon sx={{ fontSize: 24 }} />
             </Button>
           </div>
         </div>
         <p style={{ flexBasis: "100%", textAlign: "center" }}>
-          {t("page")} {page}, {t("recipes")} {startIndex + 1}–{endIndex} {t("of")} {totalItems}
+          Page {page}, Recipes {startIndex + 1}–{endIndex} of {totalItems}
         </p>
         {totalPages > 1 && (
-          <div className="pagination-container" style={{ direction: i18n.dir && i18n.dir() === "rtl" ? "rtl" : "ltr" }}>
+          <div className="pagination-container" style={{ direction: "ltr" }}>
             <Pagination
               count={totalPages}
               page={page}
@@ -317,14 +259,14 @@ const MainContent: React.FC<MainContentProps> = ({
               sx={{
                 "& .MuiPaginationItem-root": {
                   color: (theme) => (isDarkMode ? "white" : "inherit"),
-                  direction: i18n.dir && i18n.dir() === "rtl" ? "ltr" : "ltr",
+                  direction: "ltr",
                 },
                 "& .Mui-selected": {
                   backgroundColor: isDarkMode ? "#fff" : "",
                   color: isDarkMode ? "#222" : "",
                 },
               }}
-              dir={i18n.dir && i18n.dir() === "rtl" ? "ltr" : "ltr"}
+              dir="ltr"
             />
           </div>
         )}
@@ -367,7 +309,7 @@ const MainContent: React.FC<MainContentProps> = ({
             handleDeleteRecipe(recipe);
           }}
 
-          targetLang={i18n.language}
+          targetLang="en"
         />
         <RecipeDialog
           open={openAdd}
@@ -379,7 +321,7 @@ const MainContent: React.FC<MainContentProps> = ({
           onSave={(recipe: Recipe) => {
             handleAddRecipe(recipe);
           }}
-          targetLang={i18n.language}
+          targetLang="en"
         />
       </>
     </div>

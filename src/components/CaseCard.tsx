@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { translateDirectly } from "./translateAI";
-import type { Recipe } from "../utils/storage";
+import React, { useState } from "react";
+import type { Recipe } from "../utils/types";
 
 interface CaseCardProps {
   item: Recipe;
@@ -11,37 +9,7 @@ interface CaseCardProps {
 }
 
 export default function CaseCard({ item, category, index, isDarkMode }: CaseCardProps) {
-  const { t, i18n } = useTranslation();
-  const currentLang = i18n.language;
-
-  const [translatedTitle, setTranslatedTitle] = useState<string>(item.title);
   const [imageUrl, setImageUrl] = useState<string>(item.imageUrl || "https://placehold.co/100x100?text=No+Image");
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-    const translateField = async () => {
-      setIsLoading(true);
-      try {
-        const title = await translateDirectly(item.title, currentLang);
-        if (isMounted) setTranslatedTitle(title);
-      } catch (error) {
-        if (isMounted) setTranslatedTitle(item.title);
-      } finally {
-        if (isMounted) setIsLoading(false);
-      }
-    };
-    if (item && currentLang !== "en") {
-      translateField();
-    } else {
-      setTranslatedTitle(item.title);
-    }
-    return () => { isMounted = false; };
-  }, [item, currentLang, setTranslatedTitle]);
-
-  useEffect(() => {
-    setImageUrl(item.imageUrl || "https://placehold.co/100x100?text=No+Image");
-  }, [item.imageUrl]);
 
   // Removed unused: isNewRecipe, linkHref
 
@@ -60,12 +28,12 @@ export default function CaseCard({ item, category, index, isDarkMode }: CaseCard
     >
       <img
         src={imageUrl}
-        alt={translatedTitle}
+        alt={item.title}
         onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
           (e.target as HTMLImageElement).src = `https://placehold.co/100x100?text=${encodeURIComponent(item.title)}`;
         }}
       />
-      <h2>{isLoading ? t("loading") : translatedTitle}</h2>
+      <h2>{item.title}</h2>
       <p style={{ color: isDarkMode ? "#fff" : "#333" }}>
         {item.createdAt ? ` ${new Date(item.createdAt).toLocaleDateString("en-GB")}` : ""}
       </p>

@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { Autocomplete, TextField } from "@mui/material";
 // import RecipeDialog from "./RecipeDialog"; // unused
 import cardboardTexture from "../assets/cardboard-texture.jpg";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
-import { Category, Recipe } from "../utils/storage";
+import { Category, Recipe } from "../utils/types";
 
 interface HeaderBarProps {
   logo?: string;
@@ -33,7 +32,6 @@ export default function HeaderBar({
   isDarkMode,
 }: HeaderBarProps) {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   // Removed unused: dialogOpen, language
   const [searchActive, setSearchActive] = useState(false);
@@ -58,7 +56,7 @@ export default function HeaderBar({
         originalTitle: r.title,
       }))
     );
-  }, [allRecipes, i18n.language, setTranslatedOptions]);
+  }, [allRecipes, setTranslatedOptions]);
 
   const handleSearchChange = (_event: any, value: string) => {
     setShowMobileSearch(false);
@@ -140,7 +138,7 @@ export default function HeaderBar({
               borderRadius: "50%",
             }}
           />
-          <div className="SiteName">{t("appName")}</div>
+          <div className="SiteName">Recipe App</div>
         </div>
         {/* Search input or icon */}
         <div style={{ flex: 0, maxWidth: "100%" }}>
@@ -172,7 +170,7 @@ export default function HeaderBar({
                   inputRef={searchInputRef}
                   value={searchQuery}
                   onChange={(e) => handleSearchChange(e, e.target.value)}
-                  label={t("search")}
+                  label="Search"
                   placeholder="recipe name"
                   variant="outlined"
                   sx={{

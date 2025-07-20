@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import i18n from "./i18n";
 import ReactDOM from "react-dom/client";
-import { I18nextProvider } from "react-i18next";
 import {
   BrowserRouter as Router,
   Routes,
@@ -18,7 +16,7 @@ import { CircularProgress, Box } from "@mui/material";
 import { Provider } from "react-redux";
 import * as storage from "./utils/storage";
 import store from "./store/store";
-import type { SiteData, Category, Recipe } from "./utils/storage";
+import type { SiteData, Category, Recipe } from "./utils/types";
 import Questions from "./pages/Questions";
 
 const rootElement = document.getElementById("root") as HTMLElement;
@@ -72,8 +70,7 @@ function App() {
   }, [categoryParam, titleParam]);
 
   useEffect(() => {
-    document.body.dir =
-      i18n.language === "he" || i18n.language === "ar" ? "rtl" : "ltr";
+    document.body.dir = "ltr"; // Default to left-to-right
   }, []);
 
   useEffect(() => {
@@ -171,11 +168,9 @@ function App() {
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
         <Router>
           <App />
         </Router>
-      </I18nextProvider>
     </Provider>
   </React.StrictMode>
 );

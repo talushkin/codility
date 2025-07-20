@@ -3,14 +3,12 @@ import React, { useState, useEffect } from "react";
 import HeaderBar from "../components/HeaderBar";
 import NavMenu from "../components/NavMenu";
 import MainContent from "../components/MainContent";
-import { useTranslation } from "react-i18next";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/themes";
 import GlobalStyle, { createMuiTheme } from "../components/GlobalStyle";
 // import { useNavigate } from "react-router-dom"; // unused
 import FooterBar from "../components/FooterBar";
-import type { Category, Recipe, SiteData } from "../utils/storage";
-import type { i18n as I18nType } from "i18next";
+import type { Category, Recipe, SiteData } from "../utils/types";
 
 interface HomePageProps {
   setSelectedRecipe: (recipe: Recipe | null) => void;
@@ -25,7 +23,6 @@ interface HomePageProps {
 export default function Main(props: HomePageProps) {
   const { setSelectedRecipe, selectedRecipe, newRecipe, recipes, selectedCategory, setSelectedCategory } = props;
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const { i18n } = useTranslation() as { i18n: I18nType };
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [desktop, setDesktop] = useState<boolean>(typeof window !== 'undefined' ? window.innerWidth > 768 : true);
 
@@ -85,7 +82,6 @@ export default function Main(props: HomePageProps) {
                 isOpen={menuOpen}
                 onSelect={setSelectedCategory}
                 desktop={desktop}
-                language={i18n.language}
                 onHamburgerClick={handleHamburgerClick}
               />
             </div>
@@ -107,8 +103,6 @@ export default function Main(props: HomePageProps) {
           <FooterBar
             isDarkMode={isDarkMode}
             toggleDarkMode={toggleDarkMode}
-            language={i18n.language}
-            i18n={i18n}
           />
         )}
       </div>

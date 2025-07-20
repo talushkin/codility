@@ -10,10 +10,8 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
-import { translateDirectly } from "./translateAI";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import type { Recipe } from "../utils/storage";
+import type { Recipe } from "../utils/types";
 
 const BASE_URL = "https://be-tan-theta.vercel.app";
 
@@ -40,8 +38,7 @@ const RecipeDialog = ({
   categoryName,
   autoFill = false,
 }: RecipeDialogProps) => {
-  const { i18n, t } = useTranslation();
-  const isRTL = i18n.language === "he" || i18n.language === "ar";
+
 
   const [editableRecipe, setEditableRecipe] = useState<Recipe>({
     title: recipe?.title || "",
@@ -50,18 +47,9 @@ const RecipeDialog = ({
     imageUrl: recipe?.imageUrl || "",
     _id: recipe?._id,
   });
+  const isRTL: Boolean = false; // Assuming you have a way to determine if the language is RTL
 
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
-  const [isFillingAI, setIsFillingAI] = useState<boolean>(false);
-  const [isTranslating, setIsTranslating] = useState<{
-    title: boolean;
-    ingredients: boolean;
-    preparation: boolean;
-  }>({
-    title: false,
-    ingredients: false,
-    preparation: false,
-  });
   const [showTranslated, setShowTranslated] = useState<boolean>(false);
 
   useEffect(() => {
@@ -88,11 +76,6 @@ const RecipeDialog = ({
     }
   }, [recipe]);
 
-  useEffect(() => {
-    if (editableRecipe && autoFill) {
-      handleFillAI();
-    }
-  }, [autoFill]);
 
   const handleChange = (field: keyof Recipe) => (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -108,134 +91,11 @@ const RecipeDialog = ({
     onClose();
   };
 
-  const handleFillAI = async () => {
-    setIsFillingAI(true);
-    try {
-      let aiTitle = editableRecipe.title;
-      // If language is not English, translate the title to English before sending to AI
-      if (i18n.language !== "en") {
-        try {
-          aiTitle = await translateDirectly(editableRecipe.title, "en");
-        } catch (e) {
-          aiTitle = editableRecipe.title; // fallback if translation fails
-        }
-      }
-      const authToken = localStorage.getItem("authToken") || "1234";
-      const response = await fetch(`${BASE_URL}/api/ai/fill-recipe`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          categoryName: categoryName,
-          title: aiTitle,
-          recipeId: recipe?._id,
-        }),
-      });
-      if (!response.ok) throw new Error("Failed to fill recipe via AI");
-
-      const data = await response.json();
-
-      // If the current language is not English, translate the AI results back to the current language
-      let translatedTitle = data.title;
-      let translatedIngredients = data.ingredients;
-      let translatedPreparation = data.preparation;
-      if (i18n.language !== "en") {
-        try {
-          [translatedTitle, translatedIngredients, translatedPreparation] =
-            await Promise.all([
-              translateDirectly(data.title, i18n.language),
-              translateDirectly(data.ingredients, i18n.language),
-              translateDirectly(data.preparation, i18n.language),
-            ]);
-        } catch (e) {
-          // fallback to original if translation fails
-        }
-      }
-
-      setEditableRecipe((prev) => ({
-        ...prev,
-        ingredients: translatedIngredients,
-        title: translatedTitle,
-        preparation: translatedPreparation,
-      }));
-      await handleRecreateImage(data.title);
-    } catch (error) {
-      console.error("Error while filling recipe via AI:", error);
-    } finally {
-      setIsFillingAI(false);
-    }
-  };
-
-  const handleRecreateImage = async (text: string = editableRecipe?.title) => {
-    setIsLoadingImage(true);
-    try {
-      const authToken = localStorage.getItem("authToken") || "1234";
-      const response = await fetch(`${BASE_URL}/api/ai/image`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          text: text,
-          recipeId: recipe?._id,
-        }),
-      });
-      if (!response.ok) throw new Error("Failed to recreate image via AI");
-
-      const data = await response.json();
-      setEditableRecipe((prev) => ({
-        ...prev,
-        imageUrl: data.imageUrl,
-      }));
-    } catch (error) {
-      console.error("Error while recreating image via AI:", error);
-    } finally {
-      setIsLoadingImage(false);
-    }
-  };
-
   const handleDelete = () => {
     if (onDelete) {
       setEditableRecipe((prev) => ({ ...prev, _id: recipe?._id }));
       onDelete(editableRecipe);
       onClose();
-    }
-  };
-
-  const handleLangButton = async () => {
-    if (!showTranslated && targetLang !== "en") {
-      setIsTranslating({ title: true, ingredients: true, preparation: true });
-      try {
-        const [title, ingredients, preparation] = await Promise.all([
-          translateDirectly(recipe.title, targetLang),
-          translateDirectly(recipe.ingredients, targetLang),
-          translateDirectly(recipe.preparation, targetLang),
-        ]);
-        setEditableRecipe((prev) => ({
-          ...prev,
-          title,
-          ingredients,
-          preparation,
-        }));
-      } catch (error) {
-        console.error("Error during translation:", error);
-      } finally {
-        setIsTranslating({ title: false, ingredients: false, preparation: false });
-        setShowTranslated(true);
-      }
-    } else {
-      // Switch back to English/original
-      setEditableRecipe({
-        title: recipe?.title || "",
-        ingredients: recipe?.ingredients || "",
-        preparation: recipe?.preparation || "",
-        imageUrl: recipe?.imageUrl || "",
-        _id: recipe?._id,
-      });
-      setShowTranslated(false);
     }
   };
 
@@ -299,22 +159,6 @@ const RecipeDialog = ({
       </DialogTitle>
 
       <Box position="relative">
-        {isFillingAI && (
-          <Box
-            position="absolute"
-            top={0}
-            left={0}
-            width="100%"
-            height="100%"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            bgcolor="rgba(255,255,255,0.6)"
-            zIndex={10}
-          >
-            <CircularProgress />
-          </Box>
-        )}
 
         <DialogContent
           style={{
@@ -329,57 +173,6 @@ const RecipeDialog = ({
             marginBottom={2}
             style={{ minHeight: "180px" }}
           >
-            {/* Stack language buttons vertically on the left */}
-            <Box
-              sx={{
-                position: "absolute",
-                left: 0,
-                top: 16,
-                zIndex: 3,
-                display: "flex",
-                flexDirection: "column",
-                gap: 1,
-              }}
-            >
-              <Button
-                variant={showTranslated ? "outlined" : "contained"}
-                size="small"
-                sx={{
-                  background: showTranslated ? "#fff" : "darkgreen",
-                  color: showTranslated ? "inherit" : "#fff",
-                  borderRadius: "16px",
-                  fontWeight: "bold",
-                  minWidth: "90px",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-                }}
-                onClick={() => {
-                  if (showTranslated) handleLangButton();
-                }}
-              >
-                ENGLISH
-              </Button>
-              <Button
-                variant={showTranslated ? "contained" : "outlined"}
-                size="small"
-                sx={{
-                  background: showTranslated ? "darkgreen" : "#fff",
-                  color: showTranslated ? "#fff" : "inherit",
-                  borderRadius: "16px",
-                  fontWeight: "bold",
-                  minWidth: "90px",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-                }}
-                onClick={() => {
-                  if (!showTranslated) handleLangButton();
-                }}
-                disabled={targetLang === "en"}
-              >
-                {targetLang === "en"
-                  ? "ENGLISH"
-                  : t(targetLang.charAt(0).toUpperCase() + targetLang.slice(1))}
-              </Button>
-            </Box>
-
             <img
               src={
                 editableRecipe.imageUrl ||
@@ -389,38 +182,11 @@ const RecipeDialog = ({
               style={{ maxHeight: "300px", borderRadius: "28px" }}
             />
 
-            {isLoadingImage && (
-              <CircularProgress
-                size={48}
-                style={{
-                  position: "absolute",
-                }}
-              />
-            )}
-            <IconButton
-              onClick={() => handleRecreateImage(editableRecipe.title)}
-              title={t("recreate image")}
-              style={{
-                position: "absolute",
-                top: 12,
-                background: "#fff",
-                boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-                width: "56px",
-                height: "56px",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                zIndex: 2,
-              }}
-            >
-              <AutorenewIcon sx={{ fontSize: 40 }} />
-            </IconButton>
           </Box>
 
           <Box position="relative">
             <TextField
-              label={t("recipeName")}
+              label="recipe Name"
               value={editableRecipe.title}
               onChange={handleChange("title")}
               fullWidth
@@ -430,7 +196,7 @@ const RecipeDialog = ({
                   fontSize: "2rem",
                   fontWeight: "bold",
                 },
-                readOnly: isTranslating.title,
+                
               }}
               InputLabelProps={{
                 style: {
@@ -439,105 +205,32 @@ const RecipeDialog = ({
                 },
               }}
             />
-            {isTranslating.title && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  pointerEvents: "none",
-                  zIndex: 2,
-                  background: "rgba(255,255,255,0.7)",
-                }}
-              >
-                <CircularProgress size={32} />
-                <span style={{ marginTop: 8, fontWeight: "bold", fontSize: "1rem" }}>
-                  {t("loading")}
-                </span>
-              </Box>
-            )}
           </Box>
 
           <Box position="relative">
             <TextField
-              label={t("ingredients")}
+              label={"ingredients"}
               value={editableRecipe.ingredients}
               onChange={handleChange("ingredients")}
               fullWidth
               multiline
               rows={4}
               margin="normal"
-              InputProps={{
-                readOnly: isTranslating.ingredients,
-              }}
+
             />
-            {isTranslating.ingredients && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  pointerEvents: "none",
-                  zIndex: 2,
-                  background: "rgba(255,255,255,0.7)",
-                }}
-              >
-                <CircularProgress size={32} />
-                <span style={{ marginTop: 8, fontWeight: "bold", fontSize: "1rem" }}>
-                  {t("loading")}
-                </span>
-              </Box>
-            )}
+
           </Box>
 
           <Box position="relative">
             <TextField
-              label={t("preparation")}
+              label={"preparation"}
               value={editableRecipe.preparation}
               onChange={handleChange("preparation")}
               fullWidth
               multiline
               rows={4}
               margin="normal"
-              InputProps={{
-                readOnly: isTranslating.preparation,
-              }}
             />
-            {isTranslating.preparation && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  pointerEvents: "none",
-                  zIndex: 2,
-                  background: "rgba(255,255,255,0.7)",
-                }}
-              >
-                <CircularProgress size={32} />
-                <span style={{ marginTop: 8, fontWeight: "bold", fontSize: "1rem" }}>
-                  {t("loading")}
-                </span>
-              </Box>
-            )}
           </Box>
         </DialogContent>
       </Box>
@@ -561,9 +254,6 @@ const RecipeDialog = ({
           },
         }}
       >
-        <Button onClick={handleFillAI} variant="contained" color="secondary">
-          {t("AI")}
-        </Button>
         <Button
           onClick={handleDelete}
           variant="contained"
@@ -579,13 +269,13 @@ const RecipeDialog = ({
             },
           }}
         >
-          {t("delete")}
+          delete
         </Button>
         <Button onClick={handleSave} variant="contained">
-          {t("save")}
+          save
         </Button>
         <Button onClick={onClose} variant="contained" color="primary">
-          {t("close")}
+         close
         </Button>
       </DialogActions>
     </Dialog>

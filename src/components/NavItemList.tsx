@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { translateDirectly } from "./translateAI";
 import { useDispatch } from "react-redux";
 import { addCategoryThunk, reorderCategoriesThunk, delCategoryThunk } from "../store/dataSlice";
 import { Button } from "@mui/material";
@@ -18,10 +16,9 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import i18n from "../i18n";
-import type { Category, Categories } from "../utils/storage";
+import type { Category, Categories } from "../utils/types";
 
-const isRTL = i18n.dir() === "rtl";
+const isRTL = true;
 
 // Add priority to Category type for sorting
 interface CategoryWithPriority extends Category {
@@ -135,7 +132,7 @@ export default function NavItemList({
   onOrderChange,
   setReorder,
 }: NavItemListProps) {
-  const { t, i18n } = useTranslation();
+
   const dispatch = useDispatch();
 
   // Convert incoming categories to CategoryWithPriority[]
@@ -153,45 +150,18 @@ export default function NavItemList({
     setItems(categories.map(toCategoryWithPriority));
   }, [categories, toCategoryWithPriority]);
 
-  // Translate category names and cache them per language
-  useEffect(() => {
-    const translateCategories = async () => {
-      if (categories.length === 0) return;
-      const lang = i18n.language;
-      const newItems = await Promise.all(
-        categories.map(async (item, idx) => {
-          let translatedCategoryObj = (items[idx] && items[idx].translatedCategoryObj) || {};
-          if (!translatedCategoryObj[lang]) {
-            translatedCategoryObj[lang] = await translateDirectly(item.category, lang);
-          }
-          return {
-            ...toCategoryWithPriority(item, idx),
-            translatedCategoryObj,
-          };
-        })
-      );
-      setItems(newItems);
-    };
-    translateCategories();
-  }, [categories, i18n.language, items, toCategoryWithPriority]);
 
   const handleAddItem = async () => {
     setNewCat(false);
     if (inputValue.trim() === "") return;
     // Translate the category to English before saving
     let englishCategory = inputValue.trim();
-    try {
-      englishCategory = await translateDirectly(inputValue.trim(), "en");
-    } catch (e) {
-      // fallback to original if translation fails
-      englishCategory = inputValue.trim();
-    }
+
     const newItem: CategoryWithPriority = {
       _id: String(Date.now() + Math.random()),
       category: englishCategory,
       itemPage: [],
       priority: items.length + 1,
-      translatedCategoryObj: { [i18n.language]: inputValue.trim() },
     };
     dispatch(addCategoryThunk(englishCategory) as any);
     setItems([...items, newItem]);
@@ -240,9 +210,7 @@ export default function NavItemList({
               onSelect={onSelect}
               editCategories={editCategories}
               translatedCategory={
-                item.translatedCategoryObj && item.translatedCategoryObj[i18n.language]
-                  ? item.translatedCategoryObj[i18n.language]
-                  : item.category
+                 item.category
               }
               delCategoryCallback={handleDelCategory}
             />
@@ -263,14 +231,14 @@ export default function NavItemList({
             },
           }}
         >
-          + {t("addCategory")}
+          + 
         </Button>
       )}
       {newCat && (
         <div style={{ width: "100%", display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <input
             type="text"
-            placeholder={t("addCategory") as string}
+            placeholder={"addCategory"}
             value={inputValue}
             autoFocus
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}

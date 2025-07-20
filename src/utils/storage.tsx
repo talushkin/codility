@@ -1,47 +1,10 @@
 // utils/storage.ts
-import axios from "axios";
+import { Recipe, Category, SiteData } from "./types"; // Adjust the import path as needed
+import defaultData from "../data/defaultData.json"; // Adjust the import path as needed
 
-//const LOCAL_URL = "http://localhost:5000";
-const BASE_URL = "https://be-tan-theta.vercel.app";
 
-const AUTH_HEADER = {
-  Authorization: `Bearer 1234`,
-};
-
-// --- Types ---
-export interface Recipe {
-  _id?: string;
-  title: string;
-  ingredients: string;
-  preparation: string;
-  imageUrl?: string;
-  createdAt?: string;
-  categoryId?: string;
-  category?: string;
-}
-
-export interface Category {
-  _id: string;
-  category: string;
-  translatedCategory?: string[];
-  itemPage: Recipe[];
-}
-
-export type Categories = Category[];
-
-export interface SiteData {
-  header: { logo: string };
-  categories: Categories;
-}
-
-export interface SiteResponse {
-  success: boolean;
-  message: string;
-  site: SiteData;
-}
-
-// Load categories and recipes from the server
-export const loadData = async (loadFromMemory = false): Promise<SiteResponse | { site: { categories: Category[] } }> => {
+// Load categories and recipes from local default data
+export const loadData = async (loadFromMemory :boolean = true) => {
   try {
     if (loadFromMemory) {
       const cached = localStorage.getItem("recipeSiteData");
@@ -51,68 +14,54 @@ export const loadData = async (loadFromMemory = false): Promise<SiteResponse | {
         return site;
       }
     }
-    const categoriesRes = await axios.get(`${BASE_URL}/api/categories`, {
-      headers: AUTH_HEADER,
-    });
-    const recipesRes = await axios.get(`${BASE_URL}/api/recipes`, {
-      headers: AUTH_HEADER,
-    });
-    const site: SiteResponse = {
-      success: true,
-      message: "Data loaded successfully",
-      site: {
-        header: {
-          logo: "https://vt-photos.s3.amazonaws.com/recipe-app-icon-generated-image.png"
-        },
-        categories: categoriesRes.data.map((cat: any) => ({
-          category: cat.category || "unknown category",
-          translatedCategory: cat.translatedCategory || [],
-          _id: cat._id,
-          itemPage: recipesRes.data
-            .filter((r: any) => r.categoryId?._id === cat._id)
-            .map((r: any) => ({
-              title: r.title,
-              ingredients: r.ingredients.join(","),
-              preparation: r.preparation,
-              imageUrl: r.imageUrl,
-              createdAt: r.createdAt,
-              _id: r._id,
-            })),
-        })),
-      },
-    };
+    
+    // Use local default data instead of API calls
+    const site = defaultData ? defaultData.site : defaultData;
+    
     localStorage.setItem("recipeSiteData", JSON.stringify(site));
-    console.log("Data loaded successfully:", site);
+    console.log("Data loaded successfully from defaults:", site);
     return site;
   } catch (err: any) {
-    console.error("Error loading data from API:", err);
+    console.error("Error loading data from defaults:", err);
     return { site: { categories: [] } };
   }
-};
+}
 
 export const addRecipe = async (recipe: Recipe, category: Category): Promise<any> => {
-  console.log("addRecipe api", recipe, category);
+  console.log("addRecipe locally", recipe, category);
   if (!recipe.title || !category?._id) {
     console.error("Missing recipe or category ID");
     return null;
   }
   try {
-    const res = await axios.post(
-      `${BASE_URL}/api/recipes`,
-      {
-        title: recipe.title,
-        ingredients: recipe.ingredients,
-        preparation: recipe.preparation,
-        categoryId: category._id,
-        categoryName: category.category,
-        imageUrl: recipe.imageUrl || "https://placehold.co/100x100?text=No+Image",
-      },
-      { headers: AUTH_HEADER }
-    );
-    console.log("Recipe added:", res.data);
-    return res.data;
+    // Get current data from localStorage
+    const cached = localStorage.getItem("recipeSiteData");
+    if (!cached) {
+      console.error("No data in localStorage");
+      return null;
+    }
+    
+    const siteData = JSON.parse(cached);
+    const newRecipe = {
+      ...recipe,
+      _id: Date.now().toString(), // Simple ID generation
+      createdAt: new Date().toISOString(),
+      imageUrl: recipe.imageUrl || "https://placehold.co/100x100?text=No+Image",
+    };
+    
+    // Find the category and add the recipe
+    const categoryIndex = siteData.site.categories.findIndex((cat: any) => cat._id === category._id);
+    if (categoryIndex !== -1) {
+      siteData.site.categories[categoryIndex].itemPage.push(newRecipe);
+      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+      console.log("Recipe added locally:", newRecipe);
+      return newRecipe;
+    } else {
+      console.error("Category not found");
+      return null;
+    }
   } catch (err: any) {
-    console.error("Error adding recipe:", err.response?.data || err.message);
+    console.error("Error adding recipe locally:", err.message);
     return null;
   }
 };
@@ -123,33 +72,72 @@ export const updateRecipe = async (updatedRecipe: Recipe): Promise<any> => {
     return null;
   }
   try {
-    const res = await axios.put(
-      `${BASE_URL}/api/recipes/${updatedRecipe._id}`,
-      {
-        title: updatedRecipe.title,
-        ingredients: updatedRecipe.ingredients,
-        preparation: updatedRecipe.preparation,
-        imageUrl: updatedRecipe.imageUrl || "https://placehold.co/100x100?text=No+Image",
-        categoryId: updatedRecipe.categoryId,
-      },
-      { headers: AUTH_HEADER }
-    );
-    console.log("Recipe updated:", res.data);
-    return res.data;
+    // Get current data from localStorage
+    const cached = localStorage.getItem("recipeSiteData");
+    if (!cached) {
+      console.error("No data in localStorage");
+      return null;
+    }
+    
+    const siteData = JSON.parse(cached);
+    let recipeFound = false;
+    
+    // Find and update the recipe across all categories
+    siteData.site.categories.forEach((category: any) => {
+      const recipeIndex = category.itemPage.findIndex((recipe: any) => recipe._id === updatedRecipe._id);
+      if (recipeIndex !== -1) {
+        category.itemPage[recipeIndex] = {
+          ...category.itemPage[recipeIndex],
+          ...updatedRecipe,
+          imageUrl: updatedRecipe.imageUrl || "https://placehold.co/100x100?text=No+Image",
+        };
+        recipeFound = true;
+      }
+    });
+    
+    if (recipeFound) {
+      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+      console.log("Recipe updated locally:", updatedRecipe);
+      return updatedRecipe;
+    } else {
+      console.error("Recipe not found for update");
+      return null;
+    }
   } catch (err: any) {
-    console.error("Error updating recipe:", err.response?.data || err.message);
+    console.error("Error updating recipe locally:", err.message);
     return null;
   }
 };
 
 export const delRecipe = async (recipeId: string): Promise<void> => {
   try {
-    await axios.delete(`${BASE_URL}/api/recipes/${recipeId}`, {
-      headers: AUTH_HEADER,
+    // Get current data from localStorage
+    const cached = localStorage.getItem("recipeSiteData");
+    if (!cached) {
+      console.error("No data in localStorage");
+      return;
+    }
+    
+    const siteData = JSON.parse(cached);
+    let recipeDeleted = false;
+    
+    // Find and delete the recipe from the appropriate category
+    siteData.site.categories.forEach((category: any) => {
+      const recipeIndex = category.itemPage.findIndex((recipe: any) => recipe._id === recipeId);
+      if (recipeIndex !== -1) {
+        category.itemPage.splice(recipeIndex, 1);
+        recipeDeleted = true;
+      }
     });
-    console.log("Recipe deleted:", recipeId);
+    
+    if (recipeDeleted) {
+      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+      console.log("Recipe deleted locally:", recipeId);
+    } else {
+      console.error("Recipe not found for deletion");
+    }
   } catch (err: any) {
-    console.error("Error deleting recipe:", err.response?.data || err.message);
+    console.error("Error deleting recipe locally:", err.message);
   }
 };
 
@@ -159,43 +147,91 @@ export const addCategory = async (categoryName: string): Promise<any> => {
     return;
   }
   try {
-    const res = await axios.post(
-      `${BASE_URL}/api/categories`,
-      { category: categoryName.trim() },
-      { headers: AUTH_HEADER }
-    );
-    console.log("Category added:", res.data);
-    return res.data;
+    // Get current data from localStorage
+    const cached = localStorage.getItem("recipeSiteData");
+    if (!cached) {
+      console.error("No data in localStorage");
+      return null;
+    }
+    
+    const siteData = JSON.parse(cached);
+    
+    // Generate a unique ID for the new category
+    const newId = Date.now().toString();
+    
+    // Create new category object
+    const newCategory = {
+      _id: newId,
+      category: categoryName.trim(),
+      itemPage: []
+    };
+    
+    // Add the new category to the data
+    siteData.site.categories.push(newCategory);
+    
+    // Save back to localStorage
+    localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+    
+    console.log("Category added locally:", newCategory);
+    return newCategory;
   } catch (err: any) {
-    console.error("Error adding category:", err.response?.data || err.message);
+    console.error("Error adding category locally:", err.message);
     return null;
   }
 };
 
 export const delCategory = async (categoryId: string, categoryName?: string): Promise<void> => {
   try {
-    await axios.delete(`${BASE_URL}/api/categories/${categoryId}`, {
-      headers: AUTH_HEADER,
-    });
-    console.log("Category deleted:", categoryId, categoryName);
+    // Get current data from localStorage
+    const cached = localStorage.getItem("recipeSiteData");
+    if (!cached) {
+      console.error("No data in localStorage");
+      return;
+    }
+    
+    const siteData = JSON.parse(cached);
+    
+    // Find and remove the category
+    const categoryIndex = siteData.site.categories.findIndex((cat: any) => cat._id === categoryId);
+    
+    if (categoryIndex !== -1) {
+      siteData.site.categories.splice(categoryIndex, 1);
+      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+      console.log("Category deleted locally:", categoryId, categoryName);
+    } else {
+      console.error("Category not found for deletion:", categoryId);
+    }
   } catch (err: any) {
-    console.error("Error deleting category:", err.response?.data || err.message);
+    console.error("Error deleting category locally:", err.message);
   }
 };
 
 export const handleItemsChangeOrder = async (orderedCategories: Category[]): Promise<void> => {
   try {
-    const updates = orderedCategories.map((cat, index) =>
-      axios.put(
-        `${BASE_URL}/api/categories/${cat._id}`,
-        { priority: index + 1 },
-        { headers: AUTH_HEADER }
-      )
-    );
-    await Promise.all(updates);
+    // Get current data from localStorage
+    const cached = localStorage.getItem("recipeSiteData");
+    if (!cached) {
+      console.error("No data in localStorage");
+      return;
+    }
+    
+    const siteData = JSON.parse(cached);
+    
+    // Update category order by priority
+    orderedCategories.forEach((cat, index) => {
+      const categoryIndex = siteData.site.categories.findIndex((storeCat: any) => storeCat._id === cat._id);
+      if (categoryIndex !== -1) {
+        siteData.site.categories[categoryIndex].priority = index + 1;
+      }
+    });
+    
+    // Sort categories by priority
+    siteData.site.categories.sort((a: any, b: any) => (a.priority || 0) - (b.priority || 0));
+    
+    localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
     console.log("Categories reordered successfully");
   } catch (err: any) {
-    console.error("Error updating category order:", err.response?.data || err.message);
+    console.error("Error updating category order locally:", err.message);
   }
 };
 
@@ -205,18 +241,33 @@ export const updateCategory = async (updatedCategory: Category): Promise<any> =>
     return null;
   }
   try {
-    const res = await axios.put(
-      `${BASE_URL}/api/categories/${updatedCategory._id}`,
-      {
-        category: updatedCategory.category,
-        // Add other fields to update as needed
-      },
-      { headers: AUTH_HEADER }
-    );
-    console.log("Category updated:", res.data);
-    return res.data;
+    // Get current data from localStorage
+    const cached = localStorage.getItem("recipeSiteData");
+    if (!cached) {
+      console.error("No data in localStorage");
+      return null;
+    }
+    
+    const siteData = JSON.parse(cached);
+    
+    // Find and update the category
+    const categoryIndex = siteData.site.categories.findIndex((cat: any) => cat._id === updatedCategory._id);
+    
+    if (categoryIndex !== -1) {
+      siteData.site.categories[categoryIndex] = {
+        ...siteData.site.categories[categoryIndex],
+        ...updatedCategory
+      };
+      
+      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+      console.log("Category updated locally:", updatedCategory);
+      return updatedCategory;
+    } else {
+      console.error("Category not found for update");
+      return null;
+    }
   } catch (err: any) {
-    console.error("Error updating category:", err.response?.data || err.message);
+    console.error("Error updating category locally:", err.message);
     return null;
   }
 };

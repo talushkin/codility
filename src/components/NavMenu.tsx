@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
 import NavItemList from "./NavItemList";
-import { useTranslation } from "react-i18next";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ThemeModeButton from "./ThemeModeButton";
-import LanguageSelector from "./LanguageSelector";
-import type { Category, Categories } from "../utils/storage";
+import type { Category, Categories } from "../utils/types";
 
 interface NavMenuProps {
   categories: Categories;
   onSelect: (cat: Category | null) => void;
   isOpen: boolean;
-  language: string;
   desktop: boolean;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
   onHamburgerClick: () => void;
 }
 
-export default function NavMenu({ categories, onSelect, isOpen, language, desktop, isDarkMode, toggleDarkMode, onHamburgerClick }: NavMenuProps) {
-  const { t, i18n } = useTranslation();
+export default function NavMenu({ categories, onSelect, isOpen, desktop, isDarkMode, toggleDarkMode, onHamburgerClick }: NavMenuProps) {
   const [editCategories, setEditCategories] = useState<boolean>(false);
   const [reorder, setReorder] = useState<boolean>(false);
   const [orderedCategories, setOrderedCategories] = useState<Categories>(categories);
@@ -47,11 +43,6 @@ export default function NavMenu({ categories, onSelect, isOpen, language, deskto
     console.log("Selected category:", item);
   };
 
-  // Use correct event type for LanguageSelector (SelectChangeEvent<string>)
-  const handleLanguageChange = (event: { target: { value: string } }) => {
-    const newLang = event.target.value;
-    i18n.changeLanguage(newLang);
-  };
 
   return (
     <div className={`nav ${isOpen || reorder || desktop ? "show" : "hide"}`}>
@@ -75,14 +66,11 @@ export default function NavMenu({ categories, onSelect, isOpen, language, deskto
         }}
         onClick={() => setEditCategories(!editCategories)}
       >
-        {t("changeOrder")}
+        {editCategories ? "Done" : "Change Order"}
       </Button>
       {/* Only show language and theme buttons on desktop */}
       {desktop && (
         <>
-          <div style={{ marginTop: "0rem", marginBottom: "0rem" }}>
-            <LanguageSelector language={language} handleLanguageChange={handleLanguageChange} />
-          </div>
           <ThemeModeButton isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
         </>
       )}

@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import HomePage from "./HomePage";
-import type { Category, Recipe, SiteData } from "../utils/storage";
+import type { Category, Recipe, SiteData } from "../utils/types";
 
 interface RecipeDetailProps {
   recipes: SiteData;

@@ -1,23 +1,14 @@
 import React from "react";
 import { Box } from "@mui/material";
-import LanguageSelector from "./LanguageSelector";
 import ThemeModeButton from "./ThemeModeButton";
 import type { SelectChangeEvent } from "@mui/material";
-import type { i18n as I18nType } from "i18next";
 
 interface FooterBarProps {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
-  language: string;
-  i18n: I18nType;
 }
 
-export default function FooterBar({ isDarkMode, toggleDarkMode, language, i18n }: FooterBarProps) {
-  // Handler for language change
-  const handleLanguageChange = (event: SelectChangeEvent<string>) => {
-    const newLang = event.target.value as string;
-    i18n.changeLanguage(newLang);
-  };
+export default function FooterBar({ isDarkMode, toggleDarkMode}: FooterBarProps) {
 
   return (
     <Box
@@ -44,9 +35,6 @@ export default function FooterBar({ isDarkMode, toggleDarkMode, language, i18n }
         <ThemeModeButton isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       </div>
       <div style={{ width: "20%" }} />
-      <div style={{ width: "30%", display: "flex", justifyContent: "center" }}>
-        <LanguageSelector language={language} handleLanguageChange={handleLanguageChange} />
-      </div>
     </Box>
   );
 }
