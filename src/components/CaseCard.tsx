@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { translateDirectly } from "./translateAI";
-import dayjs from "dayjs";
 import type { Recipe } from "../utils/storage";
 
 interface CaseCardProps {
@@ -68,7 +67,7 @@ export default function CaseCard({ item, category, index, isDarkMode }: CaseCard
       />
       <h2>{isLoading ? t("loading") : translatedTitle}</h2>
       <p style={{ color: isDarkMode ? "#fff" : "#333" }}>
-        {item.createdAt ? ` ${dayjs(item.createdAt).format("DD-MM-YYYY")}` : ""}
+        {item.createdAt ? ` ${new Date(item.createdAt).toLocaleDateString("en-GB")}` : ""}
       </p>
     </div>
   );

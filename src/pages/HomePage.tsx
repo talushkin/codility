@@ -4,9 +4,9 @@ import HeaderBar from "../components/HeaderBar";
 import NavMenu from "../components/NavMenu";
 import MainContent from "../components/MainContent";
 import { useTranslation } from "react-i18next";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/themes";
-import GlobalStyle from "../components/GlobalStyle";
+import GlobalStyle, { createMuiTheme } from "../components/GlobalStyle";
 // import { useNavigate } from "react-router-dom"; // unused
 import FooterBar from "../components/FooterBar";
 import type { Category, Recipe, SiteData } from "../utils/storage";
@@ -56,9 +56,9 @@ export default function Main(props: HomePageProps) {
   const isMobile = !desktop;
 
   return (
-    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+    <ThemeProvider theme={createMuiTheme(isDarkMode ? darkTheme : lightTheme)}>
       <div className="App">
-        <GlobalStyle theme={isDarkMode ? darkTheme : lightTheme} />
+        <GlobalStyle />
         <div className="TOP">
           <HeaderBar
             desktop={desktop}

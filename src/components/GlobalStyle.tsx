@@ -1,19 +1,24 @@
 // src/GlobalStyle.ts
-import { createGlobalStyle } from "styled-components";
+import { CssBaseline, createTheme } from "@mui/material";
 import type { AppTheme } from "./themes";
 
-const GlobalStyle = createGlobalStyle<{ theme: AppTheme }>`
-  body {
-    background-color: ${({ theme }) => theme.background};
-    color: ${({ theme }) => theme.color};
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+// Instead of styled-components GlobalStyle, we'll use Material-UI's CssBaseline
+// and create theme-aware styles through Material-UI's theme system
 
-  h1, h2, h3, p {
-    color: ${({ theme }) => theme.color};
-  }
-`;
+export const createMuiTheme = (appTheme: AppTheme) => createTheme({
+  palette: {
+    mode: appTheme.background === '#333' ? 'dark' : 'light',
+    background: {
+      default: appTheme.background,
+    },
+    text: {
+      primary: appTheme.color,
+    }
+  },
+  typography: {
+    fontFamily: 'Arial, sans-serif',
+  },
+});
 
-export default GlobalStyle;
+// Export CssBaseline as the default export for consistency
+export default CssBaseline;

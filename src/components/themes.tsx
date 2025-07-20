@@ -1,7 +1,6 @@
 // src/themes.js
-import { DefaultTheme } from "styled-components";
 
-export interface AppTheme extends DefaultTheme {
+export interface AppTheme {
   background: string;
   color: string;
   headerBackground: string;
