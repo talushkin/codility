@@ -138,7 +138,7 @@ export default function HeaderBar({
               borderRadius: "50%",
             }}
           />
-          <div className="SiteName">Default App</div>
+          <div className="SiteName">Default2 App</div>
         </div>
         {/* Search input or icon */}
         <div style={{ flex: 0, maxWidth: "100%" }}>
