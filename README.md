@@ -1,5 +1,5 @@
-recipes FE - add , sort and create recipe book with photo, title, ingredients and preparation instructions !
-images created with AI
-translate to ANY LANG with AI
-keep images on BE
-BE in VERCEL node.js express
+This is My Store, app is :
+able to add , sort, create, delete and save to local memory product with price descripion 
+and title.
+
+redux used for memory on storage/slice

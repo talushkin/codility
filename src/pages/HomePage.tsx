@@ -1,7 +1,6 @@
 import "../styles.css";
 import React, { useState, useEffect } from "react";
 import HeaderBar from "../components/HeaderBar";
-import NavMenu from "../components/NavMenu";
 import MainContent from "../components/MainContent";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/themes";

@@ -7,7 +7,6 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import RecipeCategory from "./pages/RecipeCategory";
 import RecipeDetail from "./pages/RecipeDetail";
 import AddRecipe from "./pages/AddRecipe";
 import HomePage from "./pages/HomePage";
@@ -122,17 +121,20 @@ function App() {
               />
             }
           />
-          {/* <Route
-            path="/recipes/:category"
+                    <Route
+            path="/products"
             element={
-              <RecipeCategory
+              <HomePage
                 recipes={recipes}
                 setRecipes={setRecipes}
+                selectedRecipe={selectedRecipe}
                 setSelectedRecipe={setSelectedRecipe}
                 setSelectedCategory={setSelectedCategory}
+                selectedCategory={selectedCategory}
+                newRecipe={null}
               />
             }
-          /> */}
+          />
           <Route
             path="/:category/:id"
             element={
