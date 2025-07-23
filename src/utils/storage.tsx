@@ -10,7 +10,7 @@ export const loadData = async (loadFromMemory :boolean = true) => {
       const cached = localStorage.getItem("recipeSiteData");
       if (cached) {
         const site = JSON.parse(cached);
-        console.log("Loaded site from localStorage cache:", site);
+    //    console.log("Loaded site from localStorage cache:", site);
         return site;
       }
     }
@@ -19,7 +19,7 @@ export const loadData = async (loadFromMemory :boolean = true) => {
     const site = defaultData ? defaultData.site : defaultData;
     
     localStorage.setItem("recipeSiteData", JSON.stringify(site));
-    console.log("Data loaded successfully from defaults:", site);
+//    console.log("Data loaded successfully from defaults:", site);
     return site;
   } catch (err: any) {
     console.error("Error loading data from defaults:", err);
@@ -47,13 +47,13 @@ export const addRecipe = async (recipe: Recipe, category: Category): Promise<any
       createdAt: new Date().toISOString(),
       imageUrl: recipe.imageUrl || `https://placehold.co/100x100?text=${recipe.title || 'No Image'}`,
     };
-    console.log('site data:',siteData)
+//    console.log('site data:',siteData)
     // Find the category and add the recipe
     const categoryIndex = siteData.categories.findIndex((cat: any) => cat._id === category._id);
     if (categoryIndex !== -1) {
       siteData.categories[categoryIndex].itemPage.push(newRecipe);
       localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-      console.log("Recipe added and updated locally:", newRecipe,siteData);
+  //    console.log("Recipe added and updated locally:", newRecipe,siteData);
       return newRecipe;
     } else {
       console.error("Category not found");
@@ -67,7 +67,7 @@ export const addRecipe = async (recipe: Recipe, category: Category): Promise<any
 
 export const updateRecipe = async (updatedRecipe: Recipe): Promise<any> => {
   if (!updatedRecipe._id) {
-    console.log('updated',updatedRecipe)
+//    console.log('updated',updatedRecipe)
     console.error("Missing recipe ID for update.");
     return null;
   }
@@ -82,7 +82,7 @@ export const updateRecipe = async (updatedRecipe: Recipe): Promise<any> => {
     const siteData = JSON.parse(cached);
     let recipeFound = false;
     
-    console.log("Updating recipe:", updatedRecipe);
+//    console.log("Updating recipe:", updatedRecipe);
     // Find and update the recipe across all categories
     siteData.site.categories.forEach((category: any) => {
       const recipeIndex = category.itemPage.findIndex((recipe: any) => recipe._id === updatedRecipe._id);
@@ -98,7 +98,7 @@ export const updateRecipe = async (updatedRecipe: Recipe): Promise<any> => {
     
     if (recipeFound) {
       localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-      console.log("Recipe updated locally:", updatedRecipe);
+  //    console.log("Recipe updated locally:", updatedRecipe);
       return updatedRecipe;
     } else {
       console.error("Recipe not found for update");
@@ -133,7 +133,7 @@ export const delRecipe = async (recipeId: string): Promise<void> => {
     
     if (recipeDeleted) {
       localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-      console.log("Recipe deleted locally:", recipeId);
+  //    console.log("Recipe deleted locally:", recipeId);
     } else {
       console.error("Recipe not found for deletion");
     }
@@ -173,7 +173,7 @@ export const addCategory = async (categoryName: string): Promise<any> => {
     // Save back to localStorage
     localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
     
-    console.log("Category added locally:", newCategory);
+//    console.log("Category added locally:", newCategory);
     return newCategory;
   } catch (err: any) {
     console.error("Error adding category locally:", err.message);
@@ -198,7 +198,7 @@ export const delCategory = async (categoryId: string, categoryName?: string): Pr
     if (categoryIndex !== -1) {
       siteData.site.categories.splice(categoryIndex, 1);
       localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-      console.log("Category deleted locally:", categoryId, categoryName);
+  //    console.log("Category deleted locally:", categoryId, categoryName);
     } else {
       console.error("Category not found for deletion:", categoryId);
     }
@@ -230,7 +230,7 @@ export const handleItemsChangeOrder = async (orderedCategories: Category[]): Pro
     siteData.site.categories.sort((a: any, b: any) => (a.priority || 0) - (b.priority || 0));
     
     localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-    console.log("Categories reordered successfully");
+//    console.log("Categories reordered successfully");
   } catch (err: any) {
     console.error("Error updating category order locally:", err.message);
   }
@@ -261,7 +261,7 @@ export const updateCategory = async (updatedCategory: Category): Promise<any> =>
       };
       
       localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-      console.log("Category updated locally:", updatedCategory);
+  //    console.log("Category updated locally:", updatedCategory);
       return updatedCategory;
     } else {
       console.error("Category not found for update");

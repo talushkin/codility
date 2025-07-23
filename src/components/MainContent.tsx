@@ -45,7 +45,7 @@ const MainContent: React.FC<MainContentProps> = ({
   const [openAdd, setOpenAdd] = useState<boolean>(false);
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [filterItem, setFilterItem] = useState<string>(""); // for filter the products
-
+  const [filteredProducts, setFilteredProducts] = useState<Recipe[]>([]); // for filtered products
   const [selectedSort, setSelectedSort] = useState<string>("_id");
   const [viewedItem, setViewedItem] = useState<Recipe>(selectedRecipe || { _id: "", price: 0, title: "", description: "", preparation: "" });
   const [newRecipe, setNewRecipe] = useState<Recipe>({
@@ -54,15 +54,30 @@ const MainContent: React.FC<MainContentProps> = ({
     price: 0,
     ingredients: "",
     preparation: "",
-    _id: ""
+    _id: selectedCategory?.itemPage?.length ? (selectedCategory.itemPage.length + 1).toString() : "1",
+    categoryId: selectedCategory?._id,
+    category: selectedCategory?.category || "",
   });
-  // Removed unused: setEditOrder
+  // Removed unused: setEditOrder 
   // Remove all usage of editOrder
   const [rowJustify, setRowJustify] = useState<string>(
     window.innerWidth <= 770 ? "center" : "flex-start"
   );
   const [recipes, setRecipes] = useState<Recipe[]>(selectedCategory?.itemPage || []);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!openSearch) {
+      setFilteredProducts([])
+      setFilterItem("");
+    } else {
+      if (filterItem) {
+        //console.log("Filtering products with:", filterItem);
+        setFilteredProducts(filterProducts(filterItem));
+        setPage(1)
+      }
+    }
+  }, [filterItem, openSearch]);
 
   useEffect(() => {
     setOpenView(!!selectedRecipe);
@@ -102,15 +117,26 @@ const MainContent: React.FC<MainContentProps> = ({
       } else if (sort === "title") {
         return a.title.localeCompare(b.title);
       } else if (sort === "price") {
-        return (a.price || 0) - (b.price || 0);
+        return (parseFloat(a.price as string) || 0) - (parseFloat(b.price as string) || 0);
       }
       return 0;
     });
     setRecipes(sortedRecipes);
   };
 
+  const filterProducts = (filterItem: string) => {
+    if (!recipes || recipes.length === 0) return [];
+    const filteredProducts = recipes.filter((recipe) =>
+      recipe.title.toLowerCase().includes(filterItem.toLowerCase())
+    );
+//    console.log("Filtered products:", filteredProducts);
+    return filteredProducts;
+  }
+
+
+
   const handleSortChange = (event: React.ChangeEvent<{ value: unknown; }>) => {
-    console.log("Sort changed:", event.target.value);
+//    console.log("Sort changed:", event.target.value);
     SortBy(event.target.value as string);
     setSelectedSort(event.target.value as string);
     setPage(1);
@@ -133,6 +159,9 @@ const MainContent: React.FC<MainContentProps> = ({
     try {
       await dispatch(addRecipeThunk({ recipe: newRecipeData, category: selectedCategory }) as any).unwrap();
       setRecipes([...recipes, newRecipeData]);
+      setViewedItem(newRecipeData);
+      navigate(`/${selectedCategory?.category}/${newRecipeData._id}`);
+      window.location.reload();
     } catch (error: any) {
       console.error("Error adding recipe:", error.response?.data || error.message);
     }
@@ -165,6 +194,7 @@ const MainContent: React.FC<MainContentProps> = ({
           setRecipes((prevRecipes) =>
             prevRecipes.filter((r) => r._id !== recipe._id)
           );
+          window.location.reload();
         })
         .catch((err: any) => {
           console.error("Error deleting recipe:", err);
@@ -172,11 +202,11 @@ const MainContent: React.FC<MainContentProps> = ({
     }
   };
 
-  const totalItems = recipes.length;
+  const totalItems = (openSearch && filterItem.length > 0) ? filteredProducts.length : recipes.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-  const currentItems = recipes.slice(startIndex, endIndex);
+  const currentItems = (openSearch && filterItem.length > 0) ? filteredProducts.slice(startIndex, endIndex) : recipes.slice(startIndex, endIndex);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -235,7 +265,7 @@ const MainContent: React.FC<MainContentProps> = ({
                 backgroundColor: "#145214",
               },
             }}
-            title="Add"
+            title="Add a product"
           >
             <AddIcon sx={{ fontSize: 28 }} />
             ADD
@@ -245,7 +275,7 @@ const MainContent: React.FC<MainContentProps> = ({
             color="primary"
             onClick={() => {
               setOpenSearch(true)
-              console.log('filter...')
+          //    console.log('filter...')
             }}
             sx={{
               minWidth: "256px",
@@ -265,10 +295,10 @@ const MainContent: React.FC<MainContentProps> = ({
                 backgroundColor: "#145214",
               },
             }}
-            title="Add"
+            title="filter the list"
           >
             <SearchIcon sx={{ fontSize: 28 }} />
-            Search Products
+            Filter Products
           </Button>)}
           {openSearch && (
             <Input
@@ -292,7 +322,7 @@ const MainContent: React.FC<MainContentProps> = ({
               value={filterItem || ""}
               onChange={(e) => {
                 const searchTerm = e.target.value.toLowerCase();
-                console.log("Search term:", searchTerm);
+            //    console.log("Search term:", searchTerm);
                 setFilterItem(searchTerm);
               }}
               onFocus={() => setOpenSearch(true)}
@@ -318,6 +348,9 @@ const MainContent: React.FC<MainContentProps> = ({
             width: "50%"
           }}
         >
+          {openSearch && filteredProducts.length === 0 && filterItem.length > 0 && (
+            <p style={{ color: "red", textAlign: "center" }}>No products found.</p>
+          )}
           {currentItems.map((item, index) => {
             let colClass = "col-6";
             return (
@@ -334,6 +367,7 @@ const MainContent: React.FC<MainContentProps> = ({
                   item={item}
                   category={selectedCategory?.category}
                   isDarkMode={isDarkMode}
+                  selectedRecipe={viewedItem}
                   onDelete={(recipe: Recipe) => {
                     handleDeleteRecipe(recipe);
                   }}
@@ -341,7 +375,7 @@ const MainContent: React.FC<MainContentProps> = ({
               </div>
             );
           })}
-          <div className="pagination-container" >
+          {currentItems.length > 0 && (<div className="pagination-container" >
             <p style={{
               width: "50%",
               textAlign: "center",
@@ -375,7 +409,7 @@ const MainContent: React.FC<MainContentProps> = ({
                 />
               </div>
             )}
-          </div>
+          </div>)}
         </div>
         <div className="one-product" style={{ width: "40%", display: "flex", marginLeft: "50%", position: "absolute", top: "150px" }}>
           <ProductDetails

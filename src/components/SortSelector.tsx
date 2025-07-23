@@ -26,6 +26,7 @@ export default function SortSelector({ sort, handleSortChange }: SortSelectorPro
       <FormControl sx={{ width: "100%", marginRight: "0px" }}>
         <InputLabel id="language-select-label"></InputLabel>
         <MuiSelect
+        title="sort products"
           labelId="language-select-label"
           value={sort}
           onChange={handleChange}

@@ -90,42 +90,50 @@ const ProductDetails = ({
   ) => {
     if (!field || !event?.target) return;
     const value = event.target.value;
-   // console.log("Field changed:", field, ":", value);
+//    console.log("Field changed:", field, ":", value);
     if (field === "title") {
+      setEditableRecipe((prev) => ({
+        ...prev,
+        [field]: event.target.value,
+      }));
       if
         (!/^[a-zA-Z ]+$/.test(value)) {
         setNameError("Name must contain only letters and spaces");
         //console.log("Invalid name input:", event?.target.value);
       } else {
         setNameError("")
-        setEditableRecipe((prev) => ({
-          ...prev,
-          [field]: event.target.value,
-        }));
+
       }
     } else
       if (field === "price") {
         const priceValue = parseFloat(value);
-        if (isNaN(priceValue) || priceValue <= 0) {
-          setPriceError("Price must be a valid number");
-        } else {
-          setPriceError("");
+    //    console.log("Price changed:", priceValue);
+        if (isNaN(priceValue) || priceValue < 0) {
           setEditableRecipe((prev) => ({
             ...prev,
-            [field]: priceValue,
-          }));
+            [field]: 0,
+          }))
+          setPriceError("Price must be a valid number");
+        } else {
+          setEditableRecipe((prev) => ({
+            ...prev,
+            [field]: value,
+          }))
+          setPriceError("");
+
         }
       } else if (field === "description") {
+        setEditableRecipe((prev) => ({
+          ...prev,
+          [field]: event.target.value,
+        }));
         if
           (!/^[a-zA-Z ]+$/.test(value)) {
           setDescError("Description must contain only letters and spaces");
           //console.log("Invalid name input:", event?.target.value);
         } else {
           setDescError("")
-          setEditableRecipe((prev) => ({
-            ...prev,
-            [field]: event.target.value,
-          }));
+
         }
       }
 
@@ -227,8 +235,7 @@ const ProductDetails = ({
               value={editableRecipe.price}
               onChange={handleChange("price")}
               fullWidth
-              multiline
-              rows={4}
+              rows={1}
               margin="normal"
             />
           </Box>
@@ -250,7 +257,10 @@ const ProductDetails = ({
         >
           delete
         </Button> */}
-        <Button onClick={handleSave} variant="contained">
+        <Button 
+        disabled={!!nameError || !!priceError || !!descError}
+        onClick={handleSave} 
+        variant="contained">
           Update
         </Button>
         {/* <Button onClick={onClose} variant="contained" color="primary">

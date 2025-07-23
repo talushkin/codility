@@ -171,7 +171,7 @@ export default function NavItemList({
   // Callback when drag ends: update order, set new priorities, persist via redux
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
-    console.log("Drag ended", active, over);
+//    console.log("Drag ended", active, over);
     if (!over) return; // No item was dropped
     if (active.id !== over.id) {
       const oldIndex = items.findIndex((item) => item._id === active.id);
@@ -179,7 +179,7 @@ export default function NavItemList({
       let newItems = arrayMove(items, oldIndex, newIndex);
       // Update each item's priority based on its new index
       newItems = newItems.map((item, idx) => ({ ...item, priority: idx + 1 }));
-      console.log("Moved items", newItems);
+  //    console.log("Moved items", newItems);
       setItems(newItems);
       dispatch(reorderCategoriesThunk(newItems) as any);
       // Notify parent if needed

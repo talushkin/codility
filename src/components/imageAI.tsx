@@ -9,7 +9,7 @@ export const generateImage = async (text: string): Promise<string | null> => {
   }
 
   try {
-    console.log("Requesting image for:", text);
+//    console.log("Requesting image for:", text);
     const res = await axios.post<{ s3Url?: string; imageUrl?: string }>(
       "https://be-tan-theta.vercel.app/api/ai/image",
       { text },
@@ -20,7 +20,7 @@ export const generateImage = async (text: string): Promise<string | null> => {
         },
       }
     );
-    console.log("image result:", res.data);
+//    console.log("image result:", res.data);
     return res?.data?.s3Url || res?.data?.imageUrl || null;
   } catch (err: any) {
     console.error("Error creating image:", err.response?.data || err.message);

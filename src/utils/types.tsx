@@ -4,7 +4,7 @@ export interface Recipe {
   title: string;
   ingredients?: string;
   description?: String|undefined;
-  price?: number|undefined;
+  price?: number|string|undefined;
   preparation?: string;
   imageUrl?: string;
   createdAt?: string;

@@ -8,15 +8,20 @@ interface CaseCardProps {
   index?: number;
   isDarkMode?: boolean;
   onDelete?: (recipe: Recipe) => void;
+  selectedRecipe?: Recipe | null; // Added for potential future use
 }
 
 
-export default function CaseCard({ item, category, index, isDarkMode, onDelete }: CaseCardProps) {
+
+
+export default function CaseCard({ item, category, index, isDarkMode, onDelete,selectedRecipe }: CaseCardProps) {
   const [imageUrl, setImageUrl] = useState<string>(item.imageUrl || "https://placehold.co/100x100?text=No+Image");
+
+  const isSelected :boolean = (item===selectedRecipe)
 
   const handleDelete = () => {
     if (onDelete) {
-      console.log('deleting a product:', item);
+  //    console.log('deleting a product:', item);
       onDelete(item);
     }
   };
@@ -25,7 +30,7 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete }
       className={`case case-index-${index !== undefined ? index : "unknown"}`}
       id={`case-index-${index !== undefined ? index : "unknown"}`}
       style={{
-        backgroundColor: isDarkMode ? "#333" : "#fffce8",
+        backgroundColor: isSelected ? "rgba(189, 180, 120, 1)" : isDarkMode ? "#333" : "#fffce8",
         border: isDarkMode
           ? "1px solid rgb(71, 69, 69)"
           : "1px solid rgb(234, 227, 227)",

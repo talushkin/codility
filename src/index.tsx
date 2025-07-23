@@ -60,7 +60,7 @@ function App() {
           if (foundRecipe) {
             setSelectedRecipe(foundRecipe);
           } else {
-            console.log("first recipe:", initialCategory.itemPage[0]);
+        //    console.log("first recipe:", initialCategory.itemPage[0]);
             setSelectedRecipe(initialCategory.itemPage[0] || null);
           }
         }

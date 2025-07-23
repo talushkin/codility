@@ -40,7 +40,7 @@ export default function NavMenu({ categories, onSelect, isOpen, desktop, isDarkM
     }
     onHamburgerClick();
     onSelect(item);
-    console.log("Selected category:", item);
+//    console.log("Selected category:", item);
   };
 
 

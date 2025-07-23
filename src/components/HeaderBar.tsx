@@ -41,14 +41,18 @@ export default function HeaderBar({
     title: string;
     category: string;
     originalTitle: string;
+    _id: string;
   }[]>([]);
 
-  const allRecipes = categories?.flatMap((category) =>
+  let allRecipes = categories?.flatMap((category) =>
     category.itemPage.map((r) => ({ ...r, category: category.category }))
   );
 
   useEffect(() => {
     if (!allRecipes) return;
+    allRecipes = categories?.flatMap((category) =>
+    category.itemPage.map((r) => ({ ...r, category: category.category }))
+  );
     setTranslatedOptions(
       allRecipes.map((r) => ({
         title: r.title,
@@ -57,7 +61,7 @@ export default function HeaderBar({
         _id: r._id?r._id:'', // Ensure _id is included for search
       }))
     );
-  }, [allRecipes, setTranslatedOptions]);
+  }, [categories, allRecipes, setTranslatedOptions]);
 
   const handleSearchChange = (_event: any, value: string) => {
     setShowMobileSearch(false);
