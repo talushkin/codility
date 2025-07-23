@@ -2,8 +2,10 @@
 export interface Recipe {
   _id?: string;
   title: string;
-  ingredients: string;
-  preparation: string;
+  ingredients?: string;
+  description?: String;
+  price?: number;
+  preparation?: string;
   imageUrl?: string;
   createdAt?: string;
   categoryId?: string;

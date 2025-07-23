@@ -26,7 +26,7 @@ export default function AddRecipe(props: AddRecipeProps) {
     return (
       <HomePage
         selectedCategory={selectedCategoryData}
-        newRecipe={{ title: "", ingredients: "", preparation: "" }}
+        newRecipe={{ price:0, description: "",title: "", ingredients: "", preparation: "" }}
         recipes={recipes}
         setRecipes={setRecipes}
         selectedRecipe={selectedRecipe}

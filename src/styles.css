@@ -8,10 +8,12 @@ body {
   background-image: url('./assets/leaf-left.png'), url('./assets/leaf-right.png');
   background-position: left center, right center;
   background-repeat: repeat-y;
-  background-size:  auto 40%, auto 40%;
-    background-position: 
-    calc(0% - 1rem) center,  /* Left image slightly inward */
-    calc(100% + 1rem) center; /* Right image slightly inward */
+  background-size: auto 40%, auto 40%;
+  background-position:
+    calc(0% - 1rem) center,
+    /* Left image slightly inward */
+    calc(100% + 1rem) center;
+  /* Right image slightly inward */
 }
 
 * {
@@ -127,19 +129,25 @@ body {
 /* ======================= */
 
 .main-title {
-  width: 100%;
+  width: 50%;
   font-size: 4rem;
   font-weight: bold;
   color: rgb(3, 50, 3);
   /* Set text color to dark green */
-  margin-bottom: 20px;
-  padding-bottom: 10px;
+}
+.main-product {
+  width: 50%;
+  font-size: 4rem;
+  font-weight: bold;
+  color: rgb(3, 50, 3);
+  /* Set text color to dark green */
 }
 
 .main {
   padding: 10px;
   /* Remove or adjust the background properties if they duplicate the body's */
   min-height: 100vh;
+  width: 100%;
 }
 
 /* ======================= */
@@ -147,8 +155,8 @@ body {
 /* ======================= */
 
 .case {
-  width: 300px;
-  height: 350px;
+  width: 600px;
+  height: 130px;
   background-size: cover;
   background-position: center;
   background-repeat: repeat;
@@ -156,16 +164,15 @@ body {
   border: 1px solid rgb(164, 164, 164);
   border-radius: 20px;
   padding: 5px;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  text-align: center;
+  align-items: left;
+  text-align: left;
+  margin: 10px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .case img {
-  width: 90%;
+  width: 20%;
   height: auto;
   object-fit: contain;
   border-radius: 10px;
@@ -175,12 +182,20 @@ body {
 
 .case h2 {
   font-size: 18px;
+  margin-left: 150px;
+  margin-top: -135px;
 }
 
+
 .case p {
-  font-size: 10px;
-  color: #333;
-  margin: 2px;
+  font-size: 18px;
+  margin-left: 150px;
+}
+
+.case-description {
+  font-size: 18px;
+  margin-left: 150px;
+  font-size: 15px
 }
 
 .case-col {
@@ -189,8 +204,11 @@ body {
   flex: 0 0 100%;
   padding-left: 8px;
   padding-right: 8px;
-  justify-content: center !important; /* Center on small screens */
+  left: 10;
+  justify-content: left !important;
+  /* Center on small screens */
 }
+
 @media (min-width: 651px) {
   .case-col {
     max-width: 50%;
@@ -198,6 +216,7 @@ body {
     justify-content: center !important;
   }
 }
+
 /* ======================= */
 /*      RESPONSIVE         */
 /* ======================= */
@@ -225,10 +244,10 @@ body {
 
 @media (max-width: 764px) {
   body {
-     background-image: url('./assets/leaf-left.png'), url('./assets/leaf-right.png');
-  background-position: left center, right center;
-  background-repeat: repeat-y;
-  background-size:  auto 40%, auto 40%;
+    background-image: url('./assets/leaf-left.png'), url('./assets/leaf-right.png');
+    background-position: left center, right center;
+    background-repeat: repeat-y;
+    background-size: auto 40%, auto 40%;
     background-position: calc(0% - 180px) center, calc(100% + 180px) center;
   }
 

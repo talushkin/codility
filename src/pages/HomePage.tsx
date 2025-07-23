@@ -71,7 +71,7 @@ export default function Main(props: HomePageProps) {
         </div>
         <div className="container-fluid ps-0 pe-0">
           <div className="flex-column flex-md-row ps-0 pe-0 row">
-            <div
+            {/* <div
               className="nav-menu col-12 col-md-auto ps-0 pe-0"
               style={{ width: desktop ? '270px' : '100%' }}
             >
@@ -84,7 +84,7 @@ export default function Main(props: HomePageProps) {
                 desktop={desktop}
                 onHamburgerClick={handleHamburgerClick}
               />
-            </div>
+            </div> */}
             <div className="main-content col">
               {selectedCategory && (
                 <MainContent

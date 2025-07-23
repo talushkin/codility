@@ -17,7 +17,6 @@ import { Provider } from "react-redux";
 import * as storage from "./utils/storage";
 import store from "./store/store";
 import type { SiteData, Category, Recipe } from "./utils/types";
-import Questions from "./pages/Questions";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
@@ -53,12 +52,17 @@ function App() {
           if (foundCat) initialCategory = foundCat;
         }
         setSelectedCategory(initialCategory);
-
+        //setSelectedRecipe(initialCategory.itemPage[0] || null);
         if (titleParam && initialCategory.itemPage) {
-          const foundRecipe : Recipe | undefined = initialCategory.itemPage.find(
+          const foundRecipe: Recipe | undefined = initialCategory.itemPage.find(
             (rec: Recipe) => encodeURIComponent(rec.title) === titleParam
           );
-          if (foundRecipe) setSelectedRecipe(foundRecipe);
+          if (foundRecipe) {
+            setSelectedRecipe(foundRecipe);
+          } else {
+            console.log("first recipe:", initialCategory.itemPage[0]);
+            setSelectedRecipe(initialCategory.itemPage[0] || null);
+          }
         }
       }
       setLoading(false);
@@ -74,12 +78,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (selectedRecipe && selectedRecipe.title && selectedRecipe.category) {
-      navigate(
-        `/recipes/${encodeURIComponent(selectedRecipe.category)}/${encodeURIComponent(selectedRecipe.title)}`
-      );
-    }
-  }, [selectedRecipe, navigate]);
+    // if (selectedRecipe && selectedRecipe.title && selectedRecipe.category) {
+    //   navigate(
+    //     `/recipes/${encodeURIComponent(selectedRecipe.category)}/${encodeURIComponent(selectedRecipe.title)}`
+    //   );
+    // }
+    console.log("Selected:", selectedRecipe);
+  }, [selectedRecipe]);
 
   return (
     <>
@@ -104,13 +109,6 @@ function App() {
       {!loading && recipes && (
         <Routes>
           <Route
-            path="/questions"
-            element={
-              <Questions
-              />
-            }
-          />
-          <Route
             path="/"
             element={
               <HomePage
@@ -124,7 +122,7 @@ function App() {
               />
             }
           />
-          <Route
+          {/* <Route
             path="/recipes/:category"
             element={
               <RecipeCategory
@@ -134,9 +132,9 @@ function App() {
                 setSelectedCategory={setSelectedCategory}
               />
             }
-          />
+          /> */}
           <Route
-            path="/recipes/:category/:title"
+            path="/:category/:title"
             element={
               <RecipeDetail
                 recipes={recipes}
@@ -147,7 +145,7 @@ function App() {
             }
           />
           <Route
-            path="/recipes/:category/add"
+            path="/:category/add"
             element={
               <AddRecipe
                 recipes={recipes}
@@ -168,9 +166,9 @@ function App() {
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-        <Router>
-          <App />
-        </Router>
+      <Router>
+        <App />
+      </Router>
     </Provider>
   </React.StrictMode>
 );

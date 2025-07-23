@@ -33,10 +33,16 @@ export default function CaseCard({ item, category, index, isDarkMode }: CaseCard
           (e.target as HTMLImageElement).src = `https://placehold.co/100x100?text=${encodeURIComponent(item.title)}`;
         }}
       />
+
       <h2>{item.title}</h2>
       <p style={{ color: isDarkMode ? "#fff" : "#333" }}>
         {item.createdAt ? ` ${new Date(item.createdAt).toLocaleDateString("en-GB")}` : ""}
       </p>
+      <div className="case-description">
+        {item.description ? item.description : ""}
+      </div>
+
+
     </div>
   );
 }

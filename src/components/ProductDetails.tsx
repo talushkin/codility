@@ -15,7 +15,7 @@ import type { Recipe } from "../utils/types";
 
 const BASE_URL = "https://be-tan-theta.vercel.app";
 
-interface RecipeDialogProps {
+interface ProductDetailsProps {
   open: boolean;
   onClose: () => void;
   onSave: (recipe: Recipe) => void;
@@ -27,7 +27,7 @@ interface RecipeDialogProps {
   autoFill?: boolean;
 }
 
-const RecipeDialog = ({
+const ProductDetails = ({
   open,
   onClose,
   onSave,
@@ -37,7 +37,7 @@ const RecipeDialog = ({
   type,
   categoryName,
   autoFill = false,
-}: RecipeDialogProps) => {
+}: ProductDetailsProps) => {
 
 
   const [editableRecipe, setEditableRecipe] = useState<Recipe>({
@@ -105,44 +105,8 @@ const RecipeDialog = ({
   };
 
   return (
-    <Dialog
-      open={open || false}
-      onClose={onClose}
-      dir={isRTL ? "rtl" : "ltr"}
-      PaperProps={{
-        style: {
-          maxWidth: "98vw",
-          width: "98vw",
-          maxHeight: "98vh",
-          height: "98vh",
-          borderRadius: "24px",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-          background: "rgb(247, 241, 227)",
-          overflow: "auto",
-        },
-      }}
-      disableEscapeKeyDown={false} // Allow ESC to close
-      onKeyDown={(e) => {
-        if (e.key === "Escape") {
-          e.stopPropagation();
-          onClose();
-        }
-      }}
-    >
-      <DialogTitle
-        style={{
-          backgroundColor: "#f7f1e3",
-          textAlign: "center",
-          padding: "10px",
-          fontSize: "2.8rem", // Enlarged title text
-          fontWeight: "bold",
-          borderTopLeftRadius: "24px",
-          borderTopRightRadius: "24px",
-          position: "relative",
-          minHeight: "60px",
-        }}
-      >
-        {editableRecipe.title}
+<>
+       {/* {editableRecipe.title} */}
         <IconButton
           onClick={onClose}
           style={{
@@ -161,11 +125,10 @@ const RecipeDialog = ({
         >
           <span style={{ fontSize: "24px", fontWeight: "bold", lineHeight: 1 }}>×</span>
         </IconButton>
-      </DialogTitle>
 
       <Box position="relative">
 
-        <DialogContent
+        <div 
           style={{
             backgroundColor: "#f7f1e3",
           }}
@@ -239,29 +202,8 @@ const RecipeDialog = ({
               margin="normal"
             />
           </Box>
-        </DialogContent>
-      </Box>
-
-      <DialogActions
-        sx={{
-          display: "flex",
-          gap: 2,
-          width: "100%",
-          justifyContent: "center",
-          background: "rgb(247, 241, 227)", // Set background color for actions area
-          "& > button": {
-            flex: 1,
-            minWidth: 0,
-            maxWidth: "100%",
-            paddingLeft: 2,
-            paddingRight: 2,
-            height: "48px",
-            fontWeight: "bold",
-            borderRadius: "10px",
-          },
-        }}
-      >
-        <Button
+        </div>
+          <Button
           onClick={handleDelete}
           variant="contained"
           color="error"
@@ -284,9 +226,11 @@ const RecipeDialog = ({
         <Button onClick={onClose} variant="contained" color="primary">
           close
         </Button>
-      </DialogActions>
-    </Dialog>
+      </Box>
+    </>
   );
-};
 
-export default RecipeDialog;
+
+}
+
+export default ProductDetails;

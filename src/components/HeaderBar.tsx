@@ -75,7 +75,7 @@ export default function HeaderBar({
           searchInputRef.current.blur();
         }
         navigate(
-          `/recipes/${encodeURIComponent(recipe.category)}/${encodeURIComponent(recipe.title)}`
+          `/${encodeURIComponent(recipe.category)}/${encodeURIComponent(recipe.title)}`
         );
         window.location.reload();
       }
@@ -138,7 +138,7 @@ export default function HeaderBar({
               borderRadius: "50%",
             }}
           />
-          <div className="SiteName">Default2 App</div>
+          <div className="SiteName">My Store</div>
         </div>
         {/* Search input or icon */}
         <div style={{ flex: 0, maxWidth: "100%" }}>

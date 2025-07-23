@@ -1,0 +1,7 @@
+[
+  { "code": "_id", "label": "by id"},
+  { "code": "createdAt", "label": "by creation date" },
+  { "code": "title", "label": "by product name" },
+  { "code": "price", "label": "by price" }
+ 
+]

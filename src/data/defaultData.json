@@ -7,12 +7,14 @@
     },
     "categories": [
       {
-        "category": "Casseroles",
+        "category": "Products",
         "translatedCategory": [],
         "_id": "6859599ce2e8ae46c7217cdf",
         "itemPage": [
           {
-            "title": "Fish Casserole",
+            "title": "Product 1",
+            "description": "description for product 1",
+            "price":10.99,
             "ingredients": "4 white fish fillets (like cod or haddock), 1 cup of milk, 2 tablespoons of butter, 2 tablespoons of all-purpose flour, 1 cup of grated cheddar cheese, 1 cup of bread crumbs, one onion, finely chopped, 2 cloves of garlic, finely chopped, salt and pepper to taste, 2 tablespoons of fresh parsley, chopped",
             "preparation": "Preheat your oven to 180°C (350°F). In a pot, melt the butter over medium heat. Add the chopped onion and peeled garlic, and sauté until softened. Stir in flour to create a roux, then gradually whisk in the milk. Continue to cook and stir until the sauce thickens. Remove from heat, and stir in half of the cheese until it melts. Season with salt and pepper. Place the fish fillet on a baking tray, and pour the sauce over the fish. Sprinkle the remaining cheese and breadcrumbs on top. Bake in the preheated oven for 25-30 minutes, or until the top turns golden and the fish is fully cooked. Garnish with fresh parsley before serving.",
             "imageUrl": "https://vt-photos.s3.amazonaws.com/Fish-Casserole-generated-image.png",
@@ -20,7 +22,8 @@
             "_id": "685a20b8ce1c2e3765472d5a"
           },
           {
-            "title": "Chicken casserole, broccoli, rice and cheese.",
+            "title": "Product 2",
+            "price":1023.99,
             "ingredients": "1 cup of raw rice, 2 cups of water, 2 boneless and skinless chicken breasts, 1 tablespoon of olive oil, 1 small diced onion, 2 crushed garlic cloves, 1 can of creamy chicken soup, 2 cups of fresh broccoli florets, 1 cup of shredded cheddar cheese, salt and pepper to taste",
             "preparation": "Start by preheating the oven to 350 degrees Fahrenheit. Meanwhile, cook the rice in 2 cups of water according to the instructions on the package. While the rice is cooking, heat the olive oil in a pan over medium heat. Add the chicken breasts and cook them until they are no longer pink in the middle, about 7-10 minutes on each side. Remove the chicken and set it aside to cool. In the same pan, add the chopped onion and minced garlic, and sauté until the onion becomes translucent. Add the chicken broth to the pan, stirring. Cut the cooked chicken into small cubes and add it to the pan. Mix in the cooked rice and fresh broccoli florets. Season with salt and pepper. Pour the mixture into a casserole dish and sprinkle the shredded cheddar cheese on top. Bake in the preheated oven for 25-30 minutes, or until the cheese is melted and bubbly. Allow the casserole to cool for a few minutes before serving.",
             "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-Broccoli-and-Rice-Casserole-generated-image.png",
@@ -28,365 +31,42 @@
             "_id": "685a8d5f68b2876476bd08a9"
           },
           {
-            "title": "Cheesy Chicken and Broccoli Casserole",
+            "title": "Product 3",
+            "price":34.23,
             "ingredients": "2 cups cooked chicken, shredded,2 cups broccoli florets, steamed,1 cup cooked rice,1 cup shredded cheddar cheese,1/2 cup cream of chicken soup,1/2 cup milk,1 teaspoon garlic powder,1 teaspoon onion powder,Salt and pepper to taste,1/2 cup breadcrumbs,2 tablespoons butter, melted",
             "preparation": "1. Preheat your oven to 350°F (175°C).  \n2. In a large mixing bowl, combine the shredded chicken, steamed broccoli, cooked rice, cheddar cheese, cream of chicken soup, milk, garlic powder, onion powder, salt, and pepper. Mix well until all ingredients are fully incorporated.  \n3. Transfer the mixture into a greased 9x13 inch casserole dish and spread it evenly.  \n4. In a small bowl, mix the breadcrumbs with the melted butter until well combined. Sprinkle the breadcrumb mixture evenly over the top of the casserole.  \n5. Bake in the preheated oven for 25-30 minutes, or until the casserole is hot and bubbly, and the top is golden brown.  \n6. Remove from the oven and let it cool for a few minutes before serving. Enjoy your delicious Cheesy Chicken and Broccoli Casserole!",
             "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-and-Broccoli-Casserole-generated-image.png",
             "createdAt": "2025-07-16T14:36:15.178Z",
             "_id": "6877b8dfd48547834615dd5a"
+          },
+          {
+            "title": "Product 4",
+            "price":34.23,
+            "ingredients": "2 cups cooked chicken, shredded,2 cups broccoli florets, steamed,1 cup cooked rice,1 cup shredded cheddar cheese,1/2 cup cream of chicken soup,1/2 cup milk,1 teaspoon garlic powder,1 teaspoon onion powder,Salt and pepper to taste,1/2 cup breadcrumbs,2 tablespoons butter, melted",
+            "preparation": "1. Preheat your oven to 350°F (175°C).  \n2. In a large mixing bowl, combine the shredded chicken, steamed broccoli, cooked rice, cheddar cheese, cream of chicken soup, milk, garlic powder, onion powder, salt, and pepper. Mix well until all ingredients are fully incorporated.  \n3. Transfer the mixture into a greased 9x13 inch casserole dish and spread it evenly.  \n4. In a small bowl, mix the breadcrumbs with the melted butter until well combined. Sprinkle the breadcrumb mixture evenly over the top of the casserole.  \n5. Bake in the preheated oven for 25-30 minutes, or until the casserole is hot and bubbly, and the top is golden brown.  \n6. Remove from the oven and let it cool for a few minutes before serving. Enjoy your delicious Cheesy Chicken and Broccoli Casserole!",
+            "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-and-Broccoli-Casserole-generated-image.png",
+            "createdAt": "2025-07-16T14:36:15.178Z",
+            "_id": "6877b8dfd48547834615dd5s"
+          },
+          {
+            "title": "Product 5",
+            "price":34.23,
+            "ingredients": "2 cups cooked chicken, shredded,2 cups broccoli florets, steamed,1 cup cooked rice,1 cup shredded cheddar cheese,1/2 cup cream of chicken soup,1/2 cup milk,1 teaspoon garlic powder,1 teaspoon onion powder,Salt and pepper to taste,1/2 cup breadcrumbs,2 tablespoons butter, melted",
+            "preparation": "1. Preheat your oven to 350°F (175°C).  \n2. In a large mixing bowl, combine the shredded chicken, steamed broccoli, cooked rice, cheddar cheese, cream of chicken soup, milk, garlic powder, onion powder, salt, and pepper. Mix well until all ingredients are fully incorporated.  \n3. Transfer the mixture into a greased 9x13 inch casserole dish and spread it evenly.  \n4. In a small bowl, mix the breadcrumbs with the melted butter until well combined. Sprinkle the breadcrumb mixture evenly over the top of the casserole.  \n5. Bake in the preheated oven for 25-30 minutes, or until the casserole is hot and bubbly, and the top is golden brown.  \n6. Remove from the oven and let it cool for a few minutes before serving. Enjoy your delicious Cheesy Chicken and Broccoli Casserole!",
+            "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-and-Broccoli-Casserole-generated-image.png",
+            "createdAt": "2025-07-16T14:36:15.178Z",
+            "_id": "6877b8dfd48547834615dd5e"
+          },
+          {
+            "title": "Product 6",
+            "price":34.23,
+            "ingredients": "2 cups cooked chicken, shredded,2 cups broccoli florets, steamed,1 cup cooked rice,1 cup shredded cheddar cheese,1/2 cup cream of chicken soup,1/2 cup milk,1 teaspoon garlic powder,1 teaspoon onion powder,Salt and pepper to taste,1/2 cup breadcrumbs,2 tablespoons butter, melted",
+            "preparation": "1. Preheat your oven to 350°F (175°C).  \n2. In a large mixing bowl, combine the shredded chicken, steamed broccoli, cooked rice, cheddar cheese, cream of chicken soup, milk, garlic powder, onion powder, salt, and pepper. Mix well until all ingredients are fully incorporated.  \n3. Transfer the mixture into a greased 9x13 inch casserole dish and spread it evenly.  \n4. In a small bowl, mix the breadcrumbs with the melted butter until well combined. Sprinkle the breadcrumb mixture evenly over the top of the casserole.  \n5. Bake in the preheated oven for 25-30 minutes, or until the casserole is hot and bubbly, and the top is golden brown.  \n6. Remove from the oven and let it cool for a few minutes before serving. Enjoy your delicious Cheesy Chicken and Broccoli Casserole!",
+            "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-and-Broccoli-Casserole-generated-image.png",
+            "createdAt": "2025-07-16T14:36:15.178Z",
+            "_id": "6877b8dfd48547834615dd5f"
           }
-        ]
-      },
-      {
-        "category": "Salads",
-        "translatedCategory": [
-          {
-            "lang": "en",
-            "value": "Salads",
-            "_id": "685d0675339b299e3250ead5"
-          },
-          {
-            "lang": "he",
-            "value": "סלטים",
-            "_id": "685d0675339b299e3250ead6"
-          },
-          {
-            "lang": "pt",
-            "value": "Saladas",
-            "_id": "685d0675339b299e3250ead7"
-          }
-        ],
-        "_id": "68205bf5f94da516687c5920",
-        "itemPage": [
-          {
-            "title": "Margherita",
-            "ingredients": "Tomato sauce, mozzarella cheese, fresh basil, 2 olive oil",
-            "preparation": "BAKE AND FRY",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Margherita-generated-image.png",
-            "createdAt": "2025-05-02T00:00:00.000Z",
-            "_id": "68205cfff94da516687c5924"
-          },
-          {
-            "title": "Quinoa Salad",
-            "ingredients": "Quinoa, cucumber, tomato, mint, lemon",
-            "preparation": "Cook quinoa, chop vegetables, mix with lemon and olive oil.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Quinoa-Salad-generated-image.png",
-            "createdAt": "2025-05-02T00:00:00.000Z",
-            "_id": "68205cfff94da516687c5927"
-          },
-          {
-            "title": "מרק עגבניות",
-            "ingredients": "8 ripe tomatoes,2 tablespoons olive oil,1 large onion, chopped,2 cloves of garlic, minced,1 red bell pepper, chopped,1 teaspoon salt,1/2 teaspoon black pepper,1 teaspoon sugar,1 liter vegetable broth,Handful of fresh basil leaves, chopped,1 teaspoon dried oregano,1/2 cup heavy cream (optional)",
-            "preparation": "Start by washing the tomatoes and cutting a small X on the bottom of each one. Then, blanch them in boiling water for 1-2 minutes until the skins start to peel away. Remove from the water and once cool enough to handle, peel off the skins. Roughly chop the tomatoes and set aside. In a large pot, heat the olive oil over medium heat. Add the chopped onion, minced garlic, and chopped bell pepper. Sauté for about 5 minutes until the vegetables have softened. Add the chopped tomatoes, salt, black pepper, and sugar to the pot. Stir well and let it cook for another 5 minutes. Pour in the vegetable broth, chopped basil leaves, and dried oregano. Let it simmer for about 30 minutes. Optionally, for a creamier soup, blend the soup with a hand blender until smooth and stir in the heavy cream. Serve the soup warm, garnished with a few fresh basil leaves.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/tomato-soup-generated-image.png",
-            "createdAt": "2025-05-02T00:00:00.000Z",
-            "_id": "68205cfff94da516687c5928"
-          },
-          {
-            "title": "red pasta",
-            "ingredients": "200g spaghetti,2 tbsp olive oil,1 small onion, finely chopped,2 garlic cloves, minced,400g can chopped tomatoes,1/2 tsp sugar,1/2 tsp dried basil,1/2 tsp dried oregano,1/4 tsp red pepper flakes,Salt and freshly ground black pepper to taste,50g grated Parmesan cheese,A handful of fresh basil leaves, torn",
-            "preparation": "1. Cook the spaghetti according to the package instructions until al dente. Drain and set aside, reserving some pasta water.\n2. Heat the olive oil in a large pan over medium heat. Add the onion and garlic, sautéing until the onion is soft and translucent.\n3. Add the chopped tomatoes, sugar, dried basil, dried oregano, and red pepper flakes to the pan. Stir well to combine.\n4. Reduce the heat to low and let the sauce simmer for about 15 minutes, stirring occasionally.\n5. Season the sauce with salt and freshly ground black pepper to taste.\n6. Add the cooked spaghetti to the sauce, tossing well to ensure the pasta is fully coated. If the sauce is too thick, add a bit of the reserved pasta water.\n7. Serve the pasta in bowls, topped with the grated Parmesan cheese and fresh basil leaves.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/red-pasta-generated-image.png",
-            "createdAt": "2025-05-13T13:09:20.571Z",
-            "_id": "6823448061eeabad9aee0ba1"
-          },
-          {
-            "title": "Market salad with celery and radish",
-            "ingredients": "4 stalks of celery, thinly sliced, 4 small radishes, thinly sliced, 2 cups of mixed lettuce leaves, 1 medium cucumber, thinly sliced, 1 medium red onion, thinly sliced, 1 cup of cherry tomatoes, halved, 1/4 cup of olive oil, 2 tablespoons of white wine vinegar, 1 teaspoon of Dijon mustard, salt and pepper to taste, 1/2 cup of crumbled feta cheese, 1/2 cup of roughly chopped roasted walnuts",
-            "preparation": "The text is already in English.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Market-salad-with-celery-and-radish-generated-image.png",
-            "createdAt": "2025-05-13T13:12:43.708Z",
-            "_id": "6823454b61eeabad9aee0baf"
-          },
-          {
-            "title": "Italian Margherita Pizza",
-            "ingredients": "2 cups all-purpose flour,1 teaspoon sugar,1 teaspoon salt,1 packet (2 1/4 tsp) active dry yeast,3/4 cup warm water (110°F),1 tablespoon olive oil,1 cup tomato sauce,8 oz fresh mozzarella cheese, sliced,1/4 cup fresh basil leaves,Salt and pepper to taste,Extra virgin olive oil for drizzling",
-            "preparation": "1. In a mixing bowl, combine the warm water, sugar, and yeast. Let it sit for about 5-10 minutes until frothy. \n2. In a large bowl, mix the flour and salt. Make a well in the center and pour in the yeast mixture and olive oil. \n3. Stir until a dough forms, then knead on a floured surface for about 5-7 minutes until smooth. \n4. Place the dough in a greased bowl, cover with a damp cloth, and let rise in a warm place for about 1 hour or until doubled in size. \n5. Preheat your oven to 475°F (245°C). If using a pizza stone, place it in the oven to heat up. \n6. Once the dough has risen, punch it down and roll it out on a floured surface to your desired thickness. \n7. Transfer the rolled-out dough to a baking sheet or a pizza peel if using a stone. \n8. Spread the tomato sauce evenly over the base, leaving a small border around the edges. \n9. Arrange the mozzarella slices on top of the sauce, season with salt and pepper, and drizzle with a little olive oil. \n10. Bake in the preheated oven for about 10-12 minutes or until the crust is golden and the cheese is bubbly. \n11. Remove from the oven and scatter fresh basil leaves on top. \n12. Allow to cool for a couple of minutes before slicing and serving. Enjoy your homemade Margherita pizza!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Italian-Pizza-Margarita-generated-image.png",
-            "createdAt": "2025-05-14T15:36:48.338Z",
-            "_id": "6824b89071230ea2707f2280"
-          },
-          {
-            "title": "טוסט צרפתי עם קריספי סוכר",
-            "ingredients": "4 פרוסות לחם ביתי עבה,2 ביצים,1/2 כוס חלב,2 כפות סוכר,1/2 כפית קינמון,מחית וניל,סוכר להטבעה,שמן למריחה",
-            "preparation": "הכנת הטוסט הצרפתי מתחילה עם ערבוב הביצים, החלב, הסוכר, הקינמון והווניל בקערה. משם, מוסיפים את הלחם לתוך התערובת, מוודאים שהוא מוטבע באופן שווה משני הצדדים. את הטוסט מטגנים במחבת מרוחה שמן על אש בינונית עד שהוא מתחיל להתזהב. לאחר מכן, מניחים את הטוסט בצלחת מלאה בסוכר ומוודאים שהוא מקבל שכבה של סוכר משני הצדדים. ממשיכים להטביע ולהטגין את שארית הלחמים. הטוסט הצרפתי מוכן להגשה חמה עם ממרח האהוב עליך, או בפשטות עם סירופ מייפל.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/frebch-toast-with-sugar-cresp-generated-image.png",
-            "createdAt": "2025-05-15T12:34:23.136Z",
-            "_id": "6825df4f641aabf2aa7c04f2"
-          },
-          {
-            "title": "potato salad",
-            "ingredients": "3 pounds small red potatoes,1 cup mayonnaise,1/4 cup white vinegar,2 tablespoons Dijon mustard,2 cloves garlic, minced,1/2 cup chopped fresh parsley,1/2 cup chopped green onions,1/2 cup chopped celery,1 teaspoon salt,1/2 teaspoon freshly ground black pepper",
-            "preparation": "First, place the potatoes in a large pot and cover with water. Bring to a boil over high heat, then reduce heat to medium-low, cover, and simmer until tender, about 20 minutes. Drain and let cool. Once cooled, cut the potatoes into bite-size pieces. In a large bowl, combine the mayonnaise, vinegar, mustard, and garlic. Stir until well combined. Add the potatoes, parsley, green onions, and celery to the bowl. Toss until the potatoes are well coated with the dressing. Season with salt and pepper. Cover and refrigerate for at least 2 hours before serving to allow the flavors to meld together. Stir again before serving. Enjoy your delicious potato salad!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/potato-salad--generated-image.png",
-            "createdAt": "2025-05-18T15:51:07.825Z",
-            "_id": "682a01ebe83769a40e21fec6"
-          },
-          {
-            "title": "Italian salad with tomato",
-            "ingredients": "tomato, lettuce, cucumber",
-            "preparation": "Chop the vegetables and mix them in a bowl. Add olive oil and vinegar for dressing.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Italian-salad-with-tomato-tomato--lettuce--cucumber-generated-image.png",
-            "createdAt": "2025-05-19T13:56:10.787Z",
-            "_id": "682b387a6e6c35080fb264cc"
-          },
-          {
-            "title": "Greek Salad",
-            "ingredients": "4 tomatoes,1 cucumber,1 small red onion,1 bell pepper,200g feta cheese,1/2 cup olives,1 tablespoon oregano,Salt to taste,Pepper to taste,1/4 cup extra virgin olive oil,2 tablespoons red wine vinegar",
-            "preparation": "Begin by washing all the vegetables. Cut the tomatoes into wedges, the cucumber into slices, the onion into thin rings, and the bell pepper into thin strips. Combine all the vegetables in a large salad bowl. Crumble the feta cheese over the top. Add the olives and sprinkle with oregano, salt, and pepper. In a small bowl, whisk together the olive oil and red wine vinegar. Pour the dressing over the salad just before serving. Toss well to ensure everything is evenly coated. Enjoy your delicious Greek salad!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Greek-Salad-generated-image.png",
-            "createdAt": "2025-05-19T14:34:34.676Z",
-            "_id": "682b417a1a0a51bcca8b0118"
-          },
-          {
-            "title": "Classic Caesar Salad",
-            "ingredients": "1 head of romaine lettuce,1/2 cup of shredded parmesan cheese,1 cup of croutons,2 cloves of garlic,1 egg yolk,1 teaspoon of Dijon mustard,2 tablespoons of lemon juice,1/2 cup of olive oil,Salt and pepper to taste,1/4 teaspoon of Worcestershire sauce,1/4 teaspoon of anchovy paste",
-            "preparation": "Begin by preparing the salad dressing. In a medium bowl, combine the minced garlic, egg yolk, Dijon mustard, lemon juice, Worcestershire sauce, and anchovy paste. Whisk these ingredients together until they are well combined. Gradually add the olive oil into the bowl, whisking continuously to form an emulsion. Once the dressing is well mixed, season it with salt and pepper to taste. Set the dressing aside. Next, clean the romaine lettuce and tear it into bite-sized pieces. Place the lettuce in a large bowl. Add the shredded parmesan cheese and croutons to the bowl. Drizzle the salad dressing over the lettuce, cheese, and croutons, tossing the salad to ensure that it is evenly coated with the dressing. Serve the Caesar salad immediately, garnishing it with additional cheese and croutons if desired.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Classic-Caesar-Salad-generated-image.png",
-            "createdAt": "2025-05-19T14:51:40.537Z",
-            "_id": "682b457cfcb406bf38facc9f"
-          },
-          {
-            "title": "Crunchy Garden Salad",
-            "ingredients": "2 cups of fresh romaine lettuce,1 cup of cherry tomatoes,1 cucumber,1 red onion,1/2 cup of feta cheese,1/2 cup of black olives,1/2 cup of croutons,2 tablespoons of olive oil,1 tablespoon of balsamic vinegar,Salt and pepper to taste",
-            "preparation": "Wash and dry the lettuce leaves, then tear them into bite-sized pieces. Slice the cherry tomatoes in half, and dice the cucumber and red onion. Combine these in a large salad bowl. Sprinkle on the feta cheese and black olives. Make the dressing by mixing the olive oil, balsamic vinegar, salt, and pepper. Drizzle this over the salad, then toss everything together to make sure it's well combined. Top with croutons just before serving for added crunch. Enjoy this light and refreshing Crunchy Garden Salad!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Crunchy-Garden-Salad-generated-image.png",
-            "createdAt": "2025-05-19T16:17:56.303Z",
-            "_id": "682b59b429059aef81198e31"
-          }
-        ]
-      },
-      {
-        "category": "Desserts",
-        "translatedCategory": [],
-        "_id": "68207be03673ecc03aa3cf67",
-        "itemPage": [
-          {
-            "title": "Chocolate Cake",
-            "ingredients": "1 and 3/4 cups (220g) all-purpose flour, 1 and 1/2 cups (300g) granulated sugar",
-            "preparation": "Preheat your oven to 350°F (175°C). Grease and flour two nine-inch round cake pans. In a large mixing bowl, stir together the flour, sugar, cocoa, baking powder, baking soda, and salt. Add the eggs, milk, oil, and vanilla, and mix for about two minutes on medium speed of an electric mixer. Stir in the boiling water last. Batter will be thin. Pour evenly into the prepared pans. Bake for 30 to 35 minutes in the preheated oven, until a toothpick inserted comes out clean. Cool for 10 minutes before removing from pans to cool completely. To make the frosting, cream butter until light and fluffy. Stir in the cocoa and powdered sugar alternately with the milk and vanilla. Beat to a spreading consistency. Spread frosting on cooled cakes.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Chocolate-Cake-1-and-3-4-cups--220g--all-purpose-flour--1-and-1-2-cups--300g--granulated-sugar-generated-image.png",
-            "createdAt": "2025-05-11T10:29:29.557Z",
-            "_id": "68207c093673ecc03aa3cf6c"
-          },
-          {
-            "title": "Velvety Chocolate Mousse",
-            "ingredients": "200g Dark Chocolate,3 Large Eggs,1/4 cup Sugar,1 cup Whipping Cream,1 tsp Vanilla Extract,A pinch of Salt,Powdered Sugar and Berries for garnish",
-            "preparation": "Start by melting the dark chocolate over a double boiler or in the microwave. Stir occasionally until smooth, and let it cool slightly. Meanwhile, separate the eggs. In one bowl, beat the egg yolks with the sugar until the mixture is light and creamy. In another bowl, whip the egg whites with a pinch of salt until they form stiff peaks. In a third bowl, whip the cream until it thickens up. Now, stir the melted chocolate into the egg yolk mixture. Then, add the whipped cream and vanilla extract, and stir until the mixture is smooth. Finally, gently fold in the beaten egg whites. Be careful not to over mix, or the mousse will lose its fluffy texture. Divide the mousse among serving dishes and refrigerate for at least 2 hours, or until set. Before serving, dust the top with powdered sugar and garnish with fresh berries. Enjoy this velvety chocolate mousse as a decadent dessert after any meal.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Velvety-Chocolate-Mousse-generated-image.png",
-            "createdAt": "2025-05-19T15:11:27.567Z",
-            "_id": "682b4a1f0420c7d47803c88f"
-          },
-          {
-            "title": "Caramel Pecan Cheesecake",
-            "ingredients": "1-1/2 cups graham cracker crumbs,1/3 cup melted butter,2 tablespoons sugar,3 packages (8 ounces each) cream cheese, softened,1 cup sugar,1 cup packed brown sugar,2 teaspoons vanilla extract,3 large eggs, lightly beaten,1 cup heavy whipping cream,1/2 cup chopped pecans,1/3 cup caramel ice cream topping",
-            "preparation": "In a small bowl, combine the cracker crumbs, butter, and sugar. Press onto the bottom of a greased 9-in. springform pan; set aside. In a large bowl, beat the cream cheese until smooth. Combine the sugars and add to cream cheese, beat until smooth. Add vanilla; mix well. Add eggs, beat on low speed just until combined. Stir in cream just until blended. Pour over crust; sprinkle with pecans. Place pan on a baking sheet. Bake at 325° for 60-70 minutes or until center is almost set. Cool on a wire rack for 10 minutes. Carefully run a knife around edge of pan to loosen; cool 1 hour longer. Refrigerate overnight. Just before serving, drizzle with caramel topping.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Caramel-Pecan-Cheesecake-generated-image.png",
-            "createdAt": "2025-05-19T16:19:36.044Z",
-            "_id": "682b5a182fcd2c39e125508b"
-          },
-          {
-            "title": "Classic Vanilla Cheesecake",
-            "ingredients": "1 1/2 cups graham cracker crumbs,1/4 cup melted unsalted butter,2 tablespoons granulated sugar,1/2 teaspoon ground cinnamon,3 packages (8 ounces each) cream cheese, softened,1 cup granulated sugar,1 teaspoon vanilla extract,3 large eggs,1 cup sour cream,1/4 cup all-purpose flour",
-            "preparation": "1. Preheat your oven to 325°F (163°C). In a medium bowl, combine the graham cracker crumbs, melted butter, sugar, and cinnamon. Press the mixture into the bottom of a 9-inch springform pan. Bake for 10 minutes, then remove from the oven and set aside.\n2. In a large bowl, beat the cream cheese until it is smooth and creamy. Gradually add in the sugar and continue to beat until well mixed. Stir in the vanilla.\n3. Add the eggs one at a time, beating well after each addition. Blend in the sour cream and flour. Pour the cream cheese mixture over the baked crust.\n4. Bake for 1 hour, or until the center is set and the top is slightly browned. Let it cool in the pan on a wire rack for 10 minutes.\n5. Carefully run a knife around the edge of the pan to loosen the cheesecake, then cool for 1 more hour. After that, refrigerate the cheesecake (still in the pan) for at least 4 hours, or until it's thoroughly chilled.\n6. Remove the sides of the pan before slicing and serving the cheesecake. Enjoy your Classic Vanilla Cheesecake!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Classic-Vanilla-Cheesecake-generated-image.png",
-            "createdAt": "2025-05-19T16:20:38.895Z",
-            "_id": "682b5a5689f89dd3d8609103"
-          },
-          {
-            "title": "Forset fruits desert",
-            "ingredients": "2 cups of mixed forest fruits (such as raspberries, blackberries, strawberries, and blueberries),1/2 cup of sugar,1 tablespoon of lemon juice,1 cup of heavy cream,1/2 cup of powdered sugar,1 teaspoon of vanilla extract,2 cups of crushed digestive biscuits,1/2 cup of melted unsalted butter",
-            "preparation": "Begin by washing all the forest fruits thoroughly and allowing them to dry. Once they are dry, put them in a saucepan with the sugar and lemon juice. Cook over medium heat until the sugar has dissolved and the fruits have released their juices, then turn down the heat and let it simmer for about 10 minutes. After that, strain the mixture and let it cool. While the fruit mixture is cooling, whip the heavy cream together with the powdered sugar and vanilla extract until soft peaks form. Set aside. Now, mix the crushed digestive biscuits with the melted butter and press it into the bottom of a serving dish to form a base. Once the fruit mixture has cooled, pour it over the biscuit base. Top it off with the whipped cream and refrigerate for at least 2 hours or until set. Your forest fruits dessert is now ready to be served and enjoyed!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Forset-fruits-desert-generated-image.png",
-            "createdAt": "2025-06-23T10:51:46.613Z",
-            "_id": "685931c2c46932d73a7b8192"
-          },
-          {
-            "title": "Decadent chocolate lava cake",
-            "ingredients": "1/2 cup unsalted butter, 1 cup semi-sweet chocolate, 2 large eggs, 2 egg yolks, 1/4 cup grated sugar, 2 tablespoons all-purpose flour, 1/4 teaspoon salt, powdered sugar (for drizzling), vanilla ice cream (for serving)",
-            "preparation": "1. Preheat the oven to 425°F (220°C) and grease four ramekins with butter, then dust them with flour, allowing any excess to fall off.  \n2. In a microwave-safe bowl, combine the unsalted butter and semi-sweet chocolate. Heat in the microwave in 30-second intervals, stirring after each time, until the chocolate is melted and smooth.  \n3. In a separate bowl, whisk the eggs, egg yolks, and granulated sugar until the mixture is light and slightly thickened.  \n4. Carefully pour the melted chocolate mixture into the egg mixture, stirring to combine.  \n5. Gently fold in the flour and salt until the mixture comes together; be careful not to overmix.  \n6. Divide the batter evenly among the prepared ramekins, filling each one to 3/4 full.  \n7. Place the ramekins on a baking sheet and bake for 12-14 minutes, or until the edges are set but the center is still soft.  \n8. Remove from the oven and let cool for one minute. Carefully run a knife around the edges of each ramekin to release the cakes, then invert them onto individual plates.  \n9. Dust powdered sugar on top and serve immediately with a scoop of vanilla ice cream.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Decadent-Chocolate-Lava-Cake-generated-image.png",
-            "createdAt": "2025-06-26T09:30:11.927Z",
-            "_id": "685d1323b34406e41f23257f"
-          },
-          {
-            "title": "Decadent chocolate lava cake",
-            "ingredients": "1/2 cup unsalted butter, 1 cup chopped semi-sweet chocolate, 1 cup powdered sugar, 2 large eggs, 2 large egg yolks, 1 teaspoon vanilla extract, 1/2 cup all-purpose flour, 1/4 teaspoon salt, butter and cocoa for greasing the ramekins, ice cream or whipped cream for serving (optional)",
-            "preparation": "1. Preheat the oven to 425°F (220°C). Grease four ramekin dishes with butter and dust with cocoa, shaking off the excess.  \n2. In a microwave-safe bowl, mix the butter and chocolate chips. Heat in the microwave in 30-second intervals, stirring between each heating, until the chocolate is melted and smooth.  \n3. Add the powdered sugar and mix well.  \n4. Add the eggs and egg yolks, then stir in the vanilla extract.  \n5. Gently fold in the flour and salt until the mixture comes together, being careful not to overmix.  \n6. Divide the batter evenly among the prepared ramekins.  \n7. Place the ramekins on a baking sheet and bake for 12-14 minutes, or until the edges are set but the center is still soft.  \n8. Remove from the oven and let sit for one minute. Carefully invert each ramekin onto a plate.  \n9. Serve immediately with ice cream or whipped cream if desired, and enjoy the gooey chocolate center!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Decadent-Chocolate-Lava-Cake-generated-image.png",
-            "createdAt": "2025-06-27T05:26:46.671Z",
-            "_id": "685e2b969b81f2c36a21e1d2"
-          }
-        ]
-      },
-      {
-        "category": "tomatoes",
-        "translatedCategory": [],
-        "_id": "6824b4897f222d56b821961c",
-        "itemPage": [
-          {
-            "title": "Figs with honey on lamb meat",
-            "ingredients": "",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Figs-with-honey-on-lamb-meat-generated-image.png",
-            "createdAt": "2025-05-14T15:42:00.293Z",
-            "_id": "6824b9c871230ea2707f228e"
-          },
-          {
-            "title": "Italian pizza",
-            "ingredients": "Pizza dough, 2 cups of crushed San Marzano tomatoes, 1 minced garlic clove, A handful of fresh basil leaves, 2 tablespoons of extra virgin olive oil, 1.5 cups of sliced fresh mozzarella cheese, Salt to taste, Flour for dusting",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Italian-pizza-generated-image.png",
-            "createdAt": "2025-05-14T15:43:07.615Z",
-            "_id": "6824ba0b71230ea2707f2290"
-          },
-          {
-            "title": "Italian pizza",
-            "ingredients": "For the dough:,500g strong bread flour,1 tsp instant yeast,1 tsp salt,1 tbsp olive oil, plus extra for drizzling,325ml warm water,For the topping:,400g can chopped tomatoes,1 tsp dried oregano,1 tsp dried basil,2 garlic cloves, crushed,125g ball mozzarella, drained and sliced,A handful of fresh basil leaves,Olive oil, for drizzling,Salt and pepper to taste",
-            "preparation": "First, prepare the pizza dough. Put the flour into a large bowl and mix in the yeast and salt. Create a well in the middle, then pour in the warm water and olive oil. Use a wooden spoon to mix thoroughly until you have a soft, somewhat wet dough. Turn it out onto a lightly floured surface and knead for 5 minutes until it's smooth. Cover with a tea towel and set it aside. Let it rise for 1 hour, or until it has doubled in size.\n\nWhile the dough is rising, get the pizza sauce ready. In a blender or food processor, blend the canned tomatoes, dried oregano, dried basil, and garlic until they're smooth. Add salt and pepper to taste.\n\nPreheat your oven to its highest setting. Roll out the dough on a floured surface until it's about 25cm in diameter. Lift it onto an oiled baking sheet. Spread sauce over the dough with the back of a spoon. Scatter cheese and tomatoes on top, drizzle with olive oil, and season. Bake on the top shelf of the oven for 10-12 minutes or until the crust is golden and the cheese is bubbling and starting to brown.\n\nLastly, sprinkle fresh basil leaves on top and drizzle with a little more olive oil before serving. Cut into slices and serve hot.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Italian-pizza-generated-image.png",
-            "createdAt": "2025-05-14T15:46:23.811Z",
-            "_id": "6824bacf97a45519b5e0d6d4"
-          },
-          {
-            "title": "Tomato Bruschetta",
-            "ingredients": "6 ripe tomatoes,2 cloves of garlic,1 bunch of fresh basil,1 loaf of Italian bread,1/4 cup of olive oil,Salt to taste,Pepper to taste",
-            "preparation": "Start by preheating your oven to 450 degrees F (230 degrees C). Then, cut the tomatoes into small pieces and put them in a medium bowl. Peel and finely chop the garlic and add it to the bowl. Next, chop the basil and add it to the bowl. Drizzle the olive oil over the tomato mixture and add salt and pepper to taste, stir well. Slice the bread to about 1 inch thick and arrange on a baking sheet. Toast the bread in the preheated oven for 5 minutes, or until it becomes crispy. Once the bread is toasted, remove it from the oven and top each slice with the tomato mixture. Serve the Tomato Bruschetta immediately.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Tomato-Bruschetta-generated-image.png",
-            "createdAt": "2025-05-22T08:26:46.558Z",
-            "_id": "682edfc64a43d916e9de6afd"
-          }
-        ]
-      },
-      {
-        "category": "Soups",
-        "translatedCategory": [],
-        "_id": "68205bf5f94da516687c5921",
-        "itemPage": [
-          {
-            "title": "Weather Soup",
-            "ingredients": "Water, root vegetables, spices",
-            "preparation": "Cook everything together until the vegetables are soft.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Weather-Soup-generated-image.png",
-            "createdAt": "2023-02-02T00:00:00.000Z",
-            "_id": "68205cfff94da516687c5929"
-          },
-          {
-            "title": "Daily Soup",
-            "ingredients": "Zucchini, carrot, potato, onion",
-            "preparation": "Fry onion, add vegetables, and cook.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Daily-Soup-Zucchini--carrot--potato--onion-generated-image.png",
-            "createdAt": "2025-05-01T00:00:00.000Z",
-            "_id": "68205cfff94da516687c592a"
-          },
-          {
-            "title": "split pea soup",
-            "ingredients": "1 pound dried split peas, 2 quarts chicken broth, 1 smoked ham hock, 3 diced carrots, 2 diced stalks of celery, 1 chopped onion, 2 minced cloves of garlic, 1 bay leaf, 1/2 teaspoon dried thyme, salt and pepper to taste, 2 tablespoons olive oil",
-            "preparation": "First, heat the olive oil in a large pot over medium heat. Add the onions, carrots, and celery and cook until the onions are translucent. Then add the garlic and cook for another minute. Add the split peas, chicken broth, ham hock, bay leaf, and thyme to the pot. Bring the mixture to a boil, then reduce the heat and simmer for about 1 hour or until the peas are soft. Remove the ham hock from the pot and let it cool. Once it's cool enough to handle, remove the meat from the bone and cut it into small pieces. Return the meat to the soup and season with salt and pepper. Heat the soup for another 10 minutes before serving.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/split-pea-soup-1-lb-dried-split-peas-2-quarts-chicken-broth-1-smoked-ham-hock-3-carrots--diced-2-stalks-celery--diced-1-onion--chopped-2-cloves-garlic--minced-1-bay-leaf-1-2-teaspoon-dried-thyme-Salt-and-pepper-to-taste-2-tablespoons-olive-oil-generated-image.png",
-            "createdAt": "2025-05-18T14:36:43.268Z",
-            "_id": "6829f07b7b63c4c788b0d170"
-          },
-          {
-            "title": "Creamy Pumpkin Soup",
-            "ingredients": "1 medium-sized pumpkin,2 tablespoons olive oil,1 large onion, diced,3 cloves garlic, minced,1 teaspoon salt,1/2 teaspoon black pepper,1 teaspoon thyme,4 cups vegetable broth,1 cup coconut cream,Chopped parsley for garnish",
-            "preparation": "First, preheat your oven to 375°F (190°C). Cut the pumpkin into halves and remove the seeds. Brush the pumpkin halves with 1 tablespoon of olive oil and place them on a baking tray. Roast the pumpkin in the oven for about 50 minutes or until it is soft. In the meantime, heat the remaining olive oil in a large pot over medium heat. Add the diced onion and minced garlic to the pot and sauté until the onion is translucent. Once the pumpkin is cooked, let it cool for a few minutes and then scoop out the flesh. Add the pumpkin flesh, salt, pepper, thyme, and vegetable broth to the pot. Bring the mixture to a boil and then reduce the heat to let it simmer for 15 minutes. After 15 minutes, use an immersion blender to blend the soup until it is smooth. Stir in the coconut cream and let the soup simmer for another 5 minutes. Serve the soup warm and garnish it with chopped parsley.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Creamy-Pumpkin-Soup-generated-image.png",
-            "createdAt": "2025-05-19T14:47:08.877Z",
-            "_id": "682b446cc580b5157f7431f4"
-          },
-          {
-            "title": "Creamy Pumpkin Soup",
-            "ingredients": "1 medium-sized pumpkin,1 large onion,2 cloves of garlic,1 liter of vegetable broth,200 ml of cream,2 tablespoons of olive oil,Salt and pepper to taste,A pinch of nutmeg,Pumpkin seeds for garnish",
-            "preparation": "Start by cutting the pumpkin into half and removing the seeds. Peel the pumpkin and cut it into cubes. Peel and chop the onion and garlic. In a large pot, heat the olive oil over medium heat. Add the onion and garlic and sauté until they become translucent. Add the pumpkin cubes and cook for a few minutes until they become slightly soft. Pour in the vegetable broth and bring the mixture to a boil. Reduce the heat, cover the pot and let it simmer for about 20 minutes or until the pumpkin is very soft. Using a blender or a hand blender, blend the soup until it becomes smooth. Return the soup to the pot, add the cream and season with salt, pepper and nutmeg. Stir well and let it cook for a few more minutes. Serve the soup hot, garnished with pumpkin seeds.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Creamy-Pumpkin-Soup-generated-image.png",
-            "createdAt": "2025-05-26T09:03:51.071Z",
-            "_id": "68342e776a49cbce5f697598"
-          }
-        ]
-      },
-      {
-        "category": "Pasta",
-        "translatedCategory": [],
-        "_id": "6821a4bea2812168fad46370",
-        "itemPage": [
-          {
-            "title": "Tomato Pasta 2",
-            "ingredients": "200 grams of pasta,2 tablespoons of olive oil,1 small onion, finely chopped,2 cloves of garlic, minced,400 grams of canned tomatoes,1 teaspoon of sugar,Salt and pepper to taste,1 teaspoon of dried basil,1 teaspoon of dried oregano,50 grams of grated Parmesan cheese",
-            "preparation": "1. Cook the pasta according to the package instructions until al dente. Drain and set aside. 2. While the pasta is cooking, heat the olive oil in a large pan over medium heat. Add the chopped onion and sauté until it becomes translucent. 3. Add the minced garlic to the pan and sauté for another minute. 4. Pour the canned tomatoes into the pan, add the sugar, salt, and pepper. Stir well. 5. Reduce the heat to low, cover the pan, and let it simmer for 15 minutes. 6. After 15 minutes, uncover the pan and add the dried basil and oregano. Stir well. 7. Add the cooked pasta to the sauce and toss until the pasta is well coated. 8. Serve the pasta with a sprinkle of grated Parmesan cheese on top. Enjoy your Tomato Pasta 2.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Tomato-Pasta-generated-image.png",
-            "createdAt": "2025-05-14T16:05:59.933Z",
-            "_id": "6824bf672d2e58becb8fa969"
-          },
-          {
-            "title": "Creamy Garlic Parmesan Pasta",
-            "ingredients": "2 cups of Fettuccine pasta,1 tablespoon of olive oil,4 cloves of garlic, minced,1 cup of heavy cream,1 cup of grated Parmesan cheese,Salt and pepper to taste,Chopped parsley for garnish",
-            "preparation": "Start by boiling the pasta in a large pot of salted water until it is al dente. In the meantime, heat the olive oil in a skillet over medium heat. Add the minced garlic and sauté until it's fragrant. Pour in the heavy cream and bring the mixture to a simmer. Reduce the heat to low and stir in the Parmesan cheese until it melts into a creamy sauce. Season the sauce with salt and pepper. Drain the pasta and add it to the skillet, tossing it in the sauce until it's fully coated. Serve the pasta with a sprinkle of chopped parsley on top for garnish. Enjoy your Creamy Garlic Parmesan Pasta!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Creamy-Garlic-Parmesan-Pasta-generated-image.png",
-            "createdAt": "2025-05-19T14:41:34.985Z",
-            "_id": "682b431ee75856a3ece1a2a0"
-          },
-          {
-            "title": "Classic Spaghetti Carbonara",
-            "ingredients": "200g spaghetti,100g guanciale or pancetta,2 large eggs,50g pecorino cheese,50g parmesan cheese,Freshly ground black pepper,Salt,A small bunch of fresh flat-leaf parsley",
-            "preparation": "First, boil the pasta in a large pot of salted water until al dente. While the pasta is cooking, cut the guanciale into small chunks and fry in a hot pan until crispy. In a separate bowl, beat the eggs and mix in both cheeses. Once the pasta is ready, reserve some of the pasta water and drain the rest. Add the hot pasta to the pan with guanciale and mix well. Remove the pan from heat and add a tiny splash of the pasta water and the egg-cheese mixture into the pan, swiftly stirring everything together until the pasta is glossy. Season with a generous amount of black pepper and a little bit of salt. Garnish with freshly chopped parsley before serving.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Classic-Spaghetti-Carbonara-generated-image.png",
-            "createdAt": "2025-05-19T14:42:19.009Z",
-            "_id": "682b434be75856a3ece1a2a2"
-          },
-          {
-            "title": "Fettuccine pasta",
-            "ingredients": "2 cups of Fettuccine pasta, 1 tablespoon of olive oil, 4 cloves of garlic, minced, 1 cup of heavy cream, 1 cup of grated Parmesan cheese, Salt and pepper to taste, Chopped parsley for garnish",
-            "preparation": "Start by boiling the pasta in a large pot of salted water until it is al dente. In the meantime, heat the olive oil in a skillet over medium heat. Add the minced garlic and sauté until it's fragrant. Pour in the heavy cream and bring the mixture to a simmer. Reduce the heat to low and stir in the Parmesan cheese until it melts into a creamy sauce. Season the sauce with salt and pepper. Drain the pasta and add it to the skillet, tossing it in the sauce until it's fully coated. Serve the pasta with a sprinkle of chopped parsley on top for garnish. Enjoy your Creamy Garlic Parmesan Pasta!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Creamy-Garlic-Parmesan-Pasta-generated-image.png",
-            "createdAt": "2025-05-19T14:42:49.627Z",
-            "_id": "682b4369c580b5157f7431e6"
-          },
-          {
-            "title": "Creamy Garlic Parmesan Pasta",
-            "ingredients": "2 cups of fettuccine pasta,2 tablespoons of olive oil,4 cloves of garlic, minced,1 cup of heavy cream,1 cup of grated Parmesan cheese,Salt and pepper to taste,Chopped fresh parsley for garnish",
-            "preparation": "Step 1: Cook the fettuccine according to the package instructions until it is al dente. Drain it and set it aside. \nStep 2: Heat the olive oil in a large skillet over medium heat. Add the minced garlic and sauté it until it is fragrant. \nStep 3: Add the heavy cream to the skillet. Bring it to a simmer. \nStep 4: Stir in the grated Parmesan cheese until it is completely melted into the cream. Season the sauce with salt and pepper. \nStep 5: Add the cooked fettuccine to the skillet. Toss it in the sauce until it is well coated. \nStep 6: Serve the pasta hot, garnished with chopped fresh parsley.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Creamy-Garlic-Parmesan-Pasta-generated-image.png",
-            "createdAt": "2025-05-21T20:38:19.715Z",
-            "_id": "682e39bb903e8bd098aa08ab"
-          }
-        ]
-      },
-      {
-        "category": "Pastries",
-        "translatedCategory": [],
-        "_id": "682de07c35520c0583123ee9",
-        "itemPage": [
-          {
-            "title": "Challah ",
-            "ingredients": "\n\n1 kilo of flour\n2 heaping tablespoons of yeast\n- Amount per kilo\n1 tablespoon of salt\n1/2 cup of oil\n1 cup of sugar\n3/4 2 cups (glass cups with handles) of lukewarm water",
-            "preparation": "Preparation method:\n1. Place the salt in the bottom of the bowl.\n2. Sift over the flour.\n3. Place the yeast over the flour, near the sides of the bowl.\n4. Place the sugar over the flour, in the center of the bowl.\n5. Place the lukewarm water over the yeast and sugar.\n6. With your hands, mix the sugar, yeast, water, and flour in the upper part of the bowl. Slowly the yeast and water are absorbed into the flour\nand sugar, and then you can reach the bottom of the bowl and mix in the salt as well.\n7. When all the ingredients turn into a dough, you can pour in the oil and knead the dough for about 10 minutes.\n8. When the oil has been absorbed into the dough and the dough resembles an earlobe to the touch, you can put the entire bowl into a clean garbage bag and close it tightly. In winter, you can also cover it with a lid.\n9. Let the dough rest for an hour. (A little longer in winter) The idea is that the dough should double in size\n10. Braid braids, etc., place in a pan, sprinkle flour on top (so it doesn't stick.) and cover with baking paper and a lid on top.\n11. Let the \"challah dough\" rest for another hour.\n12. Put in the oven at a cake temperature (in my case, 180) for 25 to 30 minutes. Make sure the bottom of the challah is light brown to brown. \nAnd remove from the oven.\n13. Place the challah on a wire rack so that the bottom of the challah doesn't \"get\" moisture.\n\n* Before Shabbat, I place the challah on the plate for a while and then eat it while it's still warm. \nGood luck!",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Challah--generated-image.png",
-            "createdAt": "2025-05-21T14:21:34.669Z",
-            "_id": "682de16eaa5208b19ecf08de"
-          },
-          {
-            "title": "French Butter Croissants",
-            "ingredients": "1 1/4 cups milk, room temperature,2 teaspoons active dry yeast,1/4 cup white sugar,3 3/4 cups all-purpose flour,1 teaspoon salt,1 cup unsalted butter, cold,1 egg,1 tablespoon water",
-            "preparation": "Step 1: In a small bowl, dissolve yeast in warm milk. Let stand until creamy, about 10 minutes. In a large bowl, combine the yeast mixture with the flour; mix well. When the dough has pulled together, turn it out onto a lightly floured surface, and knead for about 10 minutes. Roll out dough into a 1/2 inch thick round. Cover with a damp cloth and let rest for 15 minutes. \n\nStep 2: Roll out dough into a 1/4 inch round. Spread it with 1/3 of the butter and roll up dough. Repeat until all of the butter is used. Cover with a damp cloth and let rise in a warm place until doubled in volume, about 1 hour. Deflate the dough, cover with a damp cloth and let rise again until doubled, about 45 minutes. \n\nStep 3: Deflate the dough and turn it out onto a lightly floured surface. Divide the dough into two equal parts and roll out into 1/4 inch rounds. Cut each round into quarters, making 8 wedges. Roll the wedges starting at the wide end; roll gently but tightly. Place on a lightly greased baking sheet, point side down, with the ends of the roll tucked under the croissant to prevent them from coming loose. Cover with a damp cloth and let rise until doubled in volume, about 1 hour. \n\nStep 4: Preheat oven to 375 degrees F (190 degrees C). In a small bowl, beat together the egg and water. Brush the egg wash on the risen croissants. \n\nStep 5: Bake in the preheated oven for 20 to 25 minutes, or until golden brown.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/French-Butter-Croissants-generated-image.png",
-            "createdAt": "2025-05-21T20:22:01.950Z",
-            "_id": "682e35e9ef20094a63b837f2"
-          },
-          {
-            "title": "Buttery Croissant Pastries",
-            "ingredients": "1 cup of warm milk,2 tablespoons of active dry yeast,1/4 cup of white sugar,2 teaspoons of salt,2 1/2 cups of bread flour,2 cups of all-purpose flour,1 cup of unsalted butter, cold,1 egg,1 tablespoon of water",
-            "preparation": "Start by dissolving the yeast in the warm milk in a large bowl. Let it stand until it becomes creamy, about 10 minutes. Add sugar, salt, and both kinds of flour to the yeast mixture. Stir until everything is well mixed. Cut the butter into small pieces and work it into the flour mixture using a pastry blender or your fingers until the mixture becomes crumbly. Cover the bowl with a damp cloth and let it rise in a warm place for about 1 hour. After the dough has risen, turn it out onto a lightly floured surface and knead it for a few minutes. Roll the dough into a 1/2 inch thick rectangle and fold it into thirds. Cover it with plastic wrap and chill in the refrigerator for 30 minutes. Repeat the rolling, folding, and chilling process two more times. After the final chilling, roll the dough into a 1/4 inch thick rectangle. Cut the rectangle into triangles and roll each triangle up into a croissant shape. Place the croissants onto a baking sheet and let them rise until they have doubled in size, about 1 hour. Preheat your oven to 375 degrees F (190 degrees C). Beat the egg with the water to make an egg wash, and lightly brush this onto the croissants. Bake in the preheated oven until the croissants are golden brown, about 15 to 20 minutes.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Buttery-Croissant-Pastries-generated-image.png",
-            "createdAt": "2025-05-21T20:26:01.333Z",
-            "_id": "682e36d956153ef7f0a41185"
-          },
-          {
-            "title": "French Almond Croissants",
-            "ingredients": "2 cups of almond flour,1/2 cup of granulated sugar,1/2 cup of unsalted butter, softened,1 egg white,1/4 teaspoon of almond extract,8 day-old croissants,1/2 cup of powdered sugar,2 tablespoons of milk,Sliced almonds for garnish",
-            "preparation": "Begin by preheating your oven to 350°F (175°C). In a medium mixing bowl, combine the almond flour, granulated sugar, softened butter, egg white, and almond extract until it forms a smooth paste. Slice the day-old croissants in half, but do not cut all the way through, leaving one edge intact to create a 'pocket'. Spread a generous amount of the almond paste inside each croissant, then close them. Arrange the filled croissants on a baking sheet. Bake in the preheated oven for 15-20 minutes, or until they are golden brown and the almond paste is slightly puffed. While the croissants are baking, mix the powdered sugar and milk together to make a thin glaze. As soon as the croissants come out of the oven, brush them with this glaze, then sprinkle with sliced almonds. Allow to cool slightly on the baking sheet before serving.",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/French-Almond-Croissants-generated-image.png",
-            "createdAt": "2025-05-21T20:31:30.259Z",
-            "_id": "682e3822ef20094a63b83816"
-          }
+          
         ]
       }
     ]

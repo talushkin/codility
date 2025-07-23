@@ -36,7 +36,7 @@ export default function NavMenu({ categories, onSelect, isOpen, desktop, isDarkM
 
     if (item?.category) {
       const categoryEncoded = encodeURIComponent(item.category);
-      navigate(`/recipes/${categoryEncoded}`);
+      navigate(`/${categoryEncoded}`);
     }
     onHamburgerClick();
     onSelect(item);
