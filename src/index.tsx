@@ -38,7 +38,7 @@ function App() {
     let isMounted = true;
     const fetchData = async () => {
       setLoading(true);
-      const data = await storage.loadData(false);
+      const data = await storage.loadData(true);
       const siteData = (data as any).site ? (data as any).site : data;
       if (!isMounted) return;
       setRecipes(siteData);
@@ -83,7 +83,7 @@ function App() {
     //     `/recipes/${encodeURIComponent(selectedRecipe.category)}/${encodeURIComponent(selectedRecipe.title)}`
     //   );
     // }
-    console.log("Selected:", selectedRecipe);
+   // console.log("Selected:", selectedRecipe);
   }, [selectedRecipe]);
 
   return (
@@ -134,7 +134,7 @@ function App() {
             }
           /> */}
           <Route
-            path="/:category/:title"
+            path="/:category/:id"
             element={
               <RecipeDetail
                 recipes={recipes}

@@ -54,6 +54,7 @@ export default function HeaderBar({
         title: r.title,
         category: r.category,
         originalTitle: r.title,
+        _id: r._id?r._id:'', // Ensure _id is included for search
       }))
     );
   }, [allRecipes, setTranslatedOptions]);
@@ -75,7 +76,7 @@ export default function HeaderBar({
           searchInputRef.current.blur();
         }
         navigate(
-          `/${encodeURIComponent(recipe.category)}/${encodeURIComponent(recipe.title)}`
+          `/${encodeURIComponent(recipe.category)}/${encodeURIComponent(recipe._id)}`
         );
         window.location.reload();
       }

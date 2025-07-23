@@ -1,18 +1,25 @@
 import React, { useState } from "react";
 import type { Recipe } from "../utils/types";
+import { Button } from "@mui/material";
 
 interface CaseCardProps {
   item: Recipe;
   category: string;
   index?: number;
   isDarkMode?: boolean;
+  onDelete?: (recipe: Recipe) => void;
 }
 
-export default function CaseCard({ item, category, index, isDarkMode }: CaseCardProps) {
+
+export default function CaseCard({ item, category, index, isDarkMode, onDelete }: CaseCardProps) {
   const [imageUrl, setImageUrl] = useState<string>(item.imageUrl || "https://placehold.co/100x100?text=No+Image");
 
-  // Removed unused: isNewRecipe, linkHref
-
+  const handleDelete = () => {
+    if (onDelete) {
+      console.log('deleting a product:', item);
+      onDelete(item);
+    }
+  };
   return (
     <div
       className={`case case-index-${index !== undefined ? index : "unknown"}`}
@@ -33,16 +40,32 @@ export default function CaseCard({ item, category, index, isDarkMode }: CaseCard
           (e.target as HTMLImageElement).src = `https://placehold.co/100x100?text=${encodeURIComponent(item.title)}`;
         }}
       />
-
-      <h2>{item.title}</h2>
-      <p style={{ color: isDarkMode ? "#fff" : "#333" }}>
-        {item.createdAt ? ` ${new Date(item.createdAt).toLocaleDateString("en-GB")}` : ""}
-      </p>
+      <Button
+        onClick={handleDelete}
+        variant="contained"
+        color="error"
+        sx={{
+          left: 350,
+          top: -50,
+          background: "#fff",
+          color: "#d32f2f",
+          border: "1px solid #d32f2f",
+          "&:hover": {
+            background: "#f7f1e3",
+            color: "#b71c1c",
+            border: "1px solid #b71c1c",
+          },
+        }}
+      >
+        delete
+      </Button>
+      <h2>{item.title} / {item.price ? item.price + '$' : ''}</h2>
       <div className="case-description">
         {item.description ? item.description : ""}
       </div>
-
-
+      <p style={{ color: isDarkMode ? "#fff" : "#333" }}>
+        {item._id ? ` # ${item._id}` : ""} / {item.createdAt ? `created : ${new Date(item.createdAt).toLocaleDateString("en-GB")}` : ""}
+      </p>
     </div>
   );
 }

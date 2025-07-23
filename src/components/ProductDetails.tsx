@@ -39,7 +39,9 @@ const ProductDetails = ({
   autoFill = false,
 }: ProductDetailsProps) => {
 
-
+  const [nameError, setNameError] = useState("");
+  const [priceError, setPriceError] = useState("");
+  const [descError, setDescError] = useState("");
   const [editableRecipe, setEditableRecipe] = useState<Recipe>({
     title: recipe?.title || "",
     description: recipe?.description || "",
@@ -75,6 +77,7 @@ const ProductDetails = ({
         price: recipe.price || 0,
         description: recipe.description || "",
         preparation: recipe.preparation || "",
+        createdAt: recipe?.createdAt || "",
         imageUrl: recipe.imageUrl || "",
         _id: recipe._id,
       });
@@ -83,12 +86,49 @@ const ProductDetails = ({
 
 
   const handleChange = (field: keyof Recipe) => (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | null | undefined
   ) => {
-    setEditableRecipe((prev) => ({
-      ...prev,
-      [field]: event.target.value,
-    }));
+    if (!field || !event?.target) return;
+    const value = event.target.value;
+   // console.log("Field changed:", field, ":", value);
+    if (field === "title") {
+      if
+        (!/^[a-zA-Z ]+$/.test(value)) {
+        setNameError("Name must contain only letters and spaces");
+        //console.log("Invalid name input:", event?.target.value);
+      } else {
+        setNameError("")
+        setEditableRecipe((prev) => ({
+          ...prev,
+          [field]: event.target.value,
+        }));
+      }
+    } else
+      if (field === "price") {
+        const priceValue = parseFloat(value);
+        if (isNaN(priceValue) || priceValue <= 0) {
+          setPriceError("Price must be a valid number");
+        } else {
+          setPriceError("");
+          setEditableRecipe((prev) => ({
+            ...prev,
+            [field]: priceValue,
+          }));
+        }
+      } else if (field === "description") {
+        if
+          (!/^[a-zA-Z ]+$/.test(value)) {
+          setDescError("Description must contain only letters and spaces");
+          //console.log("Invalid name input:", event?.target.value);
+        } else {
+          setDescError("")
+          setEditableRecipe((prev) => ({
+            ...prev,
+            [field]: event.target.value,
+          }));
+        }
+      }
+
   };
 
   const handleSave = () => {
@@ -105,30 +145,10 @@ const ProductDetails = ({
   };
 
   return (
-<>
-       {/* {editableRecipe.title} */}
-        <IconButton
-          onClick={onClose}
-          style={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            width: "40px",
-            height: "40px",
-            borderRadius: "50%",
-            boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 0,
-          }}
-        >
-          <span style={{ fontSize: "24px", fontWeight: "bold", lineHeight: 1 }}>×</span>
-        </IconButton>
-
+    <>
       <Box position="relative">
 
-        <div 
+        <div
           style={{
             backgroundColor: "#f7f1e3",
           }}
@@ -154,12 +174,18 @@ const ProductDetails = ({
 
           <Box position="relative">
             <TextField
+              inputProps={{
+                pattern: "[A-Za-z ]+",
+              }}
+              required
+              error={!!nameError}
+              helperText={nameError}
               type="text"
               label="Product Name"
               value={editableRecipe.title}
               onChange={handleChange("title")}
               fullWidth
-              margin="normal" 
+              margin="normal"
               InputProps={{
                 style: {
                   fontSize: "2rem",
@@ -179,6 +205,8 @@ const ProductDetails = ({
           <Box position="relative">
             <TextField
               label={"description"}
+              error={!!descError}
+              helperText={descError}
               value={editableRecipe.description}
               onChange={handleChange("description")}
               fullWidth
@@ -193,6 +221,8 @@ const ProductDetails = ({
           <Box position="relative">
             <TextField
               type="number"
+              error={!!priceError}
+              helperText={priceError}
               label={"Price in $"}
               value={editableRecipe.price}
               onChange={handleChange("price")}
@@ -203,7 +233,7 @@ const ProductDetails = ({
             />
           </Box>
         </div>
-          <Button
+        {/* <Button
           onClick={handleDelete}
           variant="contained"
           color="error"
@@ -219,13 +249,13 @@ const ProductDetails = ({
           }}
         >
           delete
-        </Button>
+        </Button> */}
         <Button onClick={handleSave} variant="contained">
-          save
+          Update
         </Button>
-        <Button onClick={onClose} variant="contained" color="primary">
+        {/* <Button onClick={onClose} variant="contained" color="primary">
           close
-        </Button>
+        </Button> */}
       </Box>
     </>
   );

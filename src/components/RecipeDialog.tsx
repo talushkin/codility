@@ -53,6 +53,9 @@ const RecipeDialog = ({
 
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [showTranslated, setShowTranslated] = useState<boolean>(false);
+  const [nameError, setNameError] = useState("");
+  const [priceError, setPriceError] = useState("");
+  const [descError, setDescError] = useState("");
 
   useEffect(() => {
     // Reset to English when dialog opens or recipe changes
@@ -83,12 +86,49 @@ const RecipeDialog = ({
 
 
   const handleChange = (field: keyof Recipe) => (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | null | undefined
   ) => {
-    setEditableRecipe((prev) => ({
-      ...prev,
-      [field]: event.target.value,
-    }));
+    if (!field || !event?.target) return;
+    const value = event.target.value;
+   // console.log("Field changed:", field, ":", value);
+    if (field === "title") {
+      if
+        (!/^[a-zA-Z ]+$/.test(value)) {
+        setNameError("Name must contain only letters and spaces");
+        //console.log("Invalid name input:", event?.target.value);
+      } else {
+        setNameError("")
+        setEditableRecipe((prev) => ({
+          ...prev,
+          [field]: event.target.value,
+        }));
+      }
+    } else
+      if (field === "price") {
+        const priceValue = parseFloat(value);
+        if (isNaN(priceValue) || priceValue <= 0) {
+          setPriceError("Price must be a valid number");
+        } else {
+          setPriceError("");
+          setEditableRecipe((prev) => ({
+            ...prev,
+            [field]: priceValue,
+          }));
+        }
+      } else if (field === "description") {
+        if
+          (!/^[a-zA-Z ]+$/.test(value)) {
+          setDescError("Description must contain only letters and spaces");
+          //console.log("Invalid name input:", event?.target.value);
+        } else {
+          setDescError("")
+          setEditableRecipe((prev) => ({
+            ...prev,
+            [field]: event.target.value,
+          }));
+        }
+      }
+
   };
 
   const handleSave = () => {
@@ -191,12 +231,19 @@ const RecipeDialog = ({
 
           <Box position="relative">
             <TextField
+              inputProps={{
+                pattern: "[A-Za-z ]+",
+              }}
+              required
+              error={!!nameError}
+              helperText={nameError}
               type="text"
-              label="Product Name"
+              label="New Product Name"
+              placeholder="Enter product name"
               value={editableRecipe.title}
               onChange={handleChange("title")}
               fullWidth
-              margin="normal" 
+              margin="normal"
               InputProps={{
                 style: {
                   fontSize: "2rem",
@@ -216,6 +263,8 @@ const RecipeDialog = ({
           <Box position="relative">
             <TextField
               label={"description"}
+              error={!!descError}
+              helperText={descError}
               value={editableRecipe.description}
               onChange={handleChange("description")}
               fullWidth
@@ -230,6 +279,8 @@ const RecipeDialog = ({
           <Box position="relative">
             <TextField
               type="number"
+              error={!!priceError}
+              helperText={priceError}
               label={"Price in $"}
               value={editableRecipe.price}
               onChange={handleChange("price")}
@@ -261,7 +312,7 @@ const RecipeDialog = ({
           },
         }}
       >
-        <Button
+        {/* <Button
           onClick={handleDelete}
           variant="contained"
           color="error"
@@ -277,9 +328,12 @@ const RecipeDialog = ({
           }}
         >
           delete
-        </Button>
-        <Button onClick={handleSave} variant="contained">
-          save
+        </Button> */}
+        <Button 
+        onClick={handleSave}
+         variant="contained"
+         disabled={!editableRecipe.title || !editableRecipe.price || !!nameError || !!priceError || !!descError}>
+          Add product
         </Button>
         <Button onClick={onClose} variant="contained" color="primary">
           close

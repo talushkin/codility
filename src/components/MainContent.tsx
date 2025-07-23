@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import CaseCard from "./CaseCard";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
+import Input from "@mui/material/Input";
 import RecipeDialog from "./RecipeDialog";
 import ProductDetails from "./ProductDetails"; // Assuming you have a ProductDetails component
 import SortSelector from "./SortSelector"; // Assuming you have a SortSelector component
@@ -42,15 +43,18 @@ const MainContent: React.FC<MainContentProps> = ({
   const itemsPerPage: number = 5;
   const [openView, setOpenView] = useState<boolean>(false);
   const [openAdd, setOpenAdd] = useState<boolean>(false);
+  const [openSearch, setOpenSearch] = useState<boolean>(false);
+  const [filterItem, setFilterItem] = useState<string>(""); // for filter the products
 
   const [selectedSort, setSelectedSort] = useState<string>("_id");
-  const [viewedItem, setViewedItem] = useState<Recipe>(selectedRecipe || { title: "", description: "", price: 0, preparation: "" });
+  const [viewedItem, setViewedItem] = useState<Recipe>(selectedRecipe || { _id: "", price: 0, title: "", description: "", preparation: "" });
   const [newRecipe, setNewRecipe] = useState<Recipe>({
     title: "",
     description: "",
     price: 0,
     ingredients: "",
     preparation: "",
+    _id: ""
   });
   // Removed unused: setEditOrder
   // Remove all usage of editOrder
@@ -62,7 +66,7 @@ const MainContent: React.FC<MainContentProps> = ({
 
   useEffect(() => {
     setOpenView(!!selectedRecipe);
-    setViewedItem(selectedRecipe || { title: "", ingredients: "", preparation: "" });
+    setViewedItem(selectedRecipe || { _id: "", price: 0, title: "", description: "", preparation: "" });
   }, [selectedRecipe, setOpenView, setViewedItem]);
 
   useEffect(() => {
@@ -105,20 +109,25 @@ const MainContent: React.FC<MainContentProps> = ({
     setRecipes(sortedRecipes);
   };
 
-  const handleSortChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSortChange = (event: React.ChangeEvent<{ value: unknown; }>) => {
     console.log("Sort changed:", event.target.value);
     SortBy(event.target.value as string);
     setSelectedSort(event.target.value as string);
+    setPage(1);
   };
 
   const handleAddRecipe = async (recipe: Recipe) => {
     let newRecipeData: Recipe = {
       title: recipe?.title,
+      description: recipe?.description,
+      price: recipe?.price,
       ingredients: recipe?.ingredients,
       preparation: recipe?.preparation,
       categoryId: selectedCategory?._id,
       imageUrl: recipe?.imageUrl || "",
       category: selectedCategory?.category,
+      createdAt: new Date().toISOString(),
+      _id: recipe?._id || (selectedCategory?.itemPage?.length + 1).toString() || "1",
     };
 
     try {
@@ -127,7 +136,7 @@ const MainContent: React.FC<MainContentProps> = ({
     } catch (error: any) {
       console.error("Error adding recipe:", error.response?.data || error.message);
     }
-    setNewRecipe({ title: "", ingredients: "", preparation: "" });
+    setNewRecipe({ _id: "", title: "", ingredients: "", preparation: "" });
     setOpenAdd(false);
     setOpenView(false);
   };
@@ -178,8 +187,8 @@ const MainContent: React.FC<MainContentProps> = ({
     setOpenView(true);
     if (recipe && selectedCategory?.category && recipe?.title) {
       const categoryEncoded = encodeURIComponent(selectedCategory?.category);
-      const titleEncoded = encodeURIComponent(recipe?.title);
-      navigate(`/${categoryEncoded}/${titleEncoded}`);
+      const idEncoded = encodeURIComponent(recipe?._id);
+      navigate(`/${categoryEncoded}/${idEncoded}`);
     }
   };
 
@@ -203,17 +212,17 @@ const MainContent: React.FC<MainContentProps> = ({
 
       <div className="main">
 
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center", margin: "1rem 0" }}>
           <Button
             variant="contained"
             color="primary"
             onClick={() => setOpenAdd(true)}
             sx={{
               minWidth: "156px",
-              minHeight: "56px",
-              width: "56px",
-              height: "56px",
-              borderRadius: "16px",
+              minHeight: "40px",
+              width: "156px",
+              height: "40px",
+              borderRadius: "6px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -231,16 +240,19 @@ const MainContent: React.FC<MainContentProps> = ({
             <AddIcon sx={{ fontSize: 28 }} />
             ADD
           </Button>
-          <Button
+          {!openSearch && (<Button
             variant="contained"
             color="primary"
-            onClick={() => setOpenAdd(true)}
+            onClick={() => {
+              setOpenSearch(true)
+              console.log('filter...')
+            }}
             sx={{
-              minWidth: "156px",
-              minHeight: "56px",
-              width: "56px",
-              height: "56px",
-              borderRadius: "16px",
+              minWidth: "256px",
+              minHeight: "40px",
+              width: "256px",
+              height: "40px",
+              borderRadius: "6px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -257,7 +269,41 @@ const MainContent: React.FC<MainContentProps> = ({
           >
             <SearchIcon sx={{ fontSize: 28 }} />
             Search Products
-          </Button>
+          </Button>)}
+          {openSearch && (
+            <Input
+              type="text"
+              style={{
+                minWidth: "256px",
+                minHeight: "40px",
+                width: "256px",
+                height: "40px",
+                borderRadius: "6px",
+                padding: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                fontSize: "0.85rem",
+                gap: "0.25rem",
+                backgroundColor: "white"
+              }}
+              title="Search Products"
+              value={filterItem || ""}
+              onChange={(e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                console.log("Search term:", searchTerm);
+                setFilterItem(searchTerm);
+              }}
+              onFocus={() => setOpenSearch(true)}
+              onBlur={() => {
+                setTimeout(() => {
+                  setFilterItem("");
+                  setOpenSearch(false);
+                }, 100);
+              }}
+            />
+          )}
           <SortSelector
             sort={selectedSort}
             handleSortChange={handleSortChange} // Placeholder for sort change handler
@@ -269,14 +315,15 @@ const MainContent: React.FC<MainContentProps> = ({
             justifyContent: rowJustify,
             maxHeight: "calc(100vh - 300px)",
             minHeight: "calc(100vh - 300px)",
+            width: "50%"
           }}
         >
           {currentItems.map((item, index) => {
-            let colClass = "col-12 col-sm-8 col-md-6 col-lg-3";
+            let colClass = "col-6";
             return (
               <div
                 key={index}
-                className={`${colClass} mb-4 d-flex`}
+                className={`${colClass}`}
                 style={{
                   justifyContent: rowJustify,
                 }}
@@ -287,38 +334,64 @@ const MainContent: React.FC<MainContentProps> = ({
                   item={item}
                   category={selectedCategory?.category}
                   isDarkMode={isDarkMode}
+                  onDelete={(recipe: Recipe) => {
+                    handleDeleteRecipe(recipe);
+                  }}
                 />
               </div>
             );
           })}
+          <div className="pagination-container" >
+            <p style={{
+              width: "50%",
+              textAlign: "center",
+              margin: "10px 0",
+              display: "flex",
+              justifyContent: "center",
+              position: "absolute",
+              bottom: "20px"
+              /* align-content: flex-end; */
+            }}>
+              Page {page}, Recipes {startIndex + 1}–{endIndex} of {totalItems}
+            </p>
+            {totalPages > 1 && (
+              <div className="pagination-pages" style={{ direction: "ltr" }}>
+                <Pagination
+                  count={totalPages}
+                  page={page}
+                  onChange={handlePageChange}
+                  color="primary"
+                  sx={{
+                    "& .MuiPaginationItem-root": {
+                      color: (theme) => (isDarkMode ? "white" : "inherit"),
+                      direction: "ltr",
+                    },
+                    "& .Mui-selected": {
+                      backgroundColor: isDarkMode ? "#fff" : "",
+                      color: isDarkMode ? "#222" : "",
+                    },
+                  }}
+                  dir="ltr"
+                />
+              </div>
+            )}
+          </div>
         </div>
-        <div>
-          <p style={{ flexBasis: "100%", textAlign: "center" }}>
-            Page {page}, Recipes {startIndex + 1}–{endIndex} of {totalItems}
-          </p>
-          {totalPages > 1 && (
-            <div className="pagination-container" style={{ direction: "ltr" }}>
-              <Pagination
-                count={totalPages}
-                page={page}
-                onChange={handlePageChange}
-                color="primary"
-                sx={{
-                  "& .MuiPaginationItem-root": {
-                    color: (theme) => (isDarkMode ? "white" : "inherit"),
-                    direction: "ltr",
-                  },
-                  "& .Mui-selected": {
-                    backgroundColor: isDarkMode ? "#fff" : "",
-                    color: isDarkMode ? "#222" : "",
-                  },
-                }}
-                dir="ltr"
-              />
-            </div>
-          )}
+        <div className="one-product" style={{ width: "40%", display: "flex", marginLeft: "50%", position: "absolute", top: "150px" }}>
+          <ProductDetails
+            open={true}
+            recipe={viewedItem}
+            onClose={handleCloseDialog}
+            onSave={(recipe: Recipe) => {
+              viewedItem?._id ? handleUpdateRecipe(recipe) : handleAddRecipe(recipe);
+            }}
+            onDelete={(recipe: Recipe) => {
+              handleDeleteRecipe(recipe);
+            }}
+          />
         </div>
-        <RecipeDialog
+
+        {/* <RecipeDialog
           open={openView}
           onClose={handleCloseDialog}
           type="view"
@@ -331,7 +404,7 @@ const MainContent: React.FC<MainContentProps> = ({
           }}
 
           targetLang="en"
-        />
+        /> */}
         <RecipeDialog
           open={openAdd}
           autoFill={false}
@@ -345,19 +418,7 @@ const MainContent: React.FC<MainContentProps> = ({
           targetLang="en"
         />
       </div >
-      {/* <div className="one-product col-6">
-        <ProductDetails
-          open={true}
-          recipe={viewedItem}
-          onClose={handleCloseDialog}
-          onSave={(recipe: Recipe) => {
-            viewedItem?._id ? handleUpdateRecipe(recipe) : handleAddRecipe(recipe);
-          }}
-          onDelete={(recipe: Recipe) => {
-            handleDeleteRecipe(recipe);
-          }}
-        />
-      </div> */}
+
 
     </>
   );

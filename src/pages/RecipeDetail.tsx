@@ -12,18 +12,18 @@ interface RecipeDetailProps {
 
 export default function RecipeDetail(props: RecipeDetailProps) {
   const { recipes, setRecipes, setSelectedCategory, setSelectedRecipe } = props;
-  const { category, title } = useParams<{ category?: string; title?: string }>();
+  const { category, id } = useParams<{ category?: string; id?: string }>();
   const categories = recipes.categories || [];
   const selectedCategoryData = categories.find(
     (cat: Category) => cat?.category?.toLowerCase() === category?.toLowerCase()
   ) || null;
   const selectedRecipeData = selectedCategoryData?.itemPage.find(
-    (recipe: Recipe) => recipe?.title?.toLowerCase() === title?.toLowerCase()
+    (recipe: Recipe) => recipe?._id?.toLowerCase() === id?.toLowerCase()
   ) || null;
   React.useEffect(() => {
     setSelectedCategory(selectedCategoryData);
     setSelectedRecipe(selectedRecipeData);
-  }, [category, title, setSelectedCategory, setSelectedRecipe, selectedCategoryData, selectedRecipeData]);
+  }, [category, id, setSelectedCategory, setSelectedRecipe, selectedCategoryData, selectedRecipeData]);
   return (
     <HomePage
       selectedCategory={selectedCategoryData}

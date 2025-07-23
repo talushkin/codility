@@ -29,7 +29,7 @@ export const loadData = async (loadFromMemory :boolean = true) => {
 
 export const addRecipe = async (recipe: Recipe, category: Category): Promise<any> => {
   console.log("addRecipe locally", recipe, category);
-  if (!recipe.title || !category?._id) {
+  if (!recipe.title || !category?._id ) {
     console.error("Missing recipe or category ID");
     return null;
   }
@@ -44,17 +44,16 @@ export const addRecipe = async (recipe: Recipe, category: Category): Promise<any
     const siteData = JSON.parse(cached);
     const newRecipe = {
       ...recipe,
-      _id: Date.now().toString(), // Simple ID generation
       createdAt: new Date().toISOString(),
-      imageUrl: recipe.imageUrl || "https://placehold.co/100x100?text=No+Image",
+      imageUrl: recipe.imageUrl || `https://placehold.co/100x100?text=${recipe.title || 'No Image'}`,
     };
-    
+    console.log('site data:',siteData)
     // Find the category and add the recipe
-    const categoryIndex = siteData.site.categories.findIndex((cat: any) => cat._id === category._id);
+    const categoryIndex = siteData.categories.findIndex((cat: any) => cat._id === category._id);
     if (categoryIndex !== -1) {
-      siteData.site.categories[categoryIndex].itemPage.push(newRecipe);
+      siteData.categories[categoryIndex].itemPage.push(newRecipe);
       localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-      console.log("Recipe added locally:", newRecipe);
+      console.log("Recipe added and updated locally:", newRecipe,siteData);
       return newRecipe;
     } else {
       console.error("Category not found");
@@ -68,6 +67,7 @@ export const addRecipe = async (recipe: Recipe, category: Category): Promise<any
 
 export const updateRecipe = async (updatedRecipe: Recipe): Promise<any> => {
   if (!updatedRecipe._id) {
+    console.log('updated',updatedRecipe)
     console.error("Missing recipe ID for update.");
     return null;
   }
@@ -82,6 +82,7 @@ export const updateRecipe = async (updatedRecipe: Recipe): Promise<any> => {
     const siteData = JSON.parse(cached);
     let recipeFound = false;
     
+    console.log("Updating recipe:", updatedRecipe);
     // Find and update the recipe across all categories
     siteData.site.categories.forEach((category: any) => {
       const recipeIndex = category.itemPage.findIndex((recipe: any) => recipe._id === updatedRecipe._id);
@@ -122,7 +123,7 @@ export const delRecipe = async (recipeId: string): Promise<void> => {
     let recipeDeleted = false;
     
     // Find and delete the recipe from the appropriate category
-    siteData.site.categories.forEach((category: any) => {
+    siteData.categories.forEach((category: any) => {
       const recipeIndex = category.itemPage.findIndex((recipe: any) => recipe._id === recipeId);
       if (recipeIndex !== -1) {
         category.itemPage.splice(recipeIndex, 1);

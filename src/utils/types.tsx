@@ -1,10 +1,10 @@
 // --- Types ---
 export interface Recipe {
-  _id?: string;
+  _id: string;
   title: string;
   ingredients?: string;
-  description?: String;
-  price?: number;
+  description?: String|undefined;
+  price?: number|undefined;
   preparation?: string;
   imageUrl?: string;
   createdAt?: string;
