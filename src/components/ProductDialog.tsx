@@ -11,43 +11,43 @@ import {
   Box,
 } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import type { Recipe } from "../utils/types";
+import type { Product } from "../utils/types";
 
 const BASE_URL = "https://be-tan-theta.vercel.app";
 
-interface RecipeDialogProps {
+interface ProductDialogProps {
   open: boolean;
   onClose: () => void;
-  onSave: (recipe: Recipe) => void;
-  onDelete?: (recipe: Recipe) => void;
-  recipe: Recipe;
+  onSave: (Product: Product) => void;
+  onDelete?: (Product: Product) => void;
+  Product: Product;
   targetLang?: string;
   type?: string;
   categoryName?: string;
   autoFill?: boolean;
 }
 
-const RecipeDialog = ({
+const ProductDialog = ({
   open,
   onClose,
   onSave,
   onDelete,
-  recipe,
+  Product,
   targetLang = "en",
   type,
   categoryName,
   autoFill = false,
-}: RecipeDialogProps) => {
+}: ProductDialogProps) => {
 
 
-  const [editableRecipe, setEditableRecipe] = useState<Recipe>({
-    title: recipe?.title || "",
-    description: recipe?.description || "",
-    preparation: recipe?.preparation || "",
-    price: recipe?.price || 10,
-    createdAt: recipe?.createdAt || "",
-    imageUrl: recipe?.imageUrl || "",
-    _id: recipe?._id,
+  const [editableProduct, setEditableProduct] = useState<Product>({
+    title: Product?.title || "",
+    description: Product?.description || "",
+
+    price: Product?.price || 10,
+    createdAt: Product?.createdAt || "",
+    imageUrl: Product?.imageUrl || "",
+    _id: Product?._id,
   });
   const isRTL: Boolean = false; // Assuming you have a way to determine if the language is RTL
 
@@ -56,43 +56,42 @@ const RecipeDialog = ({
   const [nameError, setNameError] = useState("");
   const [priceError, setPriceError] = useState("");
   const [descError, setDescError] = useState("");
- // console.log('editableRecipe:', editableRecipe);
+ // console.log('editableProduct:', editableProduct);
   useEffect(() => {
-    // Reset to English when dialog opens or recipe changes
+    // Reset to English when dialog opens or Product changes
     setShowTranslated(false);
-    setEditableRecipe({
-      title: recipe?.title || "",
-      description: recipe?.description || "",
-      preparation: recipe?.preparation || "",
-      price: recipe?.price || 10,
-      createdAt: recipe?.createdAt || "",
-      imageUrl: recipe?.imageUrl || "",
-      _id: recipe?._id,
+    setEditableProduct({
+      title: Product?.title || "",
+      description: Product?.description || "",
+
+      price: Product?.price || 10,
+      createdAt: Product?.createdAt || "",
+      imageUrl: Product?.imageUrl || "",
+      _id: Product?._id,
     });
-  }, [recipe, open]);
+  }, [Product, open]);
 
   useEffect(() => {
-    if (recipe) {
-      setEditableRecipe({
-        title: recipe.title || "",
-        price: recipe.price || 10,
-        description: recipe.description || "",
-        preparation: recipe.preparation || "",
-        imageUrl: recipe.imageUrl || "",
-        _id: recipe._id,
+    if (Product) {
+      setEditableProduct({
+        title: Product.title || "",
+        price: Product.price || 10,
+        description: Product.description || "",
+        imageUrl: Product.imageUrl || "",
+        _id: Product._id,
       });
     }
-  }, [recipe]);
+  }, [Product]);
 
 
-  const handleChange = (field: keyof Recipe) => (
+  const handleChange = (field: keyof Product) => (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | null | undefined
   ) => {
     if (!field || !event?.target) return;
     const value = event.target.value;
 //    console.log("Field changed:", field, ":", value);
     if (field === "title") {
-      setEditableRecipe((prev) => ({
+      setEditableProduct((prev) => ({
         ...prev,
         [field]: event.target.value,
       }));
@@ -109,13 +108,13 @@ const RecipeDialog = ({
         const priceValue = parseFloat(value);
     //    console.log("Price changed:", priceValue);
         if (isNaN(priceValue) || priceValue < 0) {
-          setEditableRecipe((prev) => ({
+          setEditableProduct((prev) => ({
             ...prev,
             [field]: 0,
           }))
           setPriceError("Price must be a valid number");
         } else {
-          setEditableRecipe((prev) => ({
+          setEditableProduct((prev) => ({
             ...prev,
             [field]: value,
           }))
@@ -123,7 +122,7 @@ const RecipeDialog = ({
 
         }
       } else if (field === "description") {
-        setEditableRecipe((prev) => ({
+        setEditableProduct((prev) => ({
           ...prev,
           [field]: event.target.value,
         }));
@@ -140,14 +139,14 @@ const RecipeDialog = ({
   };
 
   const handleSave = () => {
-    onSave(editableRecipe);
+    onSave(editableProduct);
     onClose();
   };
 
   const handleDelete = () => {
     if (onDelete) {
-      setEditableRecipe((prev) => ({ ...prev, _id: recipe?._id }));
-      onDelete(editableRecipe);
+      setEditableProduct((prev) => ({ ...prev, _id: Product?._id }));
+      onDelete(editableProduct);
       onClose();
     }
   };
@@ -190,7 +189,7 @@ const RecipeDialog = ({
           minHeight: "60px",
         }}
       >
-        {editableRecipe.title}
+        {editableProduct.title}
         <IconButton
           onClick={onClose}
           style={{
@@ -228,10 +227,10 @@ const RecipeDialog = ({
           >
             <img
               src={
-                editableRecipe.imageUrl ||
+                editableProduct.imageUrl ||
                 "https://placehold.co/100x100?text=No+Image"
               }
-              alt={editableRecipe.title}
+              alt={editableProduct.title}
               style={{ maxHeight: "300px", borderRadius: "28px" }}
             />
 
@@ -248,7 +247,7 @@ const RecipeDialog = ({
               type="text"
               label="New Product Name"
               placeholder="Enter product name"
-              value={editableRecipe.title}
+              value={editableProduct.title}
               onChange={handleChange("title")}
               fullWidth
               margin="normal"
@@ -273,7 +272,7 @@ const RecipeDialog = ({
               label={"description"}
               error={!!descError}
               helperText={descError}
-              value={editableRecipe.description}
+              value={editableProduct.description}
               onChange={handleChange("description")}
               fullWidth
               multiline
@@ -289,7 +288,7 @@ const RecipeDialog = ({
               error={!!priceError}
               helperText={priceError}
               label={"Price in $"}
-              value={editableRecipe.price}
+              value={editableProduct.price}
               onChange={handleChange("price")}
               fullWidth
               rows={1}
@@ -338,7 +337,7 @@ const RecipeDialog = ({
         <Button
           onClick={handleSave}
           variant="contained"
-          disabled={!editableRecipe.title || !editableRecipe.price || !!nameError || !!priceError || !!descError}>
+          disabled={!editableProduct.title || !editableProduct.price || !!nameError || !!priceError || !!descError}>
           Add product
         </Button>
         <Button onClick={onClose} variant="contained" color="primary">
@@ -349,4 +348,4 @@ const RecipeDialog = ({
   );
 };
 
-export default RecipeDialog;
+export default ProductDialog;

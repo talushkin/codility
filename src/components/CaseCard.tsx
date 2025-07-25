@@ -1,23 +1,36 @@
-import React, { useState } from "react";
-import type { Recipe } from "../utils/types";
+import React, { useState, useEffect } from "react";
+import type { Product } from "../utils/types";
 import { Button } from "@mui/material";
+import { getImageFromLocalStorage } from "../utils/storage";
 
 interface CaseCardProps {
-  item: Recipe;
+  item: Product;
   category: string;
   index?: number;
   isDarkMode?: boolean;
-  onDelete?: (recipe: Recipe) => void;
-  selectedRecipe?: Recipe | null; // Added for potential future use
+  onDelete?: (product: Product) => void;
+  selectedProduct?: Product | null; // Added for potential future use
 }
 
 
 
 
-export default function CaseCard({ item, category, index, isDarkMode, onDelete,selectedRecipe }: CaseCardProps) {
+export default function CaseCard({ item, category, index, isDarkMode, onDelete,selectedProduct }: CaseCardProps) {
   const [imageUrl, setImageUrl] = useState<string>(item.imageUrl || "https://placehold.co/100x100?text=No+Image");
 
-  const isSelected :boolean = (item===selectedRecipe)
+  const isSelected :boolean = (item===selectedProduct)
+
+  // Load image from localStorage on component mount and when item changes
+  useEffect(() => {
+    if (item._id) {
+      const localStorageImage = getImageFromLocalStorage(item._id);
+      if (localStorageImage) {
+        setImageUrl(localStorageImage);
+      } else {
+        setImageUrl(item.imageUrl || "https://placehold.co/100x100?text=No+Image");
+      }
+    }
+  }, [item._id, item.imageUrl]);
 
   const handleDelete = () => {
     if (onDelete) {
@@ -41,15 +54,16 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
       }}
     >
       {/* Delete button - positioned absolutely */}
-      {/* <Button
+      <Button
         onClick={handleDelete}
         variant="contained"
         color="error"
         className="top-1 right-1 z-10"
         size="small"
         sx={{
+          position: "absolute",
           minWidth: "auto",
-          width: "24px",
+          width: "124px",
           height: "24px",
           fontSize: "0.75rem",
           background: "#fff",
@@ -62,20 +76,23 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
           },
         }}
       >
-        ×
-      </Button> */}
+        Delete
+      </Button>
 
       {/* Main content container */}
       <div className="flex flex-row gap-3 h-full p-3">
         {/* Image container */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0" style={{ width: "64px", height: "64px" }}>
           <img
             src={imageUrl}
             alt={item.title}
             className="w-full h-full object-cover"
             style={{
-              height: "100%",
-              borderRadius: "3px" // Slightly smaller radius for image to align with card border
+              width: "64px",
+              height: "64px",
+              borderRadius: "3px", // Slightly smaller radius for image to align with card border
+              objectFit: "cover", // Ensures perfect square cropping
+              objectPosition: "center" // Centers the image content
             }}
             onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
               (e.target as HTMLImageElement).src = `https://placehold.co/100x100?text=${encodeURIComponent(item.title)}`;
@@ -86,15 +103,15 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
         {/* Content container */}
         <div className="flex-1 min-w-0 flex flex-row overflow-hidden">
           {/* Left side - Title with Price, Description */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col" style={{ width: "250px" }}>
             {/* Title and Price on same line */}
             <div className="flex items-baseline">
-              <h2 className="font-semibold text-gray-800 dark:text-white line-clamp-1 leading-tight flex-1">
+              <h2 style={{width:"200px"}} className="font-semibold text-gray-800 dark:text-white line-clamp-1 leading-tight flex-1">
                 {item.title}
               </h2>
               {/* Price aligned to the right */}
               {item.price && (
-                <div className="flex justify-end flex-shrink-0">
+                <div className="flex justify-start flex-shrink-0">
                   <p className="text-sm font-medium text-green-600 dark:text-green-400">
                     ${parseFloat(item.price.toString()).toFixed(2)}
                   </p>
@@ -111,7 +128,7 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
           </div>
           
           {/* Right side - ID and Date */}
-          <div className="flex flex-col justify-start items-end text-xs text-gray-500 dark:text-gray-400 ml-3 flex-shrink-0">
+          <div className="flex flex-col justify-end items-end text-xs text-gray-500 dark:text-gray-400 ml-3 flex-shrink-0">
             {item._id && (
               <span className="block">#{item._id}</span>
             )}

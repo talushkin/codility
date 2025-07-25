@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Autocomplete, TextField } from "@mui/material";
-// import RecipeDialog from "./RecipeDialog"; // unused
+// import ProductDialog from "./ProductDialog"; // unused
 import cardboardTexture from "../assets/cardboard-texture.jpg";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
-import { Category, Recipe } from "../utils/types";
+import { Category, Product } from "../utils/types";
 
 interface HeaderBarProps {
   logo?: string;
@@ -12,10 +12,10 @@ interface HeaderBarProps {
   categories: Category[];
   desktop: boolean;
   setSelectedCategory?: (cat: Category | null) => void;
-  setSelectedRecipe?: (recipe: Recipe | null) => void;
-  selectedRecipe?: Recipe | null;
-  setRecipes?: (recipes: Recipe[]) => void;
-  newRecipe?: Recipe | null;
+  setSelectedProduct?: (Product: Product | null) => void;
+  selectedProduct?: Product | null;
+  setProducts?: (Products: Product[]) => void;
+  newProduct?: Product | null;
   isDarkMode?: boolean;
 }
 
@@ -25,10 +25,10 @@ export default function HeaderBar({
   categories,
   desktop,
   setSelectedCategory,
-  setSelectedRecipe,
-  selectedRecipe,
-  setRecipes,
-  newRecipe,
+  setSelectedProduct,
+  selectedProduct,
+  setProducts,
+  newProduct,
   isDarkMode,
 }: HeaderBarProps) {
   const navigate = useNavigate();
@@ -44,24 +44,24 @@ export default function HeaderBar({
     _id: string;
   }[]>([]);
 
-  let allRecipes = categories?.flatMap((category) =>
+  let allProducts = categories?.flatMap((category) =>
     category.itemPage.map((r) => ({ ...r, category: category.category }))
   );
 
   useEffect(() => {
-    if (!allRecipes) return;
-    allRecipes = categories?.flatMap((category) =>
+    if (!allProducts) return;
+    allProducts = categories?.flatMap((category) =>
     category.itemPage.map((r) => ({ ...r, category: category.category }))
   );
     setTranslatedOptions(
-      allRecipes.map((r) => ({
+      allProducts.map((r) => ({
         title: r.title,
         category: r.category,
         originalTitle: r.title,
         _id: r._id?r._id:'', // Ensure _id is included for search
       }))
     );
-  }, [categories, allRecipes, setTranslatedOptions]);
+  }, [categories, allProducts, setTranslatedOptions]);
 
   const handleSearchChange = (_event: any, value: string) => {
     setShowMobileSearch(false);
@@ -71,8 +71,8 @@ export default function HeaderBar({
   const handleSelect = (_event: any, value: string | null) => {
     const option = translatedOptions.find((opt) => opt.title === value);
     if (option) {
-      const recipe = allRecipes.find((r) => r.title === option.originalTitle);
-      if (recipe) {
+      const Product = allProducts.find((r) => r.title === option.originalTitle);
+      if (Product) {
         setSearchActive(false);
         setShowMobileSearch(false);
         setSearchQuery("");
@@ -80,7 +80,7 @@ export default function HeaderBar({
           searchInputRef.current.blur();
         }
         navigate(
-          `/${encodeURIComponent(recipe.category)}/${encodeURIComponent(recipe._id)}`
+          `/${encodeURIComponent(Product.category)}/${encodeURIComponent(Product._id)}`
         );
         window.location.reload();
       }
@@ -176,7 +176,7 @@ export default function HeaderBar({
                   value={searchQuery}
                   onChange={(e) => handleSearchChange(e, e.target.value)}
                   label="Search"
-                  placeholder="recipe name"
+                  placeholder="Product name"
                   variant="outlined"
                   sx={{
                     minWidth: "50px",

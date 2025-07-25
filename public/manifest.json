@@ -1,9 +1,9 @@
 {
-  "short_name": "Recipe App",
-  "name": "Recipe Management Application",
+  "short_name": "Product App",
+  "name": "Product Management Application",
   "icons": [
     {
-      "src": "recipe-ico.png",
+      "src": "Product-ico.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }

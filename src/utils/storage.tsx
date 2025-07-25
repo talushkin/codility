@@ -1,9 +1,9 @@
 // utils/storage.ts
-import { Recipe, Category, SiteData } from "./types"; // Adjust the import path as needed
+import { Product, Category, SiteData } from "./types"; // Adjust the import path as needed
 import defaultData from "../data/defaultData.json"; // Adjust the import path as needed
 
 // Image handling utilities
-export const uploadImageToLocalStorage = (file: File, recipeId: string): Promise<string> => {
+export const uploadImageToLocalStorage = (file: File, ProductId: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     
@@ -11,8 +11,8 @@ export const uploadImageToLocalStorage = (file: File, recipeId: string): Promise
       try {
         const dataUrl = event.target?.result as string;
         
-        // Store image in localStorage with recipe ID as key
-        const imageKey = `recipe_image_${recipeId}`;
+        // Store image in localStorage with Product ID as key
+        const imageKey = `Product_image_${ProductId}`;
         localStorage.setItem(imageKey, dataUrl);
         
         console.log(`Image stored in localStorage with key: ${imageKey}`);
@@ -31,9 +31,9 @@ export const uploadImageToLocalStorage = (file: File, recipeId: string): Promise
   });
 };
 
-export const getImageFromLocalStorage = (recipeId: string): string | null => {
+export const getImageFromLocalStorage = (ProductId: string): string | null => {
   try {
-    const imageKey = `recipe_image_${recipeId}`;
+    const imageKey = `Product_image_${ProductId}`;
     return localStorage.getItem(imageKey);
   } catch (error) {
     console.error('Error retrieving image:', error);
@@ -41,9 +41,9 @@ export const getImageFromLocalStorage = (recipeId: string): string | null => {
   }
 };
 
-export const deleteImageFromLocalStorage = (recipeId: string): void => {
+export const deleteImageFromLocalStorage = (ProductId: string): void => {
   try {
-    const imageKey = `recipe_image_${recipeId}`;
+    const imageKey = `Product_image_${ProductId}`;
     localStorage.removeItem(imageKey);
     console.log(`Image deleted from localStorage: ${imageKey}`);
   } catch (error) {
@@ -73,14 +73,31 @@ export const validateImageFile = (file: File): { isValid: boolean; error?: strin
   return { isValid: true };
 };
 
-// Load categories and recipes from local default data
+// Load categories and Products from local default data
 export const loadData = async (loadFromMemory :boolean = true) => {
   try {
     if (loadFromMemory) {
-      const cached = localStorage.getItem("recipeSiteData");
+      const cached = localStorage.getItem("ProductSiteData");
       if (cached) {
         const site = JSON.parse(cached);
-    //    console.log("Loaded site from localStorage cache:", site);
+        
+        // Map localStorage images to Products
+        if (site && site.categories) {
+          site.categories.forEach((category: any) => {
+            if (category.itemPage) {
+              category.itemPage.forEach((Product: any) => {
+                if (Product._id) {
+                  const localStorageImage = getImageFromLocalStorage(Product._id);
+                  if (localStorageImage) {
+                    Product.imageUrl = localStorageImage;
+                  }
+                }
+              });
+            }
+          });
+        }
+        
+    //    console.log("Loaded site from localStorage cache with mapped images:", site);
         return site;
       }
     }
@@ -88,7 +105,7 @@ export const loadData = async (loadFromMemory :boolean = true) => {
     // Use local default data instead of API calls
     const site = defaultData ? defaultData.site : defaultData;
     
-    localStorage.setItem("recipeSiteData", JSON.stringify(site));
+    localStorage.setItem("ProductSiteData", JSON.stringify(site));
 //    console.log("Data loaded successfully from defaults:", site);
     return site;
   } catch (err: any) {
@@ -97,118 +114,139 @@ export const loadData = async (loadFromMemory :boolean = true) => {
   }
 }
 
-export const addRecipe = async (recipe: Recipe, category: Category): Promise<any> => {
-  console.log("addRecipe locally", recipe, category);
-  if (!recipe.title || !category?._id ) {
-    console.error("Missing recipe or category ID");
+export const addProduct = async (product: Product, category: Category): Promise<any> => {
+  console.log("addProduct locally", product, category);
+  if (!product.title || !category?._id ) {
+    console.error("Missing product or category ID");
     return null;
   }
   try {
     // Get current data from localStorage
-    const cached = localStorage.getItem("recipeSiteData");
+    const cached = localStorage.getItem("ProductSiteData");
     if (!cached) {
       console.error("No data in localStorage");
       return null;
     }
     
     const siteData = JSON.parse(cached);
-    const newRecipe = {
-      ...recipe,
+    
+    // Check if there's a localStorage image for this product
+    let finalImageUrl = product.imageUrl;
+    if (product._id) {
+      const localStorageImage = getImageFromLocalStorage(product._id);
+      if (localStorageImage) {
+        finalImageUrl = localStorageImage;
+      }
+    }
+    
+    const newProduct = {
+      ...product,
       createdAt: new Date().toISOString(),
-      imageUrl: recipe.imageUrl || `https://placehold.co/100x100?text=${recipe.title || 'No Image'}`,
+      imageUrl: finalImageUrl || `https://placehold.co/100x100?text=${product.title || 'No Image'}`,
     };
 //    console.log('site data:',siteData)
-    // Find the category and add the recipe
+    // Find the category and add the product
     const categoryIndex = siteData.categories.findIndex((cat: any) => cat._id === category._id);
     if (categoryIndex !== -1) {
-      siteData.categories[categoryIndex].itemPage.push(newRecipe);
-      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-  //    console.log("Recipe added and updated locally:", newRecipe,siteData);
-      return newRecipe;
+      siteData.categories[categoryIndex].itemPage.push(newProduct);
+      localStorage.setItem("ProductSiteData", JSON.stringify(siteData));
+  //    console.log("Product added and updated locally:", newProduct,siteData);
+      return newProduct;
     } else {
       console.error("Category not found");
       return null;
     }
   } catch (err: any) {
-    console.error("Error adding recipe locally:", err.message);
+    console.error("Error adding product locally:", err.message);
     return null;
   }
 };
 
-export const updateRecipe = async (updatedRecipe: Recipe): Promise<any> => {
-  if (!updatedRecipe._id) {
-//    console.log('updated',updatedRecipe)
-    console.error("Missing recipe ID for update.");
+export const updateProduct = async (updatedProduct: Product): Promise<any> => {
+  if (!updatedProduct._id) {
+//    console.log('updated',updatedProduct)
+    console.error("Missing product ID for update.");
     return null;
   }
   try {
     // Get current data from localStorage
-    const cached = localStorage.getItem("recipeSiteData");
+    const cached = localStorage.getItem("ProductSiteData");
     if (!cached) {
       console.error("No data in localStorage");
       return null;
     }
     
     const siteData = JSON.parse(cached);
-    let recipeFound = false;
+    let productFound = false;
     
-//    console.log("Updating recipe:", updatedRecipe);
-    // Find and update the recipe across all categories
+    // Check if there's a localStorage image for this product
+    let finalImageUrl = updatedProduct.imageUrl;
+    if (updatedProduct._id) {
+      const localStorageImage = getImageFromLocalStorage(updatedProduct._id);
+      if (localStorageImage) {
+        finalImageUrl = localStorageImage;
+      }
+    }
+    
+//    console.log("Updating product:", updatedProduct);
+    // Find and update the product across all categories
     siteData.site.categories.forEach((category: any) => {
-      const recipeIndex = category.itemPage.findIndex((recipe: any) => recipe._id === updatedRecipe._id);
-      if (recipeIndex !== -1) {
-        category.itemPage[recipeIndex] = {
-          ...category.itemPage[recipeIndex],
-          ...updatedRecipe,
-          imageUrl: updatedRecipe.imageUrl || "https://placehold.co/100x100?text=No+Image",
+      const productIndex = category.itemPage.findIndex((product: any) => product._id === updatedProduct._id);
+      if (productIndex !== -1) {
+        category.itemPage[productIndex] = {
+          ...category.itemPage[productIndex],
+          ...updatedProduct,
+          imageUrl: finalImageUrl || "https://placehold.co/100x100?text=No+Image",
         };
-        recipeFound = true;
+        productFound = true;
       }
     });
     
-    if (recipeFound) {
-      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-  //    console.log("Recipe updated locally:", updatedRecipe);
-      return updatedRecipe;
+    if (productFound) {
+      localStorage.setItem("ProductSiteData", JSON.stringify(siteData));
+  //    console.log("Product updated locally:", updatedProduct);
+      return updatedProduct;
     } else {
-      console.error("Recipe not found for update");
+      console.error("Product not found for update");
       return null;
     }
   } catch (err: any) {
-    console.error("Error updating recipe locally:", err.message);
+    console.error("Error updating product locally:", err.message);
     return null;
   }
 };
 
-export const delRecipe = async (recipeId: string): Promise<void> => {
+export const delProduct = async (productId: string): Promise<void> => {
   try {
     // Get current data from localStorage
-    const cached = localStorage.getItem("recipeSiteData");
+    const cached = localStorage.getItem("ProductSiteData");
     if (!cached) {
       console.error("No data in localStorage");
       return;
     }
     
     const siteData = JSON.parse(cached);
-    let recipeDeleted = false;
+    let productDeleted = false;
     
-    // Find and delete the recipe from the appropriate category
+    // Find and delete the product from the appropriate category
     siteData.categories.forEach((category: any) => {
-      const recipeIndex = category.itemPage.findIndex((recipe: any) => recipe._id === recipeId);
-      if (recipeIndex !== -1) {
-        category.itemPage.splice(recipeIndex, 1);
-        recipeDeleted = true;
+      const productIndex = category.itemPage.findIndex((product: any) => product._id === productId);
+      if (productIndex !== -1) {
+        category.itemPage.splice(productIndex, 1);
+        productDeleted = true;
       }
     });
     
-    if (recipeDeleted) {
-      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
-  //    console.log("Recipe deleted locally:", recipeId);
+    if (productDeleted) {
+      localStorage.setItem("ProductSiteData", JSON.stringify(siteData));
+      // Also delete the associated image from localStorage
+      deleteImageFromLocalStorage(productId);
+  //    console.log("Product and associated image deleted locally:", productId);
     } else {
-      console.error("Recipe not found for deletion");
+      console.error("Product not found for deletion");
     }
   } catch (err: any) {
-    console.error("Error deleting recipe locally:", err.message);
+    console.error("Error deleting product locally:", err.message);
   }
 };
 
@@ -219,7 +257,7 @@ export const addCategory = async (categoryName: string): Promise<any> => {
   }
   try {
     // Get current data from localStorage
-    const cached = localStorage.getItem("recipeSiteData");
+    const cached = localStorage.getItem("ProductSiteData");
     if (!cached) {
       console.error("No data in localStorage");
       return null;
@@ -241,7 +279,7 @@ export const addCategory = async (categoryName: string): Promise<any> => {
     siteData.site.categories.push(newCategory);
     
     // Save back to localStorage
-    localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+    localStorage.setItem("ProductSiteData", JSON.stringify(siteData));
     
 //    console.log("Category added locally:", newCategory);
     return newCategory;
@@ -254,7 +292,7 @@ export const addCategory = async (categoryName: string): Promise<any> => {
 export const delCategory = async (categoryId: string, categoryName?: string): Promise<void> => {
   try {
     // Get current data from localStorage
-    const cached = localStorage.getItem("recipeSiteData");
+    const cached = localStorage.getItem("ProductSiteData");
     if (!cached) {
       console.error("No data in localStorage");
       return;
@@ -267,7 +305,7 @@ export const delCategory = async (categoryId: string, categoryName?: string): Pr
     
     if (categoryIndex !== -1) {
       siteData.site.categories.splice(categoryIndex, 1);
-      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+      localStorage.setItem("ProductSiteData", JSON.stringify(siteData));
   //    console.log("Category deleted locally:", categoryId, categoryName);
     } else {
       console.error("Category not found for deletion:", categoryId);
@@ -280,7 +318,7 @@ export const delCategory = async (categoryId: string, categoryName?: string): Pr
 export const handleItemsChangeOrder = async (orderedCategories: Category[]): Promise<void> => {
   try {
     // Get current data from localStorage
-    const cached = localStorage.getItem("recipeSiteData");
+    const cached = localStorage.getItem("ProductSiteData");
     if (!cached) {
       console.error("No data in localStorage");
       return;
@@ -299,7 +337,7 @@ export const handleItemsChangeOrder = async (orderedCategories: Category[]): Pro
     // Sort categories by priority
     siteData.site.categories.sort((a: any, b: any) => (a.priority || 0) - (b.priority || 0));
     
-    localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+    localStorage.setItem("ProductSiteData", JSON.stringify(siteData));
 //    console.log("Categories reordered successfully");
   } catch (err: any) {
     console.error("Error updating category order locally:", err.message);
@@ -313,7 +351,7 @@ export const updateCategory = async (updatedCategory: Category): Promise<any> =>
   }
   try {
     // Get current data from localStorage
-    const cached = localStorage.getItem("recipeSiteData");
+    const cached = localStorage.getItem("ProductSiteData");
     if (!cached) {
       console.error("No data in localStorage");
       return null;
@@ -330,7 +368,7 @@ export const updateCategory = async (updatedCategory: Category): Promise<any> =>
         ...updatedCategory
       };
       
-      localStorage.setItem("recipeSiteData", JSON.stringify(siteData));
+      localStorage.setItem("ProductSiteData", JSON.stringify(siteData));
   //    console.log("Category updated locally:", updatedCategory);
       return updatedCategory;
     } else {

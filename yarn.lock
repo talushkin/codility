@@ -13967,7 +13967,7 @@ __metadata:
     workbox-navigation-preload: "npm:6.6.0"
     workbox-precaching: "npm:6.6.0"
     workbox-range-requests: "npm:6.6.0"
-    workbox-recipes: "npm:6.6.0"
+    workbox-Products: "npm:6.6.0"
     workbox-routing: "npm:6.6.0"
     workbox-strategies: "npm:6.6.0"
     workbox-streams: "npm:6.6.0"
@@ -14044,9 +14044,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workbox-recipes@npm:6.6.0":
+"workbox-Products@npm:6.6.0":
   version: 6.6.0
-  resolution: "workbox-recipes@npm:6.6.0"
+  resolution: "workbox-Products@npm:6.6.0"
   dependencies:
     workbox-cacheable-response: "npm:6.6.0"
     workbox-core: "npm:6.6.0"

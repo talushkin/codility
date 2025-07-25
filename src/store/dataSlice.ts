@@ -71,12 +71,12 @@ export const reorderCategoriesThunk = createAsyncThunk<any, any[], { rejectValue
   }
 );
 
-// Async thunk for adding a recipe
-export const addRecipeThunk = createAsyncThunk<any, { recipe: any; category: any }, { rejectValue: string }>(
-  'data/addRecipe',
-  async ({ recipe, category }, { rejectWithValue }) => {
+// Async thunk for adding a product
+export const addProductThunk = createAsyncThunk<any, { product: any; category: any }, { rejectValue: string }>(
+  'data/addProduct',
+  async ({ product, category }, { rejectWithValue }) => {
     try {
-      const res = await storage.addRecipe(recipe, category);
+      const res = await storage.addProduct(product, category);
       return res;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
@@ -84,33 +84,33 @@ export const addRecipeThunk = createAsyncThunk<any, { recipe: any; category: any
   }
 );
 
-// Async thunk for deleting a recipe
-export const delRecipeThunk = createAsyncThunk<
-  string, // Return type: the deleted recipe's ID
-  string, // Argument type: the recipe's ID
+// Async thunk for deleting a product
+export const delProductThunk = createAsyncThunk<
+  string, // Return type: the deleted product's ID
+  string, // Argument type: the product's ID
   { rejectValue: string }
 >(
-  'data/delRecipe',
-  async (recipeId, { rejectWithValue }) => {
+  'data/delProduct',
+  async (productId, { rejectWithValue }) => {
     try {
-      await storage.delRecipe(recipeId);
-      return recipeId;
+      await storage.delProduct(productId);
+      return productId;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
 
-// Async thunk for updating a recipe
-export const updateRecipeThunk = createAsyncThunk<
-  any, // Return type: updated recipe object
-  any, // Argument type: updated recipe object
+// Async thunk for updating a product
+export const updateProductThunk = createAsyncThunk<
+  any, // Return type: updated product object
+  any, // Argument type: updated product object
   { rejectValue: string }
 >(
-  'data/updateRecipe',
-  async (updatedRecipe, { rejectWithValue }) => {
+  'data/updateProduct',
+  async (updatedProduct, { rejectWithValue }) => {
     try {
-      const res = await storage.updateRecipe(updatedRecipe);
+      const res = await storage.updateProduct(updatedProduct);
       return res;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
@@ -138,8 +138,8 @@ const dataSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(delRecipeThunk.fulfilled, (state, action) => {
-        // Remove the recipe from all categories in state.site.pages
+      .addCase(delProductThunk.fulfilled, (state, action) => {
+        // Remove the product from all categories in state.site.pages
         if (state.site && state.site.pages) {
           state.site.pages = state.site.pages.map((cat: any) => ({
             ...cat,
@@ -149,8 +149,8 @@ const dataSlice = createSlice({
           }));
         }
       })
-      .addCase(updateRecipeThunk.fulfilled, (state, action) => {
-        // Update the recipe in all categories in state.site.pages
+      .addCase(updateProductThunk.fulfilled, (state, action) => {
+        // Update the product in all categories in state.site.pages
         if (state.site && state.site.pages) {
           state.site.pages = state.site.pages.map((cat: any) => ({
             ...cat,

@@ -3,35 +3,35 @@ import CaseCard from "./CaseCard";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
-import RecipeDialog from "./RecipeDialog";
+import ProductDialog from "./ProductDialog";
 import ProductDetails from "./ProductDetails"; // Assuming you have a ProductDetails component
 import SortSelector from "./SortSelector"; // Assuming you have a SortSelector component
 
 // import { generateImage } from "./imageAI"; // unused
 import { useDispatch } from "react-redux";
-import { addRecipeThunk, delRecipeThunk, updateRecipeThunk } from "../store/dataSlice";
+import { addProductThunk, delProductThunk, updateProductThunk } from "../store/dataSlice";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
-import type { Category, Recipe } from "../utils/types";
+import type { Category, Product } from "../utils/types";
 import type { AppDispatch } from "../store/store";
 
 // --- Types ---
 interface MainContentProps {
   selectedCategory: Category;
-  selectedRecipe: Recipe | null;
-  addRecipe: any;
+  selectedProduct: Product | null;
+  addProduct: any;
   desktop: boolean;
   isDarkMode: boolean;
 }
 
-// Removed unused SortableRecipe component
+// Removed unused SortableProduct component
 
 const MainContent: React.FC<MainContentProps> = ({
   selectedCategory,
-  selectedRecipe,
-  addRecipe,
+  selectedProduct,
+  addProduct,
   desktop,
   isDarkMode,
 }) => {
@@ -45,15 +45,13 @@ const MainContent: React.FC<MainContentProps> = ({
   const [openAdd, setOpenAdd] = useState<boolean>(false);
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [filterItem, setFilterItem] = useState<string>(""); // for filter the products
-  const [filteredProducts, setFilteredProducts] = useState<Recipe[]>([]); // for filtered products
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]); // for filtered products
   const [selectedSort, setSelectedSort] = useState<string>("_id");
-  const [viewedItem, setViewedItem] = useState<Recipe>(selectedRecipe || { _id: "", price: 0, title: "", description: "", preparation: "" });
-  const [newRecipe, setNewRecipe] = useState<Recipe>({
+  const [viewedItem, setViewedItem] = useState<Product>(selectedProduct || { _id: "", price: 0, title: "", description: "" });
+  const [newProduct, setNewProduct] = useState<Product>({
     title: "",
     description: "",
     price: 0,
-    ingredients: "",
-    preparation: "",
     _id: selectedCategory?.itemPage?.length ? (selectedCategory.itemPage.length + 1).toString() : "1",
     categoryId: selectedCategory?._id,
     category: selectedCategory?.category || "",
@@ -63,7 +61,7 @@ const MainContent: React.FC<MainContentProps> = ({
   const [rowJustify, setRowJustify] = useState<string>(
     window.innerWidth <= 770 ? "center" : "flex-start"
   );
-  const [recipes, setRecipes] = useState<Recipe[]>(selectedCategory?.itemPage || []);
+  const [Products, setProducts] = useState<Product[]>(selectedCategory?.itemPage || []);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -80,16 +78,26 @@ const MainContent: React.FC<MainContentProps> = ({
   }, [filterItem, openSearch]);
 
   useEffect(() => {
-    setOpenView(!!selectedRecipe);
-    setViewedItem(selectedRecipe || { _id: "", price: 0, title: "", description: "", preparation: "" });
-  }, [selectedRecipe, setOpenView, setViewedItem]);
+    setOpenView(!!selectedProduct);
+    setViewedItem(selectedProduct || { _id: "", price: 0, title: "", description: "" });
+    
+    // If a product is selected (e.g., from URL route), navigate to the page containing that product
+    // Only do this when search is not active to avoid conflicts with filtered results
+    if (selectedProduct && selectedProduct._id && Products.length > 0 && !openSearch) {
+      const productIndex = Products.findIndex(product => product._id === selectedProduct._id);
+      if (productIndex !== -1) {
+        const targetPage = Math.floor(productIndex / itemsPerPage) + 1;
+        setPage(targetPage);
+      }
+    }
+  }, [selectedProduct, Products, itemsPerPage, openSearch]);
 
   useEffect(() => {
     const itemPage = selectedCategory?.itemPage || [];
     const translated = selectedCategory?.translatedCategory?.[0]?.value || selectedCategory?.category;
-    setRecipes(itemPage);
+    setProducts(itemPage);
     setTranslatedCategory(translated);
-  }, [selectedCategory, setRecipes, setTranslatedCategory]);
+  }, [selectedCategory, setProducts, setTranslatedCategory]);
 
   // Translate category name
   useEffect(() => {
@@ -108,8 +116,8 @@ const MainContent: React.FC<MainContentProps> = ({
   // Handle Sort Change
 
   const SortBy = (sort: string) => {
-    if (!recipes || recipes.length === 0) return;
-    const sortedRecipes = [...recipes].sort((a, b) => {
+    if (!Products || Products.length === 0) return;
+    const sortedProducts = [...Products].sort((a, b) => {
       if (sort === "_id") {
         return (a._id || "").localeCompare(b._id || "");
       } else if (sort === "createdAt") {
@@ -121,13 +129,13 @@ const MainContent: React.FC<MainContentProps> = ({
       }
       return 0;
     });
-    setRecipes(sortedRecipes);
+    setProducts(sortedProducts);
   };
 
   const filterProducts = (filterItem: string) => {
-    if (!recipes || recipes.length === 0) return [];
-    const filteredProducts = recipes.filter((recipe) =>
-      recipe.title.toLowerCase().includes(filterItem.toLowerCase())
+    if (!Products || Products.length === 0) return [];
+    const filteredProducts = Products.filter((Product) =>
+      Product.title.toLowerCase().includes(filterItem.toLowerCase())
     );
 //    console.log("Filtered products:", filteredProducts);
     return filteredProducts;
@@ -142,82 +150,91 @@ const MainContent: React.FC<MainContentProps> = ({
     setPage(1);
   };
 
-  const handleAddRecipe = async (recipe: Recipe) => {
-    let newRecipeData: Recipe = {
-      title: recipe?.title,
-      description: recipe?.description,
-      price: recipe?.price,
-      ingredients: recipe?.ingredients,
-      preparation: recipe?.preparation,
+  // Handle real-time image updates from ProductDetails
+  const handleImageUpdate = (updatedProduct: Product) => {
+    // Update the viewedItem immediately
+    setViewedItem(updatedProduct);
+    
+    // Update the Products list to reflect the change in CaseCard
+    setProducts((prevProducts) =>
+      prevProducts.map((p) => (p._id === updatedProduct._id ? updatedProduct : p))
+    );
+  };
+
+  const handleAddProduct = async (Product: Product) => {
+    let newProductData: Product = {
+      title: Product?.title,
+      description: Product?.description,
+      price: Product?.price,
       categoryId: selectedCategory?._id,
-      imageUrl: recipe?.imageUrl || "",
+      imageUrl: Product?.imageUrl || "",
       category: selectedCategory?.category,
       createdAt: new Date().toISOString(),
-      _id: recipe?._id || (selectedCategory?.itemPage?.length + 1).toString() || "1",
+      _id: Product?._id || (selectedCategory?.itemPage?.length + 1).toString() || "1",
     };
 
     try {
-      await dispatch(addRecipeThunk({ recipe: newRecipeData, category: selectedCategory }) as any).unwrap();
-      setRecipes([...recipes, newRecipeData]);
-      setViewedItem(newRecipeData);
-      navigate(`/${selectedCategory?.category}/${newRecipeData._id}`);
+      await dispatch(addProductThunk({ product: newProductData, category: selectedCategory }) as any).unwrap();
+      setProducts([...Products, newProductData]);
+      setViewedItem(newProductData);
+      navigate(`/${selectedCategory?.category}/${newProductData._id}`);
       window.location.reload();
     } catch (error: any) {
-      console.error("Error adding recipe:", error.response?.data || error.message);
+      console.error("Error adding Product:", error.response?.data || error.message);
     }
-    setNewRecipe({ _id: "", title: "", ingredients: "", preparation: "" });
+    setNewProduct({ _id: "", title: "", description: "", price: 0 });
     setOpenAdd(false);
     setOpenView(false);
   };
 
-  const handleUpdateRecipe = async (updatedRecipe: Recipe) => {
-    updatedRecipe._id = viewedItem?._id;
-    updatedRecipe.categoryId = selectedCategory?._id;
-    updatedRecipe.category = selectedCategory?.category;
+  const handleUpdateProduct = async (updatedProduct: Product) => {
+    updatedProduct._id = viewedItem?._id;
+    updatedProduct.categoryId = selectedCategory?._id;
+    updatedProduct.category = selectedCategory?.category;
     try {
-      await dispatch(updateRecipeThunk(updatedRecipe) as any).unwrap();
-      setRecipes((prevRecipes) =>
-        prevRecipes.map((r) => (r._id === updatedRecipe._id ? updatedRecipe : r))
+      await dispatch(updateProductThunk(updatedProduct) as any).unwrap();
+      setProducts((prevProducts) =>
+        prevProducts.map((r) => (r._id === updatedProduct._id ? updatedProduct : r))
       );
       setOpenView(false);
     } catch (error: any) {
-      console.error("Error updating recipe:", error.response?.data || error.message);
+      console.error("Error updating Product:", error.response?.data || error.message);
     }
   };
 
-  const handleDeleteRecipe = (recipe: Recipe) => {
-    if (!recipe._id) return;
-    if (window.confirm(`Are you sure you want to delete this recipe? ID: ${recipe._id} ${recipe.title}`)) {
-      dispatch(delRecipeThunk(recipe._id) as any)
+  const handleDeleteProduct = (Product: Product) => {
+    if (!Product._id) return;
+    if (window.confirm(`Are you sure you want to delete this Product? ID: ${Product._id} ${Product.title}`)) {
+      dispatch(delProductThunk(Product._id) as any)
         .unwrap()
         .then(() => {
-          setRecipes((prevRecipes) =>
-            prevRecipes.filter((r) => r._id !== recipe._id)
+          setProducts((prevProducts) =>
+            prevProducts.filter((r) => r._id !== Product._id)
           );
           window.location.reload();
         })
         .catch((err: any) => {
-          console.error("Error deleting recipe:", err);
+          console.error("Error deleting Product:", err);
         });
     }
   };
 
-  const totalItems = (openSearch && filterItem.length > 0) ? filteredProducts.length : recipes.length;
+  const totalItems = (openSearch && filterItem.length > 0) ? filteredProducts.length : Products.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-  const currentItems = (openSearch && filterItem.length > 0) ? filteredProducts.slice(startIndex, endIndex) : recipes.slice(startIndex, endIndex);
+  const currentItems = (openSearch && filterItem.length > 0) ? filteredProducts.slice(startIndex, endIndex) : Products.slice(startIndex, endIndex);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
-  const handleSelectRecipe = (recipe: Recipe) => {
-    setViewedItem(recipe);
+  const handleSelectProduct = (Product: Product) => {
+    setViewedItem(Product);
     setOpenView(true);
-    if (recipe && selectedCategory?.category && recipe?.title) {
+    if (Product && selectedCategory?.category && Product?.title) {
       const categoryEncoded = encodeURIComponent(selectedCategory?.category);
-      const idEncoded = encodeURIComponent(recipe?._id);
+      const idEncoded = encodeURIComponent(Product?._id);
       navigate(`/${categoryEncoded}/${idEncoded}`);
     }
   };
@@ -365,7 +382,7 @@ const MainContent: React.FC<MainContentProps> = ({
                   <div
                     key={index}
                     className="cursor-pointer w-full"
-                    onClick={() => handleSelectRecipe(item)}
+                    onClick={() => handleSelectProduct(item)}
                     style={{ 
                       height: 'calc(20% - 4px)', // Each item takes exactly 1/5 of available height minus gap
                       marginBottom: '8px' // Gap between cards
@@ -376,9 +393,9 @@ const MainContent: React.FC<MainContentProps> = ({
                       item={item}
                       category={selectedCategory?.category}
                       isDarkMode={isDarkMode}
-                      selectedRecipe={viewedItem}
-                      onDelete={(recipe: Recipe) => {
-                        handleDeleteRecipe(recipe);
+                      selectedProduct={viewedItem}
+                      onDelete={(Product: Product) => {
+                        handleDeleteProduct(Product);
                       }}
                     />
                   </div>
@@ -401,7 +418,7 @@ const MainContent: React.FC<MainContentProps> = ({
             {currentItems.length > 0 && (
               <div className="mt-auto border-t">
                 <p className="text-center mb-4">
-                  Page {page}, Recipes {startIndex + 1}–{endIndex} of {totalItems}
+                  Page {page}, Products {startIndex + 1}–{endIndex} of {totalItems}
                 </p>
                 {totalPages > 1 && (
                   <div className="flex justify-center">
@@ -443,43 +460,44 @@ const MainContent: React.FC<MainContentProps> = ({
               }}>
                 <ProductDetails
                   open={true}
-                  recipe={viewedItem}
+                  product={viewedItem}
                   onClose={handleCloseDialog}
-                  onSave={(recipe: Recipe) => {
-                    viewedItem?._id ? handleUpdateRecipe(recipe) : handleAddRecipe(recipe);
+                  onSave={(Product: Product) => {
+                    viewedItem?._id ? handleUpdateProduct(Product) : handleAddProduct(Product);
                   }}
-                  onDelete={(recipe: Recipe) => {
-                    handleDeleteRecipe(recipe);
+                  onDelete={(Product: Product) => {
+                    handleDeleteProduct(Product);
                   }}
+                  onImageUpdate={handleImageUpdate}
                 />
               </div>
             </div>
           </div>
         </div>
 
-        {/* <RecipeDialog
+        {/* <ProductDialog
           open={openView}
           onClose={handleCloseDialog}
           type="view"
-          recipe={viewedItem}
-          onSave={(recipe: Recipe) => {
-            viewedItem?._id ? handleUpdateRecipe(recipe) : handleAddRecipe(recipe);
+          Product={viewedItem}
+          onSave={(Product: Product) => {
+            viewedItem?._id ? handleUpdateProduct(Product) : handleAddProduct(Product);
           }}
-          onDelete={(recipe: Recipe) => {
-            handleDeleteRecipe(recipe);
+          onDelete={(Product: Product) => {
+            handleDeleteProduct(Product);
           }}
 
           targetLang="en"
         /> */}
-        <RecipeDialog
+        <ProductDialog
           open={openAdd}
           autoFill={false}
           onClose={handleCloseDialog}
           type="add"
-          recipe={newRecipe}
+          Product={newProduct}
           categoryName={selectedCategory?.category}
-          onSave={(recipe: Recipe) => {
-            handleAddRecipe(recipe);
+          onSave={(Product: Product) => {
+            handleAddProduct(Product);
           }}
           targetLang="en"
         />

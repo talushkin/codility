@@ -13,7 +13,7 @@ import {
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import EditIcon from "@mui/icons-material/Edit";
-import type { Recipe } from "../utils/types";
+import type { Product } from "../utils/types";
 import { uploadImageToLocalStorage, validateImageFile, getImageFromLocalStorage } from "../utils/storage";
 
 const BASE_URL = "https://be-tan-theta.vercel.app";
@@ -21,13 +21,14 @@ const BASE_URL = "https://be-tan-theta.vercel.app";
 interface ProductDetailsProps {
   open: boolean;
   onClose: () => void;
-  onSave: (recipe: Recipe) => void;
-  onDelete?: (recipe: Recipe) => void;
-  recipe: Recipe;
+  onSave: (product: Product) => void;
+  onDelete?: (product: Product) => void;
+  product: Product;
   targetLang?: string;
   type?: string;
   categoryName?: string;
   autoFill?: boolean;
+  onImageUpdate?: (product: Product) => void; // New callback for real-time image updates
 }
 
 const ProductDetails = ({
@@ -35,24 +36,24 @@ const ProductDetails = ({
   onClose,
   onSave,
   onDelete,
-  recipe,
+  product,
   targetLang = "en",
   type,
   categoryName,
   autoFill = false,
+  onImageUpdate, // New callback prop
 }: ProductDetailsProps) => {
 
   const [nameError, setNameError] = useState("");
   const [priceError, setPriceError] = useState("");
   const [descError, setDescError] = useState("");
-  const [editableRecipe, setEditableRecipe] = useState<Recipe>({
-    title: recipe?.title || "",
-    description: recipe?.description || "",
-    preparation: recipe?.preparation || "",
-    price: recipe?.price || 0,
-    createdAt: recipe?.createdAt || "",
-    imageUrl: recipe?.imageUrl || "",
-    _id: recipe?._id,
+  const [editableProduct, setEditableProduct] = useState<Product>({
+    title: product?.title || "",
+    description: product?.description || "",
+    price: product?.price || 0,
+    createdAt: product?.createdAt || "",
+    imageUrl: product?.imageUrl || "",
+    _id: product?._id,
   });
   const isRTL: Boolean = false; // Assuming you have a way to determine if the language is RTL
 
@@ -84,15 +85,22 @@ const ProductDetails = ({
 
     try {
       // Upload image to localStorage and get data URL
-      const recipeId = editableRecipe._id || 'temp_' + Date.now().toString();
-      const imageUrl = await uploadImageToLocalStorage(file, recipeId);
+      const productId = editableProduct._id || 'temp_' + Date.now().toString();
+      const imageUrl = await uploadImageToLocalStorage(file, productId);
       
-      // Update the recipe with new image URL
-      setEditableRecipe(prev => ({
-        ...prev,
+      // Update the product with new image URL
+      const updatedProduct = {
+        ...editableProduct,
         imageUrl: imageUrl,
-        _id: prev._id || recipeId // Set ID if it was temporary
-      }));
+        _id: editableProduct._id || productId // Set ID if it was temporary
+      };
+      
+      setEditableProduct(updatedProduct);
+
+      // Call the onImageUpdate callback to update the main view immediately
+      if (onImageUpdate) {
+        onImageUpdate(updatedProduct);
+      }
 
       console.log('Image uploaded successfully');
     } catch (error) {
@@ -108,52 +116,50 @@ const ProductDetails = ({
   };
 
   useEffect(() => {
-    // Reset to English when dialog opens or recipe changes
+    // Reset to English when dialog opens or product changes
     setShowTranslated(false);
     
-    // Try to load stored image if recipe has an ID
-    let imageUrl = recipe?.imageUrl || "";
-    if (recipe?._id && !imageUrl) {
-      const storedImage = getImageFromLocalStorage(recipe._id);
+    // Try to load stored image if product has an ID
+    let imageUrl = product?.imageUrl || "";
+    if (product?._id && !imageUrl) {
+      const storedImage = getImageFromLocalStorage(product._id);
       if (storedImage) {
         imageUrl = storedImage;
       }
     }
     
-    setEditableRecipe({
-      title: recipe?.title || "",
-      description: recipe?.description || "",
-      preparation: recipe?.preparation || "",
-      price: recipe?.price || 0,
-      createdAt: recipe?.createdAt || "",
+    setEditableProduct({
+      title: product?.title || "",
+      description: product?.description || "",
+      price: product?.price || 0,
+      createdAt: product?.createdAt || "",
       imageUrl: imageUrl,
-      _id: recipe?._id,
+      _id: product?._id,
     });
-  }, [recipe, open]);
+  }, [product, open]);
 
   useEffect(() => {
-    if (recipe) {
-      setEditableRecipe({
-        title: recipe.title || "",
-        price: recipe.price || 0,
-        description: recipe.description || "",
-        preparation: recipe.preparation || "",
-        createdAt: recipe?.createdAt || "",
-        imageUrl: recipe.imageUrl || "",
-        _id: recipe._id,
+    if (product) {
+      setEditableProduct({
+        title: product.title || "",
+        price: product.price || 0,
+        description: product.description || "",
+        createdAt: product?.createdAt || "",
+        imageUrl: product.imageUrl || "",
+        _id: product._id,
       });
     }
-  }, [recipe]);
+  }, [product]);
 
 
-  const handleChange = (field: keyof Recipe) => (
+  const handleChange = (field: keyof Product) => (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | null | undefined
   ) => {
     if (!field || !event?.target) return;
     const value = event.target.value;
 //    console.log("Field changed:", field, ":", value);
     if (field === "title") {
-      setEditableRecipe((prev) => ({
+      setEditableProduct((prev) => ({
         ...prev,
         [field]: event.target.value,
       }));
@@ -170,13 +176,13 @@ const ProductDetails = ({
         const priceValue = parseFloat(value);
     //    console.log("Price changed:", priceValue);
         if (isNaN(priceValue) || priceValue < 0) {
-          setEditableRecipe((prev) => ({
+          setEditableProduct((prev) => ({
             ...prev,
             [field]: 0,
           }))
           setPriceError("Price must be a valid number");
         } else {
-          setEditableRecipe((prev) => ({
+          setEditableProduct((prev) => ({
             ...prev,
             [field]: value,
           }))
@@ -184,7 +190,7 @@ const ProductDetails = ({
 
         }
       } else if (field === "description") {
-        setEditableRecipe((prev) => ({
+        setEditableProduct((prev) => ({
           ...prev,
           [field]: event.target.value,
         }));
@@ -201,14 +207,14 @@ const ProductDetails = ({
   };
 
   const handleSave = () => {
-    onSave(editableRecipe);
+    onSave(editableProduct);
     onClose();
   };
 
   const handleDelete = () => {
     if (onDelete) {
-      setEditableRecipe((prev) => ({ ...prev, _id: recipe?._id }));
-      onDelete(editableRecipe);
+      setEditableProduct((prev) => ({ ...prev, _id: product?._id }));
+      onDelete(editableProduct);
       onClose();
     }
   };
@@ -308,10 +314,10 @@ const ProductDetails = ({
               
               <img
                 src={
-                  editableRecipe.imageUrl ||
+                  editableProduct.imageUrl ||
                   "https://placehold.co/300x200?text=Click+to+Upload+Image"
                 }
-                alt={editableRecipe.title || "Product image"}
+                alt={editableProduct.title || "Product image"}
                 style={{ 
                   maxHeight: "200px", 
                   borderRadius: "28px",
@@ -356,7 +362,7 @@ const ProductDetails = ({
               helperText={nameError}
               type="text"
               label="Product Name"
-              value={editableRecipe.title}
+              value={editableProduct.title}
               onChange={handleChange("title")}
               fullWidth
               margin="normal"
@@ -381,7 +387,7 @@ const ProductDetails = ({
               label={"description"}
               error={!!descError}
               helperText={descError}
-              value={editableRecipe.description}
+              value={editableProduct.description}
               onChange={handleChange("description")}
               fullWidth
               multiline
@@ -398,7 +404,7 @@ const ProductDetails = ({
               error={!!priceError}
               helperText={priceError}
               label={"Price in $"}
-              value={editableRecipe.price}
+              value={editableProduct.price}
               onChange={handleChange("price")}
               fullWidth
               rows={1}
@@ -410,7 +416,7 @@ const ProductDetails = ({
           <Box position="relative">
             <TextField
               label="Created At"
-              value={editableRecipe.createdAt ? new Date(editableRecipe.createdAt).toLocaleString("en-GB") : "Not set"}
+              value={editableProduct.createdAt ? new Date(editableProduct.createdAt).toLocaleString("en-GB") : "Not set"}
               fullWidth
               margin="normal"
               InputProps={{

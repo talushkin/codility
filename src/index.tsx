@@ -7,23 +7,22 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import RecipeDetail from "./pages/RecipeDetail";
-import AddRecipe from "./pages/AddRecipe";
+import ProductDetail from "./pages/ProductDetail";
 import HomePage from "./pages/HomePage";
 import "./styles.css";
 import { CircularProgress, Box } from "@mui/material";
 import { Provider } from "react-redux";
 import * as storage from "./utils/storage";
 import store from "./store/store";
-import type { SiteData, Category, Recipe } from "./utils/types";
+import type { SiteData, Category, Product } from "./utils/types";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
 
 
 function App() {
-  const [recipes, setRecipes] = useState<SiteData | null>(null);
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [Products, setProducts] = useState<SiteData | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -40,7 +39,7 @@ function App() {
       const data = await storage.loadData(true);
       const siteData = (data as any).site ? (data as any).site : data;
       if (!isMounted) return;
-      setRecipes(siteData);
+      setProducts(siteData);
 
       if (siteData?.categories && siteData.categories.length > 0) {
         let initialCategory = siteData.categories[0];
@@ -51,16 +50,16 @@ function App() {
           if (foundCat) initialCategory = foundCat;
         }
         setSelectedCategory(initialCategory);
-        //setSelectedRecipe(initialCategory.itemPage[0] || null);
+        //setSelectedProduct(initialCategory.itemPage[0] || null);
         if (titleParam && initialCategory.itemPage) {
-          const foundRecipe: Recipe | undefined = initialCategory.itemPage.find(
-            (rec: Recipe) => encodeURIComponent(rec.title) === titleParam
+          const foundProduct: Product | undefined = initialCategory.itemPage.find(
+            (rec: Product) => encodeURIComponent(rec.title) === titleParam
           );
-          if (foundRecipe) {
-            setSelectedRecipe(foundRecipe);
+          if (foundProduct) {
+            setSelectedProduct(foundProduct);
           } else {
-        //    console.log("first recipe:", initialCategory.itemPage[0]);
-            setSelectedRecipe(initialCategory.itemPage[0] || null);
+        //    console.log("first Product:", initialCategory.itemPage[0]);
+            setSelectedProduct(initialCategory.itemPage[0] || null);
           }
         }
       }
@@ -77,13 +76,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // if (selectedRecipe && selectedRecipe.title && selectedRecipe.category) {
+    // if (selectedProduct && selectedProduct.title && selectedProduct.category) {
     //   navigate(
-    //     `/recipes/${encodeURIComponent(selectedRecipe.category)}/${encodeURIComponent(selectedRecipe.title)}`
+    //     `/Products/${encodeURIComponent(selectedProduct.category)}/${encodeURIComponent(selectedProduct.title)}`
     //   );
     // }
-   // console.log("Selected:", selectedRecipe);
-  }, [selectedRecipe]);
+   // console.log("Selected:", selectedProduct);
+  }, [selectedProduct]);
 
   return (
     <>
@@ -105,19 +104,19 @@ function App() {
           <CircularProgress size={64} />
         </Box>
       )}
-      {!loading && recipes && (
+      {!loading && Products && (
         <Routes>
           <Route
             path="/"
             element={
               <HomePage
-                recipes={recipes}
-                setRecipes={setRecipes}
-                selectedRecipe={selectedRecipe}
-                setSelectedRecipe={setSelectedRecipe}
+                Products={Products}
+                setProducts={setProducts}
+                selectedProduct={selectedProduct}
+                setSelectedProduct={setSelectedProduct}
                 setSelectedCategory={setSelectedCategory}
                 selectedCategory={selectedCategory}
-                newRecipe={null}
+                newProduct={null}
               />
             }
           />
@@ -125,37 +124,24 @@ function App() {
             path="/products"
             element={
               <HomePage
-                recipes={recipes}
-                setRecipes={setRecipes}
-                selectedRecipe={selectedRecipe}
-                setSelectedRecipe={setSelectedRecipe}
+                Products={Products}
+                setProducts={setProducts}
+                selectedProduct={selectedProduct}
+                setSelectedProduct={setSelectedProduct}
                 setSelectedCategory={setSelectedCategory}
                 selectedCategory={selectedCategory}
-                newRecipe={null}
+                newProduct={null}
               />
             }
           />
           <Route
             path="/:category/:id"
             element={
-              <RecipeDetail
-                recipes={recipes}
-                setRecipes={setRecipes}
+              <ProductDetail
+                Products={Products}
+                setProducts={setProducts}
                 setSelectedCategory={setSelectedCategory}
-                setSelectedRecipe={setSelectedRecipe}
-              />
-            }
-          />
-          <Route
-            path="/:category/add"
-            element={
-              <AddRecipe
-                recipes={recipes}
-                setRecipes={setRecipes}
-                setSelectedCategory={setSelectedCategory}
-                selectedCategory={selectedCategory}
-                selectedRecipe={selectedRecipe}
-                setSelectedRecipe={setSelectedRecipe}
+                setSelectedProduct={setSelectedProduct}
               />
             }
           />

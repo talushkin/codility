@@ -1,11 +1,9 @@
 // --- Types ---
-export interface Recipe {
+export interface Product {
   _id: string;
   title: string;
-  ingredients?: string;
   description?: String|undefined;
   price?: number|string|undefined;
-  preparation?: string;
   imageUrl?: string;
   createdAt?: string;
   categoryId?: string;
@@ -16,7 +14,7 @@ export interface Category {
   _id: string;
   category: string;
   translatedCategory?: { lang: string; value: string; _id: string }[];
-  itemPage: Recipe[];
+  itemPage: Product[];
 }
 
 export type Categories = Category[];

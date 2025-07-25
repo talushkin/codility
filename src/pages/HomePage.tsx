@@ -7,20 +7,20 @@ import { lightTheme, darkTheme } from "../components/themes";
 import GlobalStyle, { createMuiTheme } from "../components/GlobalStyle";
 // import { useNavigate } from "react-router-dom"; // unused
 import FooterBar from "../components/FooterBar";
-import type { Category, Recipe, SiteData } from "../utils/types";
+import type { Category, Product, SiteData } from "../utils/types";
 
 interface HomePageProps {
-  setSelectedRecipe: (recipe: Recipe | null) => void;
-  selectedRecipe: Recipe | null;
-  newRecipe?: Recipe | null;
-  recipes: SiteData;
-  setRecipes: (recipes: SiteData) => void;
+  setSelectedProduct: (Product: Product | null) => void;
+  selectedProduct: Product | null;
+  newProduct?: Product | null;
+  Products: SiteData;
+  setProducts: (Products: SiteData) => void;
   selectedCategory: Category | null;
   setSelectedCategory: (cat: Category | null) => void;
 }
 
 export default function Main(props: HomePageProps) {
-  const { setSelectedRecipe, selectedRecipe, newRecipe, recipes, selectedCategory, setSelectedCategory } = props;
+  const { setSelectedProduct, selectedProduct, newProduct, Products, selectedCategory, setSelectedCategory } = props;
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [desktop, setDesktop] = useState<boolean>(typeof window !== 'undefined' ? window.innerWidth > 768 : true);
@@ -58,14 +58,14 @@ export default function Main(props: HomePageProps) {
         <div className="TOP">
           <HeaderBar
             desktop={desktop}
-            logo={recipes.header?.logo}
+            logo={Products.header?.logo}
             onHamburgerClick={handleHamburgerClick}
-            categories={recipes.categories}
+            categories={Products.categories}
             isDarkMode={isDarkMode}
             setSelectedCategory={setSelectedCategory}
-            setSelectedRecipe={setSelectedRecipe}
-            selectedRecipe={selectedRecipe}
-            newRecipe={newRecipe}
+            setSelectedProduct={setSelectedProduct}
+            selectedProduct={selectedProduct}
+            newProduct={newProduct}
           />
         </div>
         <div className="container-fluid ps-0 pe-0">
@@ -77,7 +77,7 @@ export default function Main(props: HomePageProps) {
               <NavMenu
                 isDarkMode={isDarkMode}
                 toggleDarkMode={toggleDarkMode}
-                categories={recipes.categories}
+                categories={Products.categories}
                 isOpen={menuOpen}
                 onSelect={setSelectedCategory}
                 desktop={desktop}
@@ -88,8 +88,8 @@ export default function Main(props: HomePageProps) {
               {selectedCategory && (
                 <MainContent
                   selectedCategory={selectedCategory}
-                  selectedRecipe={selectedRecipe}
-                  addRecipe={newRecipe}
+                  selectedProduct={selectedProduct}
+                  addProduct={newProduct}
                   desktop={desktop}
                   isDarkMode={isDarkMode}
                 />
