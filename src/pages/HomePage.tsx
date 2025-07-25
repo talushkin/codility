@@ -8,7 +8,7 @@ import GlobalStyle, { createMuiTheme } from "../components/GlobalStyle";
 // import { useNavigate } from "react-router-dom"; // unused
 import FooterBar from "../components/FooterBar";
 import type { Category, Product, SiteData } from "../utils/types";
-
+//
 interface HomePageProps {
   setSelectedProduct: (Product: Product | null) => void;
   selectedProduct: Product | null;
