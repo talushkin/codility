@@ -27,31 +27,31 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
   };
   return (
     <div
-      className={`case case-index-${index !== undefined ? index : "unknown"}`}
-      id={`case-index-${index !== undefined ? index : "unknown"}`}
+      className={`relative w-full h-full rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl ${
+        isSelected ? "bg-yellow-200" : isDarkMode ? "bg-gray-800" : "bg-yellow-50"
+      }`}
       style={{
-        backgroundColor: isSelected ? "rgba(189, 180, 120, 1)" : isDarkMode ? "#333" : "#fffce8",
         border: isDarkMode
           ? "1px solid rgb(71, 69, 69)"
           : "1px solid rgb(234, 227, 227)",
-        borderRadius: "18px",
-        transition: "border 0.2s",
+        minHeight: "100px", // Fixed height as requested
+        maxHeight: "100px", // Fixed height constraint
+        overflow: "hidden", // Hide any overflow content
+        borderRadius: "5px" // 5px border radius as requested
       }}
     >
-      <img
-        src={imageUrl}
-        alt={item.title}
-        onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-          (e.target as HTMLImageElement).src = `https://placehold.co/100x100?text=${encodeURIComponent(item.title)}`;
-        }}
-      />
-      <Button
+      {/* Delete button - positioned absolutely */}
+      {/* <Button
         onClick={handleDelete}
         variant="contained"
         color="error"
+        className="top-1 right-1 z-10"
+        size="small"
         sx={{
-          left: 350,
-          top: -50,
+          minWidth: "auto",
+          width: "24px",
+          height: "24px",
+          fontSize: "0.75rem",
           background: "#fff",
           color: "#d32f2f",
           border: "1px solid #d32f2f",
@@ -62,15 +62,67 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
           },
         }}
       >
-        delete
-      </Button>
-      <h2>{item.title} / {item.price ? item.price + '$' : ''}</h2>
-      <div className="case-description">
-        {item.description ? item.description : ""}
+        ×
+      </Button> */}
+
+      {/* Main content container */}
+      <div className="flex flex-row gap-3 h-full p-3">
+        {/* Image container */}
+        <div className="flex-shrink-0">
+          <img
+            src={imageUrl}
+            alt={item.title}
+            className="w-full h-full object-cover"
+            style={{
+              height: "100%",
+              borderRadius: "3px" // Slightly smaller radius for image to align with card border
+            }}
+            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+              (e.target as HTMLImageElement).src = `https://placehold.co/100x100?text=${encodeURIComponent(item.title)}`;
+            }}
+          />
+        </div>
+
+        {/* Content container */}
+        <div className="flex-1 min-w-0 flex flex-row overflow-hidden">
+          {/* Left side - Title with Price, Description */}
+          <div className="flex-1 flex flex-col">
+            {/* Title and Price on same line */}
+            <div className="flex items-baseline">
+              <h2 className="font-semibold text-gray-800 dark:text-white line-clamp-1 leading-tight flex-1">
+                {item.title}
+              </h2>
+              {/* Price aligned to the right */}
+              {item.price && (
+                <div className="flex justify-end flex-shrink-0">
+                  <p className="text-sm font-medium text-green-600 dark:text-green-400">
+                    ${parseFloat(item.price.toString()).toFixed(2)}
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            {/* Description - closer to title */}
+            <div className="text-xs text-gray-600 dark:text-gray-300" style={{ marginTop: '-20px' }}>
+              <p className="line-clamp-2 leading-tight">
+                {item.description || "No description available"}
+              </p>
+            </div>
+          </div>
+          
+          {/* Right side - ID and Date */}
+          <div className="flex flex-col justify-start items-end text-xs text-gray-500 dark:text-gray-400 ml-3 flex-shrink-0">
+            {item._id && (
+              <span className="block">#{item._id}</span>
+            )}
+            {item.createdAt && (
+              <span className="block mt-1">
+                {new Date(item.createdAt).toLocaleDateString("en-GB")}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
-      <p style={{ color: isDarkMode ? "#fff" : "#333" }}>
-        {item._id ? ` # ${item._id}` : ""} / {item.createdAt ? `created : ${new Date(item.createdAt).toLocaleDateString("en-GB")}` : ""}
-      </p>
     </div>
   );
 }

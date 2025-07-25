@@ -22,7 +22,7 @@ export default function SortSelector({ sort, handleSortChange }: SortSelectorPro
   };
 
   return (
-    <div style={{ borderRadius: "6px",marginTop: "15px", marginBottom: "15px", display: "flex", width: "200px", marginRight: "0px", height: "40px"}}>
+    <div style={{ borderRadius: "6px", marginTop: "15px", marginBottom: "15px", display: "flex", width: "100%", marginRight: "0px", height: "40px"}}>
       <FormControl sx={{ width: "100%", marginRight: "0px" }}>
         <InputLabel id="language-select-label"></InputLabel>
         <MuiSelect
@@ -37,6 +37,7 @@ export default function SortSelector({ sort, handleSortChange }: SortSelectorPro
             borderRadius: "4px",
             fontWeight: "bold",
             height: "40px",
+            fontSize: "0.75rem",
             textAlign: "center", // Center the selected value
             "& .MuiSelect-select": {
               padding: "4px 16px",
@@ -44,6 +45,7 @@ export default function SortSelector({ sort, handleSortChange }: SortSelectorPro
               alignItems: "center",
               justifyContent: "center", // Center content horizontally
               textAlign: "center",      // Center text
+              fontSize: "0.75rem",
             },
             "& .MuiSvgIcon-root": {
               color: "white",
@@ -57,7 +59,7 @@ export default function SortSelector({ sort, handleSortChange }: SortSelectorPro
                 "& .MuiMenuItem-root": {
                   color: "white",
                   fontWeight: "bold",
-                  fontSize: "1rem",
+                  fontSize: "0.75rem",
                   backgroundColor: "darkgreen",
                   "&:hover": {
                     backgroundColor: "#145214",

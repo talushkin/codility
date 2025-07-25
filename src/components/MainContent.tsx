@@ -40,7 +40,7 @@ const MainContent: React.FC<MainContentProps> = ({
   const [translatedCategory, setTranslatedCategory] = useState<string>(
     (selectedCategory?.translatedCategory?.[0]?.value) || selectedCategory?.category || ""
   );
-  const itemsPerPage: number = 5;
+  const itemsPerPage: number = 5; // Fixed to 5 to fit on screen without scrolling
   const [openView, setOpenView] = useState<boolean>(false);
   const [openAdd, setOpenAdd] = useState<boolean>(false);
   const [openSearch, setOpenSearch] = useState<boolean>(false);
@@ -242,187 +242,219 @@ const MainContent: React.FC<MainContentProps> = ({
 
       <div className="main">
 
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center", margin: "1rem 0" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setOpenAdd(true)}
-            sx={{
-              minWidth: "156px",
-              minHeight: "40px",
-              width: "156px",
-              height: "40px",
-              borderRadius: "6px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              p: 0,
-              fontWeight: "bold",
-              fontSize: "0.85rem",
-              gap: "0.25rem",
-              backgroundColor: "darkgreen",
-              "&:hover": {
-                backgroundColor: "#145214",
-              },
-            }}
-            title="Add a product"
-          >
-            <AddIcon sx={{ fontSize: 28 }} />
-            ADD
-          </Button>
-          {!openSearch && (<Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              setOpenSearch(true)
-          //    console.log('filter...')
-            }}
-            sx={{
-              minWidth: "256px",
-              minHeight: "40px",
-              width: "256px",
-              height: "40px",
-              borderRadius: "6px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              p: 0,
-              fontWeight: "bold",
-              fontSize: "0.85rem",
-              gap: "0.25rem",
-              backgroundColor: "darkgreen",
-              "&:hover": {
-                backgroundColor: "#145214",
-              },
-            }}
-            title="filter the list"
-          >
-            <SearchIcon sx={{ fontSize: 28 }} />
-            Filter Products
-          </Button>)}
-          {openSearch && (
-            <Input
-              type="text"
-              style={{
-                minWidth: "256px",
-                minHeight: "40px",
-                width: "256px",
-                height: "40px",
-                borderRadius: "6px",
-                padding: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "bold",
-                fontSize: "0.85rem",
-                gap: "0.25rem",
-                backgroundColor: "white"
+        {/* Main content container with responsive layout */}
+        <div className="flex flex-col lg:flex-row gap-4 h-[calc(100vh-200px)]">
+          
+          {/* Left side - Products list */}
+          <div className="w-full lg:w-1/2 flex flex-col">
+            {/* Products list header and controls */}
+            <div className="flex flex-col gap-4 p-4 border-b">
+              <div className="flex flex-row gap-2 items-center w-full">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setOpenAdd(true)}
+                  className="flex-1"
+                  sx={{
+                    minHeight: "40px",
+                    height: "40px",
+                    borderRadius: "6px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    p: 0,
+                    fontWeight: "bold",
+                    fontSize: "0.75rem",
+                    gap: "0.25rem",
+                    backgroundColor: "darkgreen",
+                    "&:hover": {
+                      backgroundColor: "#145214",
+                    },
+                  }}
+                  title="Add a product"
+                >
+                  <AddIcon sx={{ fontSize: 20 }} />
+                  ADD
+                </Button>
+                
+                {!openSearch && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      setOpenSearch(true)
+                    }}
+                    className="flex-1"
+                    sx={{
+                      minHeight: "40px",
+                      height: "40px",
+                      borderRadius: "6px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      p: 0,
+                      fontWeight: "bold",
+                      fontSize: "0.75rem",
+                      gap: "0.25rem",
+                      backgroundColor: "darkgreen",
+                      "&:hover": {
+                        backgroundColor: "#145214",
+                      },
+                    }}
+                    title="filter the list"
+                  >
+                    <SearchIcon sx={{ fontSize: 20 }} />
+                    Filter Products
+                  </Button>
+                )}
+                
+                {openSearch && (
+                  <Input
+                    type="text"
+                    className="flex-1"
+                    style={{
+                      minHeight: "40px",
+                      height: "40px",
+                      borderRadius: "6px",
+                      padding: "8px",
+                      fontWeight: "bold",
+                      fontSize: "0.75rem",
+                      backgroundColor: "white"
+                    }}
+                    title="Search Products"
+                    value={filterItem || ""}
+                    onChange={(e) => {
+                      const searchTerm = e.target.value.toLowerCase();
+                      setFilterItem(searchTerm);
+                    }}
+                    onFocus={() => setOpenSearch(true)}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        setFilterItem("");
+                        setOpenSearch(false);
+                      }, 100);
+                    }}
+                  />
+                )}
+                
+                <div className="flex-1">
+                  <SortSelector
+                    sort={selectedSort}
+                    handleSortChange={handleSortChange}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Products list content */}
+            <div 
+              className="main-products flex-1 p-4"
+              style={{ 
+                justifyContent: rowJustify,
+                height: 'calc(100vh - 80px)', // Fixed height to prevent scrolling
+                overflowY: 'hidden' // Remove Y scrolling
               }}
-              title="Search Products"
-              value={filterItem || ""}
-              onChange={(e) => {
-                const searchTerm = e.target.value.toLowerCase();
-            //    console.log("Search term:", searchTerm);
-                setFilterItem(searchTerm);
-              }}
-              onFocus={() => setOpenSearch(true)}
-              onBlur={() => {
-                setTimeout(() => {
-                  setFilterItem("");
-                  setOpenSearch(false);
-                }, 100);
-              }}
-            />
-          )}
-          <SortSelector
-            sort={selectedSort}
-            handleSortChange={handleSortChange} // Placeholder for sort change handler
-          />
-        </div>
-        <div
-          className="main-products"
-          style={{
-            justifyContent: rowJustify,
-            maxHeight: "calc(100vh - 300px)",
-            minHeight: "calc(100vh - 300px)",
-            width: "50%"
-          }}
-        >
-          {openSearch && filteredProducts.length === 0 && filterItem.length > 0 && (
-            <p style={{ color: "red", textAlign: "center" }}>No products found.</p>
-          )}
-          {currentItems.map((item, index) => {
-            let colClass = "col-6";
-            return (
-              <div
-                key={index}
-                className={`${colClass}`}
-                style={{
-                  justifyContent: rowJustify,
-                }}
-                onClick={() => handleSelectRecipe(item)}
-              >
-                <CaseCard
-                  index={startIndex + index + 1}
-                  item={item}
-                  category={selectedCategory?.category}
-                  isDarkMode={isDarkMode}
-                  selectedRecipe={viewedItem}
+            >
+              {openSearch && filteredProducts.length === 0 && filterItem.length > 0 && (
+                <p className="text-red-500 text-center">No products found.</p>
+              )}
+              
+              {/* Single column layout - 5 products with fixed heights */}
+              <div className="flex flex-col h-full">
+                {currentItems.slice(0, 5).map((item, index) => (
+                  <div
+                    key={index}
+                    className="cursor-pointer w-full"
+                    onClick={() => handleSelectRecipe(item)}
+                    style={{ 
+                      height: 'calc(20% - 4px)', // Each item takes exactly 1/5 of available height minus gap
+                      marginBottom: '8px' // Gap between cards
+                    }}
+                  >
+                    <CaseCard
+                      index={startIndex + index + 1}
+                      item={item}
+                      category={selectedCategory?.category}
+                      isDarkMode={isDarkMode}
+                      selectedRecipe={viewedItem}
+                      onDelete={(recipe: Recipe) => {
+                        handleDeleteRecipe(recipe);
+                      }}
+                    />
+                  </div>
+                ))}
+                
+                {/* Fill remaining slots with empty divs if less than 5 items */}
+                {Array.from({ length: 5 - currentItems.slice(0, 5).length }, (_, index) => (
+                  <div
+                    key={`empty-${index}`}
+                    style={{ 
+                      height: 'calc(20% - 4px)',
+                      visibility: 'hidden' // Hide but maintain space
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Pagination at bottom of products list */}
+            {currentItems.length > 0 && (
+              <div className="mt-auto border-t">
+                <p className="text-center mb-4">
+                  Page {page}, Recipes {startIndex + 1}–{endIndex} of {totalItems}
+                </p>
+                {totalPages > 1 && (
+                  <div className="flex justify-center">
+                    <Pagination
+                      count={totalPages}
+                      page={page}
+                      onChange={handlePageChange}
+                      color="primary"
+                      sx={{
+                        "& .MuiPaginationItem-root": {
+                          color: (theme) => (isDarkMode ? "white" : "inherit"),
+                          direction: "ltr",
+                        },
+                        "& .Mui-selected": {
+                          backgroundColor: isDarkMode ? "#fff" : "",
+                          color: isDarkMode ? "#222" : "",
+                        },
+                      }}
+                      dir="ltr"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Right side - Product details */}
+          <div className="w-full lg:w-1/2 flex flex-col height-full" style={{  height: '800px' }}>
+            {/* Empty header space to align with left side buttons */}
+            <div className="p-4 border-b" style={{ visibility: 'hidden', height: '88px' }}>
+              {/* Invisible spacer to match left side header height */}
+            </div>
+            
+            <div className="one-product flex-1 overflow-y-auto p-4">
+              <div className="shadow-lg h-full p-4 bg-yellow-50" style={{
+                border: isDarkMode ? "1px solid rgb(71, 69, 69)" : "1px solid rgb(234, 227, 227)",
+                backgroundColor: isDarkMode ? "rgb(31, 41, 55)" : "#fefce8",
+                borderRadius: "5px" // Match CaseCard border radius
+              }}>
+                <ProductDetails
+                  open={true}
+                  recipe={viewedItem}
+                  onClose={handleCloseDialog}
+                  onSave={(recipe: Recipe) => {
+                    viewedItem?._id ? handleUpdateRecipe(recipe) : handleAddRecipe(recipe);
+                  }}
                   onDelete={(recipe: Recipe) => {
                     handleDeleteRecipe(recipe);
                   }}
                 />
               </div>
-            );
-          })}
-          {currentItems.length > 0 && (<div className="pagination-container" >
-            <p style={{
-              width: "50%",
-              textAlign: "center",
-              margin: "10px 0",
-              display: "flex",
-              justifyContent: "center",
-              position: "absolute",
-              bottom: "20px"
-              /* align-content: flex-end; */
-            }}>
-              Page {page}, Recipes {startIndex + 1}–{endIndex} of {totalItems}
-            </p>
-            {totalPages > 1 && (
-              <div className="pagination-pages" style={{ direction: "ltr" }}>
-                <Pagination
-                  count={totalPages}
-                  page={page}
-                  onChange={handlePageChange}
-                  color="primary"
-                  sx={{
-                    "& .MuiPaginationItem-root": {
-                      color: (theme) => (isDarkMode ? "white" : "inherit"),
-                      direction: "ltr",
-                    },
-                    "& .Mui-selected": {
-                      backgroundColor: isDarkMode ? "#fff" : "",
-                      color: isDarkMode ? "#222" : "",
-                    },
-                  }}
-                  dir="ltr"
-                />
-              </div>
-            )}
-          </div>)}
-        </div>
-        <div className="one-product" style={{ width: "40%", display: "flex", marginLeft: "50%", position: "absolute", top: "150px" }}>
-          <ProductDetails
-            open={true}
-            recipe={viewedItem}
-            onClose={handleCloseDialog}
-            onSave={(recipe: Recipe) => {
-              viewedItem?._id ? handleUpdateRecipe(recipe) : handleAddRecipe(recipe);
-            }}
-            onDelete={(recipe: Recipe) => {
-              handleDeleteRecipe(recipe);
-            }}
-          />
+            </div>
+          </div>
         </div>
 
         {/* <RecipeDialog

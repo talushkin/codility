@@ -2,6 +2,76 @@
 import { Recipe, Category, SiteData } from "./types"; // Adjust the import path as needed
 import defaultData from "../data/defaultData.json"; // Adjust the import path as needed
 
+// Image handling utilities
+export const uploadImageToLocalStorage = (file: File, recipeId: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      try {
+        const dataUrl = event.target?.result as string;
+        
+        // Store image in localStorage with recipe ID as key
+        const imageKey = `recipe_image_${recipeId}`;
+        localStorage.setItem(imageKey, dataUrl);
+        
+        console.log(`Image stored in localStorage with key: ${imageKey}`);
+        resolve(dataUrl);
+      } catch (error) {
+        console.error('Error storing image:', error);
+        reject(error);
+      }
+    };
+    
+    reader.onerror = () => {
+      reject(new Error('Failed to read file'));
+    };
+    
+    reader.readAsDataURL(file);
+  });
+};
+
+export const getImageFromLocalStorage = (recipeId: string): string | null => {
+  try {
+    const imageKey = `recipe_image_${recipeId}`;
+    return localStorage.getItem(imageKey);
+  } catch (error) {
+    console.error('Error retrieving image:', error);
+    return null;
+  }
+};
+
+export const deleteImageFromLocalStorage = (recipeId: string): void => {
+  try {
+    const imageKey = `recipe_image_${recipeId}`;
+    localStorage.removeItem(imageKey);
+    console.log(`Image deleted from localStorage: ${imageKey}`);
+  } catch (error) {
+    console.error('Error deleting image:', error);
+  }
+};
+
+// Validate image file
+export const validateImageFile = (file: File): { isValid: boolean; error?: string } => {
+  // Check file type
+  if (!file.type.startsWith('image/')) {
+    return { isValid: false, error: 'Please select a valid image file' };
+  }
+  
+  // Check file size (max 5MB)
+  const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+  if (file.size > maxSize) {
+    return { isValid: false, error: 'File size must be less than 5MB' };
+  }
+  
+  // Check file format
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+  if (!allowedTypes.includes(file.type)) {
+    return { isValid: false, error: 'Supported formats: JPEG, PNG, GIF, WebP' };
+  }
+  
+  return { isValid: true };
+};
 
 // Load categories and recipes from local default data
 export const loadData = async (loadFromMemory :boolean = true) => {
