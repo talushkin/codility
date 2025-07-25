@@ -31,7 +31,7 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
       }
     }
   }, [item._id, item.imageUrl]);
-
+//
   const handleDelete = () => {
     if (onDelete) {
   //    console.log('deleting a product:', item);
