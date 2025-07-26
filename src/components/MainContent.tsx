@@ -78,7 +78,9 @@ const MainContent: React.FC<MainContentProps> = ({
   }, [filterItem, openSearch]);
 
   useEffect(() => {
-    setOpenView(!!selectedProduct);
+    // On mobile, always open the dialog when a product is selected from URL
+    // On desktop, keep the current behavior (show in side panel)
+    setOpenView(!desktop && !!selectedProduct);
     setViewedItem(selectedProduct || { _id: "", price: 0, title: "", description: "" });
     
     // If a product is selected (e.g., from URL route), navigate to the page containing that product
@@ -90,7 +92,7 @@ const MainContent: React.FC<MainContentProps> = ({
         setPage(targetPage);
       }
     }
-  }, [selectedProduct, Products, itemsPerPage, openSearch]);
+  }, [selectedProduct, Products, itemsPerPage, openSearch, desktop]);
 
   useEffect(() => {
     const itemPage = selectedCategory?.itemPage || [];
@@ -231,7 +233,8 @@ const MainContent: React.FC<MainContentProps> = ({
 
   const handleSelectProduct = (Product: Product) => {
     setViewedItem(Product);
-    setOpenView(true);
+    // On mobile, always open the dialog; on desktop, keep it closed (show in side panel)
+    setOpenView(!desktop);
     if (Product && selectedCategory?.category && Product?.title) {
       const categoryEncoded = encodeURIComponent(selectedCategory?.category);
       const idEncoded = encodeURIComponent(Product?._id);
@@ -260,13 +263,13 @@ const MainContent: React.FC<MainContentProps> = ({
       <div className="main">
 
         {/* Main content container with responsive layout */}
-        <div className="flex flex-col lg:flex-row gap-4 h-[calc(100vh-200px)]">
+        <div className="flex flex-col lg:flex-row h-[calc(100vh-140px)]">
           
           {/* Left side - Products list */}
-          <div className="w-full lg:w-1/2 flex flex-col">
+          <div className="w-full lg:w-1/2 flex flex-col h-full">
             {/* Products list header and controls */}
-            <div className="flex flex-col gap-4 p-4 border-b">
-              <div className="flex flex-row gap-2 items-center w-full">
+            <div className="flex flex-col gap-1 p-1 border-b">
+              <div className="flex flex-row gap-3 items-center w-full">
                 <Button
                   variant="contained"
                   color="primary"
@@ -365,11 +368,11 @@ const MainContent: React.FC<MainContentProps> = ({
 
             {/* Products list content */}
             <div 
-              className="main-products flex-1 p-4"
+              className="main-products flex-1 overflow-hidden"
               style={{ 
                 justifyContent: rowJustify,
-                height: 'calc(100vh - 80px)', // Fixed height to prevent scrolling
-                overflowY: 'hidden' // Remove Y scrolling
+                display: 'flex',
+                flexDirection: 'column'
               }}
             >
               {openSearch && filteredProducts.length === 0 && filterItem.length > 0 && (
@@ -377,16 +380,12 @@ const MainContent: React.FC<MainContentProps> = ({
               )}
               
               {/* Single column layout - 5 products with fixed heights */}
-              <div className="flex flex-col h-full">
+              <div className="flex flex-col flex-1 gap-2 p-2">
                 {currentItems.slice(0, 5).map((item, index) => (
                   <div
                     key={index}
-                    className="cursor-pointer w-full"
+                    className="cursor-pointer w-full flex-1"
                     onClick={() => handleSelectProduct(item)}
-                    style={{ 
-                      height: 'calc(20% - 4px)', // Each item takes exactly 1/5 of available height minus gap
-                      marginBottom: '8px' // Gap between cards
-                    }}
                   >
                     <CaseCard
                       index={startIndex + index + 1}
@@ -405,10 +404,8 @@ const MainContent: React.FC<MainContentProps> = ({
                 {Array.from({ length: 5 - currentItems.slice(0, 5).length }, (_, index) => (
                   <div
                     key={`empty-${index}`}
-                    style={{ 
-                      height: 'calc(20% - 4px)',
-                      visibility: 'hidden' // Hide but maintain space
-                    }}
+                    className="flex-1"
+                    style={{ visibility: 'hidden' }}
                   />
                 ))}
               </div>
@@ -416,8 +413,10 @@ const MainContent: React.FC<MainContentProps> = ({
 
             {/* Pagination at bottom of products list */}
             {currentItems.length > 0 && (
-              <div className="mt-auto border-t">
-                <p className="text-center mb-4">
+              <div className="border-t p-2" style={{ 
+                flexShrink: 0
+              }}>
+                <p className="text-center mb-2 text-sm">
                   Page {page}, Products {startIndex + 1}–{endIndex} of {totalItems}
                 </p>
                 {totalPages > 1 && (
@@ -427,10 +426,12 @@ const MainContent: React.FC<MainContentProps> = ({
                       page={page}
                       onChange={handlePageChange}
                       color="primary"
+                      size="small"
                       sx={{
                         "& .MuiPaginationItem-root": {
                           color: (theme) => (isDarkMode ? "white" : "inherit"),
                           direction: "ltr",
+                          fontSize: "0.75rem",
                         },
                         "& .Mui-selected": {
                           backgroundColor: isDarkMode ? "#fff" : "",
@@ -445,37 +446,39 @@ const MainContent: React.FC<MainContentProps> = ({
             )}
           </div>
 
-          {/* Right side - Product details */}
-          <div className="w-full lg:w-1/2 flex flex-col height-full" style={{  height: '800px' }}>
-            {/* Empty header space to align with left side buttons */}
-            <div className="p-4 border-b" style={{ visibility: 'hidden', height: '88px' }}>
-              {/* Invisible spacer to match left side header height */}
-            </div>
-            
-            <div className="one-product flex-1 overflow-y-auto p-4">
-              <div className="shadow-lg h-full p-4 bg-yellow-50" style={{
-                border: isDarkMode ? "1px solid rgb(71, 69, 69)" : "1px solid rgb(234, 227, 227)",
-                backgroundColor: isDarkMode ? "rgb(31, 41, 55)" : "#fefce8",
-                borderRadius: "5px" // Match CaseCard border radius
-              }}>
-                <ProductDetails
-                  open={true}
-                  product={viewedItem}
-                  onClose={handleCloseDialog}
-                  onSave={(Product: Product) => {
-                    viewedItem?._id ? handleUpdateProduct(Product) : handleAddProduct(Product);
-                  }}
-                  onDelete={(Product: Product) => {
-                    handleDeleteProduct(Product);
-                  }}
-                  onImageUpdate={handleImageUpdate}
-                />
+          {/* Right side - Product details - Desktop only */}
+          {desktop && (
+            <div className="w-full lg:w-1/2 flex flex-col height-full" style={{  height: '800px' }}>
+              {/* Empty header space to align with left side buttons */}
+              <div className="p-4 border-b" style={{ visibility: 'hidden', height: '88px' }}>
+                {/* Invisible spacer to match left side header height */}
+              </div>
+              
+              <div className="one-product flex-1 overflow-y-auto p-4">
+                <div className="shadow-lg h-full p-4 bg-yellow-50" style={{
+                  border: isDarkMode ? "1px solid rgb(71, 69, 69)" : "1px solid rgb(234, 227, 227)",
+                  backgroundColor: isDarkMode ? "rgb(31, 41, 55)" : "#fefce8",
+                  borderRadius: "5px" // Match CaseCard border radius
+                }}>
+                  <ProductDetails
+                    open={true}
+                    product={viewedItem}
+                    onClose={handleCloseDialog}
+                    onSave={(Product: Product) => {
+                      viewedItem?._id ? handleUpdateProduct(Product) : handleAddProduct(Product);
+                    }}
+                    onDelete={(Product: Product) => {
+                      handleDeleteProduct(Product);
+                    }}
+                    onImageUpdate={handleImageUpdate}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
-        {/* <ProductDialog
+        <ProductDialog
           open={openView}
           onClose={handleCloseDialog}
           type="view"
@@ -488,7 +491,7 @@ const MainContent: React.FC<MainContentProps> = ({
           }}
 
           targetLang="en"
-        /> */}
+        />
         <ProductDialog
           open={openAdd}
           autoFill={false}

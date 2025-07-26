@@ -13,7 +13,7 @@ export default function FooterBar({ isDarkMode, toggleDarkMode}: FooterBarProps)
   return (
     <Box
       sx={{
-        position: "sticky",
+        position: "fixed",
         bottom: 0,
         left: 0,
         width: "100vw",

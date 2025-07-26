@@ -156,16 +156,30 @@ const ProductDialog = ({
       open={open || false}
       onClose={onClose}
       dir={isRTL ? "rtl" : "ltr"}
+      maxWidth={false}
+      fullWidth={false}
       PaperProps={{
         style: {
           maxWidth: "98vw",
           width: "98vw",
           maxHeight: "98vh",
           height: "98vh",
-          borderRadius: "24px",
+          margin: "1vw",
+          borderRadius: "14px",
           boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
           background: "rgb(247, 241, 227)",
-          overflow: "auto",
+          overflow: "hidden", // Remove scrolling
+          display: "flex",
+          flexDirection: "column",
+        },
+      }}
+      sx={{
+        "& .MuiDialog-container": {
+          "& .MuiPaper-root": {
+            maxWidth: "98vw !important",
+            width: "98vw !important",
+            margin: "1vw !important",
+          },
         },
       }}
       disableEscapeKeyDown={false} // Allow ESC to close
@@ -180,13 +194,14 @@ const ProductDialog = ({
         style={{
           backgroundColor: "#f7f1e3",
           textAlign: "center",
-          padding: "10px",
-          fontSize: "2.8rem", // Enlarged title text
+          padding: "8px", // Reduced padding
+          fontSize: "1.1rem", // Further reduced from 1.5rem
           fontWeight: "bold",
           borderTopLeftRadius: "24px",
           borderTopRightRadius: "24px",
           position: "relative",
-          minHeight: "60px",
+          minHeight: "40px", // Reduced from 60px
+          flexShrink: 0, // Prevent shrinking
         }}
       >
         {editableProduct.title}
@@ -215,6 +230,11 @@ const ProductDialog = ({
         <DialogContent
           style={{
             backgroundColor: "#f7f1e3",
+            padding: "8px", // Reduced padding
+            flex: 1, // Take remaining space
+            overflow: "hidden", // No scrolling
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <Box
@@ -222,8 +242,8 @@ const ProductDialog = ({
             display="flex"
             justifyContent="center"
             alignItems="center"
-            marginBottom={2}
-            style={{ minHeight: "180px" }}
+            marginBottom={1} // Reduced
+            style={{ minHeight: "90%", maxWidth: "100%" }} // Reduced height and prevent shrinking
           >
             <img
               src={
@@ -231,7 +251,15 @@ const ProductDialog = ({
                 "https://placehold.co/100x100?text=No+Image"
               }
               alt={editableProduct.title}
-              style={{ maxHeight: "300px", borderRadius: "28px" }}
+              style={{ 
+                width: "calc(100% - 10px)", // Full width minus 5px margins on each side
+                maxWidth: "calc(100% - 10px)",
+                height: "150px", // Fixed height instead of auto
+                maxHeight: "150px", // Reduced from 300px to fit better
+                borderRadius: "28px",
+                margin: "5px", // 5px margin on all sides
+                objectFit: "cover" // Cover to fill width while maintaining aspect ratio
+              }}
             />
 
           </Box>
@@ -250,17 +278,17 @@ const ProductDialog = ({
               value={editableProduct.title}
               onChange={handleChange("title")}
               fullWidth
-              margin="normal"
+              margin="dense" // Changed to dense for tighter spacing
               InputProps={{
                 style: {
-                  fontSize: "2rem",
+                  fontSize: "1.2rem", // Reduced from 2rem
                   fontWeight: "bold",
                 },
 
               }}
               InputLabelProps={{
                 style: {
-                  fontSize: "1.2rem",
+                  fontSize: "0.9rem", // Reduced from 1.2rem
                   fontWeight: "bold",
                 },
               }}
@@ -276,8 +304,8 @@ const ProductDialog = ({
               onChange={handleChange("description")}
               fullWidth
               multiline
-              rows={4}
-              margin="normal"
+              rows={2} // Reduced from 3
+              margin="dense" // Changed to dense
 
             />
 
@@ -292,7 +320,7 @@ const ProductDialog = ({
               onChange={handleChange("price")}
               fullWidth
               rows={1}
-              margin="normal" 
+              margin="dense" // Changed to dense
             />
           </Box>
         </DialogContent>
@@ -301,17 +329,19 @@ const ProductDialog = ({
       <DialogActions
         sx={{
           display: "flex",
-          gap: 2,
+          gap: 1, // Reduced gap
           width: "100%",
           justifyContent: "center",
           background: "rgb(247, 241, 227)", // Set background color for actions area
+          padding: "8px", // Reduced padding
+          flexShrink: 0, // Prevent shrinking
           "& > button": {
             flex: 1,
             minWidth: 0,
             maxWidth: "100%",
-            paddingLeft: 2,
-            paddingRight: 2,
-            height: "48px",
+            paddingLeft: 1, // Reduced padding
+            paddingRight: 1, // Reduced padding
+            height: "40px", // Reduced from 48px
             fontWeight: "bold",
             borderRadius: "10px",
           },
