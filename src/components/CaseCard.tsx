@@ -40,7 +40,7 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
   };
   return (
     <div
-      className={`relative w-full h-full rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl ${
+      className={`md:flex-row relative w-full h-full rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl ${
         isSelected ? "bg-yellow-200" : isDarkMode ? "bg-gray-800" : "bg-yellow-50"
       }`}
       style={{

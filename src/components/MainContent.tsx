@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CaseCard from "./CaseCard";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
@@ -36,6 +36,7 @@ const MainContent: React.FC<MainContentProps> = ({
   isDarkMode,
 }) => {
   const dispatch: AppDispatch = useDispatch();
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [page, setPage] = useState<number>(1);
   const [translatedCategory, setTranslatedCategory] = useState<string>(
     (selectedCategory?.translatedCategory?.[0]?.value) || selectedCategory?.category || ""
@@ -73,6 +74,12 @@ const MainContent: React.FC<MainContentProps> = ({
         //console.log("Filtering products with:", filterItem);
         setFilteredProducts(filterProducts(filterItem));
         setPage(1)
+      }
+      // Auto-focus the search input when search opens
+      if (searchInputRef.current) {
+        setTimeout(() => {
+          searchInputRef.current?.focus();
+        }, 100);
       }
     }
   }, [filterItem, openSearch]);
@@ -330,6 +337,7 @@ const MainContent: React.FC<MainContentProps> = ({
                 
                 {openSearch && (
                   <Input
+                    inputRef={searchInputRef}
                     type="text"
                     className="flex-1"
                     style={{
