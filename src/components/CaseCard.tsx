@@ -19,7 +19,7 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
   const [imageUrl, setImageUrl] = useState<string>(item.imageUrl || "https://placehold.co/100x100?text=No+Image");
 
   const isSelected :boolean = (item===selectedProduct)
-
+  const isMobileView = window.innerWidth <= 768;
   // Load image from localStorage on component mount and when item changes
   useEffect(() => {
     if (item._id) {
@@ -47,8 +47,8 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
         border: isDarkMode
           ? "1px solid rgb(71, 69, 69)"
           : "1px solid rgb(234, 227, 227)",
-        minHeight: "80px", // Fixed height as requested
-        maxHeight: "80px", // Fixed height constraint
+        minHeight: "12vh", // Fixed height as requested
+        maxHeight: "12vh", // Fixed height constraint
         overflow: "hidden", // Hide any overflow content
         borderRadius: "5px" // 5px border radius as requested
       }}
@@ -128,12 +128,12 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
           </div>
           
           {/* Right side - ID and Date */}
-          <div className="flex flex-col justify-end items-end text-xs text-gray-500 dark:text-gray-400 ml-3 flex-shrink-0">
+          <div className="flex flex-col justify-start items-end text-xs text-gray-500 dark:text-gray-400 ml-3 flex-shrink-0">
             {item._id && (
               <span className="block">#{item._id}</span>
             )}
-            {item.createdAt && (
-              <span className="block mt-1">
+            {item.createdAt && !isMobileView &&  (
+              <span className="block">
                 {new Date(item.createdAt).toLocaleDateString("en-GB")}
               </span>
             )}
