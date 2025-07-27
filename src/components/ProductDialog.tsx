@@ -257,15 +257,22 @@ const ProductDialog = ({
       <DialogTitle
         style={{
           backgroundColor: "#f7f1e3",
-          textAlign: "center",
-          padding: "8px", // Reduced padding
+          textAlign: "left",
+          padding: "20px", // Reduced padding
           fontSize: "1.1rem", // Further reduced from 1.5rem
           fontWeight: "bold",
           borderTopLeftRadius: "24px",
           borderTopRightRadius: "24px",
           position: "relative",
           minHeight: "40px", // Reduced from 60px
+          maxHeight: "80px", // Allow for 2 lines
           flexShrink: 0, // Prevent shrinking
+          //padding: "20px", // Make room for close button
+          overflow: "hidden",
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+          lineHeight: "1.3",
         }}
       >
         {editableProduct.title}

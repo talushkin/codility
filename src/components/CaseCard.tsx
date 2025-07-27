@@ -47,8 +47,8 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
         border: isDarkMode
           ? "1px solid rgb(71, 69, 69)"
           : "1px solid rgb(234, 227, 227)",
-        minHeight: "100px", // Fixed height as requested
-        maxHeight: "100px", // Fixed height constraint
+        minHeight: "80px", // Fixed height as requested
+        maxHeight: "80px", // Fixed height constraint
         overflow: "hidden", // Hide any overflow content
         borderRadius: "5px" // 5px border radius as requested
       }}
@@ -58,14 +58,14 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
         onClick={handleDelete}
         variant="contained"
         color="error"
-        className="top-1 right-1 z-10"
+        className="bottom-1 right-1 z-10"
         size="small"
         sx={{
           position: "absolute",
           minWidth: "auto",
-          width: "124px",
+          width: "60px",
           height: "24px",
-          fontSize: "0.75rem",
+          fontSize: "0.5rem",
           background: "#fff",
           color: "#d32f2f",
           border: "1px solid #d32f2f",
@@ -80,7 +80,7 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
       </Button>
 
       {/* Main content container */}
-      <div className="flex flex-row gap-3 h-full p-3">
+      <div className="flex flex-row gap-1 h-full p-1">
         {/* Image container */}
         <div className="flex-shrink-0" style={{ width: "64px", height: "64px" }}>
           <img
@@ -103,10 +103,10 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
         {/* Content container */}
         <div className="flex-1 min-w-0 flex flex-row overflow-hidden">
           {/* Left side - Title with Price, Description */}
-          <div className="flex-1 flex flex-col" style={{ width: "250px" }}>
+          <div className="flex-1 flex flex-col" style={{ width: "250px", marginTop: "-10px" }}>
             {/* Title and Price on same line */}
             <div className="flex items-baseline">
-              <h2 style={{width:"200px"}} className="font-semibold text-gray-800 dark:text-white line-clamp-1 leading-tight flex-1">
+              <h2 style={{width:"200px"}} className="font-semibold text-gray-800 dark:text-white line-clamp-1 leading-tight flex-1 text-sm md:text-base">
                 {item.title}
               </h2>
               {/* Price aligned to the right */}
@@ -120,7 +120,7 @@ export default function CaseCard({ item, category, index, isDarkMode, onDelete,s
             </div>
             
             {/* Description - closer to title */}
-            <div className="text-xs text-gray-600 dark:text-gray-300" style={{ marginTop: '-20px' }}>
+            <div className="text-xs text-gray-600 dark:text-gray-300" style={{ marginTop: '-20px', marginRight: '80px'   }}>
               <p className="line-clamp-2 leading-tight">
                 {item.description || "No description available"}
               </p>
