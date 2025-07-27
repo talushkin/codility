@@ -13,8 +13,10 @@ import {
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import EditIcon from "@mui/icons-material/Edit";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import type { Product } from "../utils/types";
-import { uploadImageToLocalStorage, validateImageFile, getImageFromLocalStorage } from "../utils/storage";
+import { uploadImageToLocalStorage, validateImageFile, getImageFromLocalStorage, updateProduct } from "../utils/storage";
+import { generateImage } from "./generateAI";
 
 const BASE_URL = "https://be-tan-theta.vercel.app";
 
@@ -60,9 +62,62 @@ const ProductDetails = ({
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [showTranslated, setShowTranslated] = useState<boolean>(false);
   const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
+  const [isGeneratingImage, setIsGeneratingImage] = useState<boolean>(false);
 
   // File input ref for image upload
   const fileInputRef = React.createRef<HTMLInputElement>();
+
+  // Handle AI image generation
+  const handleGenerateImage = async () => {
+    if (!editableProduct.title) {
+      alert('Please enter a product title first');
+      return;
+    }
+
+    setIsGeneratingImage(true);
+
+    try {
+      // Create text for AI image generation using title and description
+      const imageText = editableProduct.description 
+        ? `${editableProduct.title}, ${editableProduct.description}`
+        : editableProduct.title;
+
+      console.log('Generating image for text:', imageText);
+      const generatedImageUrl = await generateImage(imageText);
+      
+      if (generatedImageUrl) {
+        // Update the product with new AI-generated image URL
+        const updatedProduct = {
+          ...editableProduct,
+          imageUrl: generatedImageUrl,
+        };
+        
+        setEditableProduct(updatedProduct);
+
+        // Save the updated product to localStorage
+        try {
+          await updateProduct(updatedProduct);
+          console.log('Product with AI-generated image saved to localStorage');
+        } catch (error) {
+          console.error('Error saving product to localStorage:', error);
+        }
+
+        // Call the onImageUpdate callback to update the main view immediately
+        if (onImageUpdate) {
+          onImageUpdate(updatedProduct);
+        }
+
+        console.log('AI image generated successfully');
+      } else {
+        alert('Failed to generate image. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error generating image:', error);
+      alert('Failed to generate image. Please try again.');
+    } finally {
+      setIsGeneratingImage(false);
+    }
+  };
 
   // Handle image file selection
   const handleImageClick = () => {
@@ -96,6 +151,14 @@ const ProductDetails = ({
       };
       
       setEditableProduct(updatedProduct);
+
+      // Save the updated product to localStorage
+      try {
+        await updateProduct(updatedProduct);
+        console.log('Product with uploaded image saved to localStorage');
+      } catch (error) {
+        console.error('Error saving product to localStorage:', error);
+      }
 
       // Call the onImageUpdate callback to update the main view immediately
       if (onImageUpdate) {
@@ -206,9 +269,21 @@ const ProductDetails = ({
 
   };
 
-  const handleSave = () => {
-    onSave(editableProduct);
-    onClose();
+  const handleSave = async () => {
+    try {
+      // Save to localStorage first
+      await updateProduct(editableProduct);
+      console.log('Product saved to localStorage successfully');
+      
+      // Then call the parent onSave callback
+      onSave(editableProduct);
+      onClose();
+    } catch (error) {
+      console.error('Error saving product:', error);
+      // Still call parent onSave even if localStorage fails
+      onSave(editableProduct);
+      onClose();
+    }
   };
 
   const handleDelete = () => {
@@ -264,10 +339,13 @@ const ProductDetails = ({
                 '&:hover .upload-hint': {
                   opacity: 1,
                 },
+                '&:hover .ai-hint': {
+                  opacity: 1,
+                },
                 transition: 'all 0.3s ease',
               }}
             >
-              {isUploadingImage && (
+              {(isUploadingImage || isGeneratingImage) && (
                 <Box
                   position="absolute"
                   top={0}
@@ -282,8 +360,48 @@ const ProductDetails = ({
                   borderRadius="28px"
                 >
                   <CircularProgress color="primary" />
+                  {isGeneratingImage && (
+                    <Box
+                      position="absolute"
+                      bottom={20}
+                      color="white"
+                      fontSize="0.875rem"
+                      textAlign="center"
+                    >
+                      Generating AI image...
+                    </Box>
+                  )}
                 </Box>
               )}
+              
+              {/* AI Generate icon overlay - top right */}
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleGenerateImage();
+                }}
+                disabled={isGeneratingImage || isUploadingImage}
+                sx={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  zIndex: 3,
+                  backgroundColor: 'rgba(0,0,0,0.7)',
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0,0,0,0.9)',
+                    transform: 'scale(1.1)',
+                  },
+                  '&:disabled': {
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    color: 'rgba(255,255,255,0.5)',
+                  },
+                  transition: 'all 0.3s ease',
+                }}
+                title="Generate AI image from title and description"
+              >
+                <SmartToyIcon sx={{ fontSize: '1.25rem' }} />
+              </IconButton>
               
               {/* Camera icon overlay */}
               <Box
@@ -331,7 +449,7 @@ const ProductDetails = ({
                 className="upload-hint"
                 position="absolute"
                 bottom={8}
-                right={8}
+                left={8}
                 bgcolor="rgba(0,0,0,0.7)"
                 color="white"
                 px={1}
@@ -347,7 +465,31 @@ const ProductDetails = ({
                 }}
               >
                 <EditIcon sx={{ fontSize: '0.875rem' }} />
-                Click to change
+                Click to upload
+              </Box>
+              
+              {/* AI hint */}
+              <Box
+                className="ai-hint"
+                position="absolute"
+                bottom={8}
+                right={8}
+                bgcolor="rgba(0,0,0,0.7)"
+                color="white"
+                px={1}
+                py={0.5}
+                borderRadius={1}
+                fontSize="0.75rem"
+                sx={{ 
+                  opacity: 0.6,
+                  transition: 'opacity 0.3s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                }}
+              >
+                <SmartToyIcon sx={{ fontSize: '0.875rem' }} />
+                AI generate
               </Box>
             </Box>
           </Box>

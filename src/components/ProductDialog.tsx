@@ -11,7 +11,10 @@ import {
   Box,
 } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import type { Product } from "../utils/types";
+import { generateImage } from "./generateAI";
+import { updateProduct } from "../utils/storage";
 
 const BASE_URL = "https://be-tan-theta.vercel.app";
 
@@ -56,6 +59,55 @@ const ProductDialog = ({
   const [nameError, setNameError] = useState("");
   const [priceError, setPriceError] = useState("");
   const [descError, setDescError] = useState("");
+  const [isGeneratingImage, setIsGeneratingImage] = useState<boolean>(false);
+
+  // Handle AI image generation
+  const handleGenerateImage = async () => {
+    if (!editableProduct.title) {
+      alert('Please enter a product title first');
+      return;
+    }
+
+    setIsGeneratingImage(true);
+
+    try {
+      // Create text for AI image generation using title and description
+      const imageText = editableProduct.description 
+        ? `${editableProduct.title}, ${editableProduct.description}`
+        : editableProduct.title;
+
+      console.log('Generating image for text:', imageText);
+      const generatedImageUrl = await generateImage(imageText);
+      
+      if (generatedImageUrl) {
+        // Update the product with new AI-generated image URL
+        const updatedProduct = {
+          ...editableProduct,
+          imageUrl: generatedImageUrl,
+        };
+        
+        setEditableProduct(updatedProduct);
+
+        // Save the updated product to localStorage
+        try {
+          await updateProduct(updatedProduct);
+          console.log('Product with AI-generated image saved to localStorage');
+        } catch (error) {
+          console.error('Error saving product to localStorage:', error);
+        }
+
+        console.log('AI image generated successfully');
+      } else {
+        alert('Failed to generate image. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error generating image:', error);
+      alert('Failed to generate image. Please try again.');
+    } finally {
+      setIsGeneratingImage(false);
+    }
+  };
+
  // console.log('editableProduct:', editableProduct);
   useEffect(() => {
     // Reset to English when dialog opens or Product changes
@@ -138,9 +190,21 @@ const ProductDialog = ({
 
   };
 
-  const handleSave = () => {
-    onSave(editableProduct);
-    onClose();
+  const handleSave = async () => {
+    try {
+      // Save to localStorage first
+      await updateProduct(editableProduct);
+      console.log('Product saved to localStorage successfully');
+      
+      // Then call the parent onSave callback
+      onSave(editableProduct);
+      onClose();
+    } catch (error) {
+      console.error('Error saving product:', error);
+      // Still call parent onSave even if localStorage fails
+      onSave(editableProduct);
+      onClose();
+    }
   };
 
   const handleDelete = () => {
@@ -245,6 +309,58 @@ const ProductDialog = ({
             marginBottom={1} // Reduced
             style={{ minHeight: "90%", maxWidth: "100%" }} // Reduced height and prevent shrinking
           >
+            {/* Loading overlay for AI generation */}
+            {isGeneratingImage && (
+              <Box
+                position="absolute"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                bgcolor="rgba(0,0,0,0.7)"
+                zIndex={2}
+                borderRadius="28px"
+                color="white"
+              >
+                <CircularProgress color="inherit" size={40} />
+                <Box mt={1} fontSize="0.875rem">
+                  Generating AI image...
+                </Box>
+              </Box>
+            )}
+            
+            {/* AI Generate icon overlay - top right */}
+            <IconButton
+              onClick={handleGenerateImage}
+              disabled={isGeneratingImage}
+              sx={{
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                zIndex: 3,
+                backgroundColor: 'rgba(0,0,0,0.7)',
+                color: 'white',
+                width: 32,
+                height: 32,
+                '&:hover': {
+                  backgroundColor: 'rgba(0,0,0,0.9)',
+                  transform: 'scale(1.1)',
+                },
+                '&:disabled': {
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  color: 'rgba(255,255,255,0.5)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+              title="Generate AI image from title and description"
+            >
+              <SmartToyIcon sx={{ fontSize: '1rem' }} />
+            </IconButton>
+            
             <img
               src={
                 editableProduct.imageUrl ||
@@ -254,8 +370,8 @@ const ProductDialog = ({
               style={{ 
                 width: "calc(100% - 10px)", // Full width minus 5px margins on each side
                 maxWidth: "calc(100% - 10px)",
-                height: "150px", // Fixed height instead of auto
-                maxHeight: "150px", // Reduced from 300px to fit better
+                height: "3000px", // Fixed height instead of auto
+                maxHeight: "300px", // Reduced from 300px to fit better
                 borderRadius: "28px",
                 margin: "5px", // 5px margin on all sides
                 objectFit: "cover" // Cover to fill width while maintaining aspect ratio
@@ -368,7 +484,7 @@ const ProductDialog = ({
           onClick={handleSave}
           variant="contained"
           disabled={!editableProduct.title || !editableProduct.price || !!nameError || !!priceError || !!descError}>
-          Add product
+          {type === 'add' ? 'Add' : 'Update'} product
         </Button>
         <Button onClick={onClose} variant="contained" color="primary">
           close

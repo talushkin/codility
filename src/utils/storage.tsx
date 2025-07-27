@@ -190,7 +190,7 @@ export const updateProduct = async (updatedProduct: Product): Promise<any> => {
     
 //    console.log("Updating product:", updatedProduct);
     // Find and update the product across all categories
-    siteData.site.categories.forEach((category: any) => {
+    siteData.categories.forEach((category: any) => {
       const productIndex = category.itemPage.findIndex((product: any) => product._id === updatedProduct._id);
       if (productIndex !== -1) {
         category.itemPage[productIndex] = {
@@ -204,7 +204,7 @@ export const updateProduct = async (updatedProduct: Product): Promise<any> => {
     
     if (productFound) {
       localStorage.setItem("ProductSiteData", JSON.stringify(siteData));
-  //    console.log("Product updated locally:", updatedProduct);
+      console.log("Product updated locally:", updatedProduct);
       return updatedProduct;
     } else {
       console.error("Product not found for update");
