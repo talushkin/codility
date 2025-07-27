@@ -12,52 +12,92 @@
         "_id": "1",
         "itemPage": [
           {
-            "title": "Product 1",
-            "description": "description for product 1",
-            "price":10.99,
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Fish-Casserole-generated-image.png",
+            "title": "Wireless Bluetooth Headphones",
+            "description": "Premium noise-cancelling wireless headphones with 30-hour battery life, crystal-clear audio quality, and comfortable over-ear design perfect for music, calls, and travel.",
+            "price": 149.99,
+            "imageUrl": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=400&fit=crop&crop=center",
             "createdAt": "2025-06-24T03:51:20.028Z",
             "_id": 1
           },
           {
-            "title": "Product 2",
-            "price":1023.99,
-            "description": "description for product 2",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-Broccoli-and-Rice-Casserole-generated-image.png",
+            "title": "Professional Coffee Maker",
+            "description": "12-cup programmable drip coffee maker with built-in grinder, thermal carafe, and customizable brew strength settings. Start your mornings right with café-quality coffee at home.",
+            "price": 299.95,
+            "imageUrl": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop&crop=center",
             "createdAt": "2025-06-24T11:34:55.521Z",
             "_id": 2
           },
           {
-            "title": "Product 3",
-            "price":34.23,
-            "description": "description for product 3",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-and-Broccoli-Casserole-generated-image.png",
+            "title": "Ergonomic Office Chair",
+            "description": "High-back executive office chair with lumbar support, adjustable height, breathable mesh design, and 360-degree swivel. Designed for all-day comfort and productivity.",
+            "price": 189.00,
+            "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop&crop=center",
             "createdAt": "2025-07-16T14:36:15.178Z",
             "_id": 3
           },
           {
-            "title": "Product 4",
-            "description": "description for product 4",
-            "price":34.23,
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-and-Broccoli-Casserole-generated-image.png",
+            "title": "Smart Fitness Watch",
+            "description": "Advanced fitness tracker with heart rate monitoring, GPS tracking, sleep analysis, and 50+ workout modes. Water-resistant design with 7-day battery life.",
+            "price": 249.99,
+            "imageUrl": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&crop=center",
             "createdAt": "2025-07-16T14:36:15.178Z",
             "_id": 4
           },
           {
-            "title": "Product 5",
-            "price":34.23,
-            "description": "description for product 5",
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-and-Broccoli-Casserole-generated-image.png",
+            "title": "Stainless Steel Kitchen Knife Set",
+            "description": "Professional 8-piece knife set with high-carbon stainless steel blades, ergonomic handles, and wooden storage block. Essential tools for every home chef.",
+            "price": 89.95,
+            "imageUrl": "https://images.unsplash.com/photo-1593618998160-e34014c00ae8?w=400&h=400&fit=crop&crop=center",
             "createdAt": "2025-07-16T14:36:15.178Z",
             "_id": 5
           },
           {
-            "title": "Product 6",
-            "description": "description for product 6",
-            "price":34.23,
-            "imageUrl": "https://vt-photos.s3.amazonaws.com/Cheesy-Chicken-and-Broccoli-Casserole-generated-image.png",
+            "title": "Portable Bluetooth Speaker",
+            "description": "Compact waterproof speaker with 360-degree sound, 12-hour playtime, and hands-free calling. Perfect for outdoor adventures, beach trips, and pool parties.",
+            "price": 79.99,
+            "imageUrl": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop&crop=center",
             "createdAt": "2025-07-16T14:36:15.178Z",
             "_id": 6
+          },
+          {
+            "title": "LED Desk Lamp with USB Charging",
+            "description": "Modern adjustable desk lamp with touch controls, multiple brightness levels, color temperature adjustment, and built-in USB charging port for devices.",
+            "price": 45.50,
+            "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=center",
+            "createdAt": "2025-07-17T09:22:30.456Z",
+            "_id": 7
+          },
+          {
+            "title": "Organic Cotton Bed Sheets Set",
+            "description": "Luxurious 4-piece queen-size bed sheet set made from 100% organic cotton. Hypoallergenic, breathable, and machine washable for ultimate comfort and durability.",
+            "price": 129.00,
+            "imageUrl": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&h=400&fit=crop&crop=center",
+            "createdAt": "2025-07-18T16:45:12.789Z",
+            "_id": 8
+          },
+          {
+            "title": "Ceramic Non-Stick Cookware Set",
+            "description": "5-piece ceramic non-stick cookware set including frying pans, saucepan, and stockpot. PFOA-free coating, even heat distribution, and dishwasher safe.",
+            "price": 159.99,
+            "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop&crop=center",
+            "createdAt": "2025-07-19T11:30:45.123Z",
+            "_id": 9
+          },
+          {
+            "title": "Bamboo Laptop Stand",
+            "description": "Eco-friendly adjustable laptop stand made from sustainable bamboo. Improves ergonomics, enhances airflow, and features a sleek minimalist design for any workspace.",
+            "price": 34.95,
+            "imageUrl": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop&crop=center",
+            "createdAt": "2025-07-20T14:15:20.654Z",
+            "_id": 10
+          },
+          {
+            "title": "Essential Oil Diffuser",
+            "description": "Ultrasonic aromatherapy diffuser with 300ml capacity, 7-color LED lights, timer settings, and whisper-quiet operation. Create a relaxing atmosphere in any room.",
+            "price": 59.99,
+            "imageUrl": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=400&fit=crop&crop=center",
+            "createdAt": "2025-07-21T08:42:35.987Z",
+            "_id": 11
           }
           
         ]
