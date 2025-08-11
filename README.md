@@ -277,9 +277,13 @@ The application integrates with an external AI image generation service for crea
 
 #### Request Configuration
 ```typescript
+// Environment Variables Required
+REACT_APP_AI_API_TOKEN=your_token_here
+REACT_APP_AI_API_BASE_URL=https://be-tan-theta.vercel.app
+
 // Headers
 {
-  "Authorization": "Bearer 1234",
+  "Authorization": `Bearer ${process.env.REACT_APP_AI_API_TOKEN}`,
   "Content-Type": "application/json"
 }
 
