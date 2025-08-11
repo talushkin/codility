@@ -1,26 +1,62 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    // Basic Options - שיפורים יסודיים
+    "target": "es2020",                    // ⬆️ שדרוג מ-es5
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
+    "allowJs": false,                      // ⬆️ רק TypeScript
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    
+    // Strict Type Checking - החלק הכי חשוב!
+    "strict": true,                        // ⬆️ הפעלת strict mode
+    "noImplicitAny": true,                 // ⬆️ חובת הגדרת types
+    "noImplicitReturns": true,             // ⬆️ חובת return בכל path
+    "noImplicitThis": true,                // ⬆️ חובת הגדרת this
+    "noUnusedLocals": true,                // ⬆️ זיהוי משתנים לא בשימוש
+    "noUnusedParameters": true,            // ⬆️ זיהוי פרמטרים לא בשימוש
+    "exactOptionalPropertyTypes": true,    // ⬆️ הבחנה בין undefined ו-missing
+    "noUncheckedIndexedAccess": true,      // ⬆️ בטיחות ב-array access
+    
+    // Additional Checks
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,            // ⬆️ חובת override keyword
+    
+    // Module Resolution
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    
+    // JSX
+    "jsx": "react-jsx",
+    
+    // Path Mapping - לארגון טוב יותר
+    "baseUrl": "src",                      // ⬆️ base path
+    "paths": {                             // ⬆️ aliases
+      "@/*": ["*"],
+      "@components/*": ["components/*"],
+      "@utils/*": ["utils/*"],
+      "@hooks/*": ["hooks/*"],
+      "@store/*": ["store/*"],
+      "@types/*": ["types/*"],
+      "@assets/*": ["assets/*"]
+    }
   },
   "include": [
-    "src"
+    "src/**/*"                             // ⬆️ כל הקבצים בsrc
+  ],
+  "exclude": [                             // ⬆️ קבצים להתעלמות
+    "node_modules",
+    "build",
+    "dist",
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ]
 }

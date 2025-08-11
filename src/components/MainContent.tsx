@@ -13,7 +13,6 @@ import { addProductThunk, delProductThunk, updateProductThunk } from "../store/d
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
-import SmartToyIcon from "@mui/icons-material/SmartToy";
 import type { Category, Product } from "../utils/types";
 import type { AppDispatch } from "../store/store";
 
@@ -31,14 +30,13 @@ interface MainContentProps {
 const MainContent: React.FC<MainContentProps> = ({
   selectedCategory,
   selectedProduct,
-  addProduct,
   desktop,
   isDarkMode,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [page, setPage] = useState<number>(1);
-  const [translatedCategory, setTranslatedCategory] = useState<string>(
+  const [, setTranslatedCategory] = useState<string>(
     (selectedCategory?.translatedCategory?.[0]?.value) || selectedCategory?.category || ""
   );
   const itemsPerPage: number = 5; // Fixed to 5 to fit on screen without scrolling
@@ -234,7 +232,7 @@ const MainContent: React.FC<MainContentProps> = ({
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
   const currentItems = (openSearch && filterItem.length > 0) ? filteredProducts.slice(startIndex, endIndex) : Products.slice(startIndex, endIndex);
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -396,9 +394,7 @@ const MainContent: React.FC<MainContentProps> = ({
                     onClick={() => handleSelectProduct(item)}
                   >
                     <CaseCard
-                      index={startIndex + index + 1}
                       item={item}
-                      category={selectedCategory?.category}
                       isDarkMode={isDarkMode}
                       selectedProduct={viewedItem}
                       onDelete={(Product: Product) => {
@@ -437,7 +433,7 @@ const MainContent: React.FC<MainContentProps> = ({
                       size="small"
                       sx={{
                         "& .MuiPaginationItem-root": {
-                          color: (theme) => (isDarkMode ? "white" : "inherit"),
+                          color: isDarkMode ? "white" : "inherit",
                           direction: "ltr",
                           fontSize: "0.75rem",
                         },

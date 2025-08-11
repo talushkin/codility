@@ -1,5 +1,5 @@
 // utils/storage.ts
-import { Product, Category, SiteData } from "./types"; // Adjust the import path as needed
+import { Product, Category } from "./types"; // Adjust the import path as needed
 import defaultData from "../data/defaultData.json"; // Adjust the import path as needed
 
 // Image handling utilities
@@ -289,7 +289,7 @@ export const addCategory = async (categoryName: string): Promise<any> => {
   }
 };
 
-export const delCategory = async (categoryId: string, categoryName?: string): Promise<void> => {
+export const delCategory = async (categoryId: string): Promise<void> => {
   try {
     // Get current data from localStorage
     const cached = localStorage.getItem("ProductSiteData");

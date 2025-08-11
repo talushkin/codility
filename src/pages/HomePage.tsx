@@ -1,5 +1,5 @@
 import "../styles.css";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import HeaderBar from "../components/HeaderBar";
 import MainContent from "../components/MainContent";
 import { ThemeProvider } from "@mui/material/styles";

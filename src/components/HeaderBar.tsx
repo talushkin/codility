@@ -15,21 +15,14 @@ interface HeaderBarProps {
   setSelectedProduct?: (Product: Product | null) => void;
   selectedProduct?: Product | null;
   setProducts?: (Products: Product[]) => void;
-  newProduct?: Product | null;
+  newProduct?: Product | null | undefined;  // הוספת undefined
   isDarkMode?: boolean;
 }
 
 export default function HeaderBar({
-  logo,
   onHamburgerClick,
   categories,
   desktop,
-  setSelectedCategory,
-  setSelectedProduct,
-  selectedProduct,
-  setProducts,
-  newProduct,
-  isDarkMode,
 }: HeaderBarProps) {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -178,6 +171,13 @@ export default function HeaderBar({
                   label="Search"
                   placeholder="Product name"
                   variant="outlined"
+                  size="small"
+                  InputLabelProps={{
+                    className: "",
+                  }}
+                  InputProps={{
+                    ...params.InputProps,
+                  }}
                   sx={{
                     minWidth: "50px",
                     maxWidth: "100%",
@@ -200,12 +200,8 @@ export default function HeaderBar({
                     "&.Mui-focused .MuiInputLabel-root": {
                       color: "white",
                     },
-                    display:
-                      desktop || showMobileSearch ? "block" : "none",
+                    display: desktop || showMobileSearch ? "block" : "none",
                     transition: "width 0.3s",
-                  }}
-                  InputProps={{
-                    ...params.InputProps,
                   }}
                   onFocus={() => setSearchActive(true)}
                   onBlur={() => {

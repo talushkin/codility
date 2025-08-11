@@ -1,7 +1,5 @@
-import React from "react";
 import { Box } from "@mui/material";
 import ThemeModeButton from "./ThemeModeButton";
-import type { SelectChangeEvent } from "@mui/material";
 
 interface FooterBarProps {
   isDarkMode: boolean;

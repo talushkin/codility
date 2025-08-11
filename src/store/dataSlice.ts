@@ -48,9 +48,9 @@ export const addCategoryThunk = createAsyncThunk<any, string, { rejectValue: str
 // Async thunk for deleting a category
 export const delCategoryThunk = createAsyncThunk<any, { categoryId: string; categoryName: string }, { rejectValue: string }>(
   'data/delCategory',
-  async ({ categoryId, categoryName }, { rejectWithValue }) => {
+  async ({ categoryId }, { rejectWithValue }) => {
     try {
-      await storage.delCategory(categoryId, categoryName);
+      await storage.delCategory(categoryId);
       return categoryId;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);

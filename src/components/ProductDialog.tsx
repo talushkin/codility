@@ -10,13 +10,10 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import type { Product } from "../utils/types";
 import { generateImage } from "./generateAI";
 import { updateProduct } from "../utils/storage";
-
-const BASE_URL = "https://be-tan-theta.vercel.app";
 
 interface ProductDialogProps {
   open: boolean;
@@ -34,12 +31,9 @@ const ProductDialog = ({
   open,
   onClose,
   onSave,
-  onDelete,
+  //onDelete,
   Product,
-  targetLang = "en",
   type,
-  categoryName,
-  autoFill = false,
 }: ProductDialogProps) => {
 
 
@@ -52,16 +46,11 @@ const ProductDialog = ({
     imageUrl: Product?.imageUrl || "",
     _id: Product?._id,
   });
-  const isRTL: Boolean = false; // Assuming you have a way to determine if the language is RTL
-
-  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
-  const [showTranslated, setShowTranslated] = useState<boolean>(false);
+  const [, setShowTranslated] = useState<boolean>(false);   
   const [nameError, setNameError] = useState("");
   const [priceError, setPriceError] = useState("");
   const [descError, setDescError] = useState("");
-  const [isGeneratingImage, setIsGeneratingImage] = useState<boolean>(false);
-
-  // Handle AI image generation
+  const [isGeneratingImage, setIsGeneratingImage] = useState<boolean>(false);  // Handle AI image generation
   const handleGenerateImage = async () => {
     if (!editableProduct.title) {
       alert('Please enter a product title first');
@@ -207,19 +196,11 @@ const ProductDialog = ({
     }
   };
 
-  const handleDelete = () => {
-    if (onDelete) {
-      setEditableProduct((prev) => ({ ...prev, _id: Product?._id }));
-      onDelete(editableProduct);
-      onClose();
-    }
-  };
-
   return (
     <Dialog
       open={open || false}
       onClose={onClose}
-      dir={isRTL ? "rtl" : "ltr"}
+      dir={"ltr"}
       maxWidth={false}
       fullWidth={false}
       PaperProps={{

@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useNavigate,
+  //useNavigate,
   useParams,
 } from "react-router-dom";
 import ProductDetail from "./pages/ProductDetail";
@@ -26,7 +26,6 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const navigate = useNavigate();
   const params = useParams();
 
   // Extract params for useEffect dependency

@@ -5,17 +5,15 @@ import { getImageFromLocalStorage } from "../utils/storage";
 
 interface CaseCardProps {
   item: Product;
-  category: string;
-  index?: number;
   isDarkMode?: boolean;
   onDelete?: (product: Product) => void;
-  selectedProduct?: Product | null; // Added for potential future use
+  selectedProduct?: Product | null;
 }
 
 
 
 
-export default function CaseCard({ item, category, index, isDarkMode, onDelete,selectedProduct }: CaseCardProps) {
+export default function CaseCard({ item, isDarkMode, onDelete, selectedProduct }: CaseCardProps) {
   const [imageUrl, setImageUrl] = useState<string>(item.imageUrl || "https://placehold.co/100x100?text=No+Image");
 
   const isSelected :boolean = (item===selectedProduct)

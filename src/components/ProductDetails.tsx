@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Button,
   TextField,
   IconButton,
   CircularProgress,
   Box,
 } from "@mui/material";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import EditIcon from "@mui/icons-material/Edit";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import type { Product } from "../utils/types";
 import { uploadImageToLocalStorage, validateImageFile, getImageFromLocalStorage, updateProduct } from "../utils/storage";
 import { generateImage } from "./generateAI";
-
-const BASE_URL = "https://be-tan-theta.vercel.app";
 
 interface ProductDetailsProps {
   open: boolean;
@@ -37,12 +30,8 @@ const ProductDetails = ({
   open,
   onClose,
   onSave,
-  onDelete,
+  //onDelete,
   product,
-  targetLang = "en",
-  type,
-  categoryName,
-  autoFill = false,
   onImageUpdate, // New callback prop
 }: ProductDetailsProps) => {
 
@@ -57,14 +46,9 @@ const ProductDetails = ({
     imageUrl: product?.imageUrl || "",
     _id: product?._id,
   });
-  const isRTL: Boolean = false; // Assuming you have a way to determine if the language is RTL
-
-  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
-  const [showTranslated, setShowTranslated] = useState<boolean>(false);
+  const [, setShowTranslated] = useState<boolean>(false);   
   const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
-  const [isGeneratingImage, setIsGeneratingImage] = useState<boolean>(false);
-
-  // File input ref for image upload
+  const [isGeneratingImage, setIsGeneratingImage] = useState<boolean>(false);  // File input ref for image upload
   const fileInputRef = React.createRef<HTMLInputElement>();
 
   // Handle AI image generation
@@ -282,14 +266,6 @@ const ProductDetails = ({
       console.error('Error saving product:', error);
       // Still call parent onSave even if localStorage fails
       onSave(editableProduct);
-      onClose();
-    }
-  };
-
-  const handleDelete = () => {
-    if (onDelete) {
-      setEditableProduct((prev) => ({ ...prev, _id: product?._id }));
-      onDelete(editableProduct);
       onClose();
     }
   };
