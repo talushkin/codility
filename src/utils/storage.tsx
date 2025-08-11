@@ -33,6 +33,22 @@ export const uploadImageToLocalStorage = (file: File, ProductId: string): Promis
   });
 };
 
+// Store AI-generated image URL in localStorage
+export const storeAIImageToLocalStorage = async (imageUrl: string, ProductId: string): Promise<string> => {
+  try {
+    // For AI-generated images, we'll store the URL directly
+    // This avoids converting large images to base64 and saves storage space
+    const imageKey = `Product_image_${ProductId}`;
+    localStorage.setItem(imageKey, imageUrl);
+    
+    console.log(`AI-generated image URL stored in localStorage with key: ${imageKey}`);
+    return imageUrl;
+  } catch (error) {
+    console.error('Error storing AI image URL:', error);
+    throw error;
+  }
+};
+
 export const getImageFromLocalStorage = (ProductId: string): string | null => {
   try {
     const imageKey = `Product_image_${ProductId}`;

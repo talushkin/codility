@@ -15,7 +15,7 @@ import SmartToyIcon from "@mui/icons-material/SmartToy";
 import type { Product } from "../utils/types";
 
 // Utils
-import { uploadImageToLocalStorage, validateImageFile, getImageFromLocalStorage, updateProduct } from "../utils/storage";
+import { uploadImageToLocalStorage, validateImageFile, getImageFromLocalStorage, updateProduct, storeAIImageToLocalStorage } from "../utils/storage";
 
 // Components
 import { generateImage } from "./generateAI";
@@ -71,17 +71,28 @@ const ProductDetails = ({
     try {
       // Create text for AI image generation using title and description
       const imageText = editableProduct.description 
-        ? `${editableProduct.title}, ${editableProduct.description}`
+        ? `${editableProduct.title}`
         : editableProduct.title;
 
       console.log('Generating image for text:', imageText);
       const generatedImageUrl = await generateImage(imageText);
       
       if (generatedImageUrl) {
+        // Store AI-generated image in localStorage
+        const productId = editableProduct._id || 'temp_' + Date.now().toString();
+        
+        try {
+          await storeAIImageToLocalStorage(generatedImageUrl, productId);
+          console.log('AI-generated image stored in localStorage');
+        } catch (error) {
+          console.error('Error storing AI image to localStorage:', error);
+        }
+
         // Update the product with new AI-generated image URL
         const updatedProduct = {
           ...editableProduct,
           imageUrl: generatedImageUrl,
+          _id: editableProduct._id || productId // Set ID if it was temporary
         };
         
         setEditableProduct(updatedProduct);
