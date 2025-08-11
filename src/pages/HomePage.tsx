@@ -70,20 +70,6 @@ export default function Main(props: HomePageProps) {
         </div>
         <div className="container-fluid ps-0 pe-0">
           <div className="flex-column flex-md-row ps-0 pe-0 row">
-            {/* <div
-              className="nav-menu col-12 col-md-auto ps-0 pe-0"
-              style={{ width: desktop ? '270px' : '100%' }}
-            >
-              <NavMenu
-                isDarkMode={isDarkMode}
-                toggleDarkMode={toggleDarkMode}
-                categories={Products.categories}
-                isOpen={menuOpen}
-                onSelect={setSelectedCategory}
-                desktop={desktop}
-                onHamburgerClick={handleHamburgerClick}
-              />
-            </div> */}
             <div className="main-content col">
               {selectedCategory && (
                 <MainContent

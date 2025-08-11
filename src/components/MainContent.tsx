@@ -458,7 +458,7 @@ const MainContent: React.FC<MainContentProps> = ({
                 {/* Invisible spacer to match left side header height */}
               </div>
               
-              <div className="one-product flex-1 overflow-y-auto p-4">
+              {selectedProduct && (<div className="one-product flex-1 overflow-y-auto p-4">
                 <div className="shadow-lg h-full p-4 bg-yellow-50" style={{
                   border: isDarkMode ? "1px solid rgb(71, 69, 69)" : "1px solid rgb(234, 227, 227)",
                   backgroundColor: isDarkMode ? "rgb(31, 41, 55)" : "#fefce8",
@@ -477,7 +477,7 @@ const MainContent: React.FC<MainContentProps> = ({
                     onImageUpdate={handleImageUpdate}
                   />
                 </div>
-              </div>
+              </div>)}
             </div>
           )}
         </div>
