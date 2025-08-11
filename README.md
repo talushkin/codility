@@ -317,9 +317,13 @@ REACT_APP_AI_API_BASE_URL=https://be-tan-theta.vercel.app
 - **Storage**: Generated images stored in localStorage as base64
 - **Real-time Updates**: Images appear immediately via `onImageUpdate` callback
 
-#### Authentication
-- **Bearer Token**: `1234` (placeholder/demo token)
-- **Note**: In production, use proper authentication tokens and environment variables
+#### Authentication & Environment Setup
+- **Environment Variables**: 
+  - `REACT_APP_AI_API_TOKEN` - Bearer token for AI API authentication
+  - `REACT_APP_AI_API_BASE_URL` - Base URL for AI service (optional, defaults to vercel app)
+- **Local Development**: Set variables in `.env` file in project root
+- **Vercel Deployment**: Add environment variables in Vercel dashboard under Settings → Environment Variables
+- **Security**: Token validation occurs before API calls, with error logging if missing
 
 #### Error Handling
 ```typescript
@@ -340,9 +344,32 @@ try {
 
 ## Development Setup
 
+### Environment Variables Setup
+
+1. **Create `.env` file** in the project root:
+```bash
+# AI Image Generation API Configuration
+REACT_APP_AI_API_TOKEN=1234
+REACT_APP_AI_API_BASE_URL=https://be-tan-theta.vercel.app
+```
+
+2. **For Vercel Deployment**, add environment variables in Vercel Dashboard:
+   - Go to your project in Vercel Dashboard
+   - Navigate to **Settings → Environment Variables**
+   - Add: `REACT_APP_AI_API_TOKEN` with your token value
+   - Add: `REACT_APP_AI_API_BASE_URL` with the base URL (optional)
+
+### Installation & Running
+
 ```bash
 npm install
 npm start
 ```
 
 The application runs on `http://localhost:3000` with hot reload enabled.
+
+### Environment Variables Validation
+
+The application includes built-in validation for environment variables:
+- Missing `REACT_APP_AI_API_TOKEN` will log errors and disable AI image generation
+- Fallback URL provided for `REACT_APP_AI_API_BASE_URL` if not specified
