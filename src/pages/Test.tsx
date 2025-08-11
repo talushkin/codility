@@ -1,5 +1,5 @@
 // External modules
-import React from "react";
+//import React from "react";
 
 // Types
 type Term = ">" | "<";
