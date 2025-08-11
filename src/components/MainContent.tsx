@@ -97,7 +97,7 @@ const MainContent: React.FC<MainContentProps> = ({
         setPage(targetPage);
       }
     }
-  }, [selectedProduct, Products, itemsPerPage, openSearch, desktop]);
+  }, [selectedProduct, Products, itemsPerPage, openSearch, desktop, viewedItem]);
 
   useEffect(() => {
     const itemPage = selectedCategory?.itemPage || [];

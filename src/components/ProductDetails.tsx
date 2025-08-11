@@ -48,7 +48,8 @@ const ProductDetails = ({
   });
   const [, setShowTranslated] = useState<boolean>(false);   
   const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
-  const [isGeneratingImage, setIsGeneratingImage] = useState<boolean>(false);  // File input ref for image upload
+  const [isGeneratingImage, setIsGeneratingImage] = useState<boolean>(false);
+  const [currentImageUrl, setCurrentImageUrl] = useState<string>(""); // Track current image for immediate display
   const fileInputRef = React.createRef<HTMLInputElement>();
 
   // Handle AI image generation
@@ -77,6 +78,7 @@ const ProductDetails = ({
         };
         
         setEditableProduct(updatedProduct);
+        setCurrentImageUrl(generatedImageUrl); // Update display immediately
 
         // Save the updated product to localStorage
         try {
@@ -135,6 +137,7 @@ const ProductDetails = ({
       };
       
       setEditableProduct(updatedProduct);
+      setCurrentImageUrl(imageUrl); // Update display immediately
 
       // Save the updated product to localStorage
       try {
@@ -166,37 +169,29 @@ const ProductDetails = ({
     // Reset to English when dialog opens or product changes
     setShowTranslated(false);
     
-    // Try to load stored image if product has an ID
-    let imageUrl = product?.imageUrl || "";
-    if (product?._id && !imageUrl) {
-      const storedImage = getImageFromLocalStorage(product._id);
-      if (storedImage) {
-        imageUrl = storedImage;
-      }
-    }
-    
-    setEditableProduct({
-      title: product?.title || "",
-      description: product?.description || "",
-      price: product?.price || 0,
-      createdAt: product?.createdAt || "",
-      imageUrl: imageUrl,
-      _id: product?._id,
-    });
-  }, [product, open]);
-
-  useEffect(() => {
     if (product) {
+      // Always check localStorage first for the most recent image
+      let imageUrl = product.imageUrl || "";
+      if (product._id) {
+        const storedImage = getImageFromLocalStorage(product._id);
+        if (storedImage) {
+          imageUrl = storedImage;
+        }
+      }
+      
       setEditableProduct({
         title: product.title || "",
-        price: product.price || 0,
         description: product.description || "",
-        createdAt: product?.createdAt || "",
-        imageUrl: product.imageUrl || "",
+        price: product.price || 0,
+        createdAt: product.createdAt || "",
+        imageUrl: imageUrl,
         _id: product._id,
       });
+      
+      // Set current image URL for immediate display
+      setCurrentImageUrl(imageUrl);
     }
-  }, [product]);
+  }, [product, open, product?.imageUrl, product?._id]); // Watch for any changes in product properties
 
 
   const handleChange = (field: keyof Product) => (
@@ -408,6 +403,7 @@ const ProductDetails = ({
               
               <img
                 src={
+                  currentImageUrl ||
                   editableProduct.imageUrl ||
                   "https://placehold.co/300x200?text=Click+to+Upload+Image"
                 }

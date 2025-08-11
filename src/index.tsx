@@ -74,15 +74,6 @@ function App() {
     document.body.dir = "ltr"; // Default to left-to-right
   }, []);
 
-  useEffect(() => {
-    // if (selectedProduct && selectedProduct.title && selectedProduct.category) {
-    //   navigate(
-    //     `/Products/${encodeURIComponent(selectedProduct.category)}/${encodeURIComponent(selectedProduct.title)}`
-    //   );
-    // }
-   // console.log("Selected:", selectedProduct);
-  }, [selectedProduct]);
-
   return (
     <>
       {loading && (
