@@ -1,6 +1,9 @@
+// External modules
 import React from "react";  
 import { FormControl, InputLabel, MenuItem, Select as MuiSelect, SelectChangeEvent } from "@mui/material";
-import sorts from "../sorts.json"; // Adjust path if needed
+
+// Data
+import sorts from "../sorts.json";
 
 interface SortSelectorProps {
   sort: string;

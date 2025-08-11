@@ -1,4 +1,7 @@
+// External modules
 import { Box } from "@mui/material";
+
+// Components
 import ThemeModeButton from "./ThemeModeButton";
 
 interface FooterBarProps {

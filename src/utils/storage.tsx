@@ -1,6 +1,8 @@
-// utils/storage.ts
-import { Product, Category } from "./types"; // Adjust the import path as needed
-import defaultData from "../data/defaultData.json"; // Adjust the import path as needed
+// Types
+import { Product, Category } from "./types";
+
+// Data
+import defaultData from "../data/defaultData.json";
 
 // Image handling utilities
 export const uploadImageToLocalStorage = (file: File, ProductId: string): Promise<string> => {

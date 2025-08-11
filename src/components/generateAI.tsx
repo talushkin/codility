@@ -1,4 +1,4 @@
-// NEVER expose real keys in production apps or public sandboxes
+// External modules
 import axios from "axios";
 
 

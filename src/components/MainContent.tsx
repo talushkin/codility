@@ -1,20 +1,25 @@
+// External modules
 import React, { useState, useEffect, useRef } from "react";
-import CaseCard from "./CaseCard";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
-import ProductDialog from "./ProductDialog";
-import ProductDetails from "./ProductDetails"; // Assuming you have a ProductDetails component
-import SortSelector from "./SortSelector"; // Assuming you have a SortSelector component
-
-// import { generateImage } from "./imageAI"; // unused
-import { useDispatch } from "react-redux";
-import { addProductThunk, delProductThunk, updateProductThunk } from "../store/dataSlice";
-import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
+
+// Types
 import type { Category, Product } from "../utils/types";
 import type { AppDispatch } from "../store/store";
+
+// Components
+import CaseCard from "./CaseCard";
+import ProductDialog from "./ProductDialog";
+import ProductDetails from "./ProductDetails";
+import SortSelector from "./SortSelector";
+
+// Store
+import { addProductThunk, delProductThunk, updateProductThunk } from "../store/dataSlice";
 
 // --- Types ---
 interface MainContentProps {
@@ -458,26 +463,28 @@ const MainContent: React.FC<MainContentProps> = ({
                 {/* Invisible spacer to match left side header height */}
               </div>
               
-              {selectedProduct && (<div className="one-product flex-1 overflow-y-auto p-4">
-                <div className="shadow-lg h-full p-4 bg-yellow-50" style={{
-                  border: isDarkMode ? "1px solid rgb(71, 69, 69)" : "1px solid rgb(234, 227, 227)",
-                  backgroundColor: isDarkMode ? "rgb(31, 41, 55)" : "#fefce8",
-                  borderRadius: "5px" // Match CaseCard border radius
-                }}>
-                  <ProductDetails
-                    open={true}
-                    product={viewedItem}
-                    onClose={handleCloseDialog}
-                    onSave={(Product: Product) => {
-                      viewedItem?._id ? handleUpdateProduct(Product) : handleAddProduct(Product);
-                    }}
-                    onDelete={(Product: Product) => {
-                      handleDeleteProduct(Product);
-                    }}
-                    onImageUpdate={handleImageUpdate}
-                  />
+              {selectedProduct && (
+                <div className="one-product flex-1 overflow-y-auto p-4">
+                  <div className="shadow-lg h-full p-4 bg-yellow-50" style={{
+                    border: isDarkMode ? "1px solid rgb(71, 69, 69)" : "1px solid rgb(234, 227, 227)",
+                    backgroundColor: isDarkMode ? "rgb(31, 41, 55)" : "#fefce8",
+                    borderRadius: "5px" // Match CaseCard border radius
+                  }}>
+                    <ProductDetails
+                      open={true}
+                      product={viewedItem}
+                      onClose={handleCloseDialog}
+                      onSave={(Product: Product) => {
+                        viewedItem?._id ? handleUpdateProduct(Product) : handleAddProduct(Product);
+                      }}
+                      onDelete={(Product: Product) => {
+                        handleDeleteProduct(Product);
+                      }}
+                      onImageUpdate={handleImageUpdate}
+                    />
+                  </div>
                 </div>
-              </div>)}
+              )}
             </div>
           )}
         </div>

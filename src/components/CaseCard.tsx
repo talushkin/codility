@@ -1,6 +1,11 @@
+// External modules
 import React, { useState, useEffect } from "react";
-import type { Product } from "../utils/types";
 import { Button } from "@mui/material";
+
+// Types
+import type { Product } from "../utils/types";
+
+// Utils
 import { getImageFromLocalStorage } from "../utils/storage";
 
 interface CaseCardProps {

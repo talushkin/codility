@@ -1,3 +1,4 @@
+// External modules
 import React, { useEffect, useState } from "react";
 import {
   Dialog,
@@ -11,9 +12,15 @@ import {
   Box,
 } from "@mui/material";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
+
+// Types
 import type { Product } from "../utils/types";
-import { generateImage } from "./generateAI";
+
+// Utils
 import { updateProduct } from "../utils/storage";
+
+// Components
+import { generateImage } from "./generateAI";
 
 interface ProductDialogProps {
   open: boolean;

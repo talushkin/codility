@@ -1,4 +1,7 @@
+// External modules
 import { configureStore } from '@reduxjs/toolkit';
+
+// Store
 import dataReducer from './dataSlice';
 
 const store = configureStore({

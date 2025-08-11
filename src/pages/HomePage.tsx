@@ -1,13 +1,19 @@
-import "../styles.css";
+// External modules
 import { useState, useEffect } from "react";
+import { ThemeProvider } from "@mui/material/styles";
+
+// Types
+import type { Category, Product, SiteData } from "../utils/types";
+
+// Components
 import HeaderBar from "../components/HeaderBar";
 import MainContent from "../components/MainContent";
-import { ThemeProvider } from "@mui/material/styles";
-import { lightTheme, darkTheme } from "../components/themes";
-import GlobalStyle, { createMuiTheme } from "../components/GlobalStyle";
-// import { useNavigate } from "react-router-dom"; // unused
 import FooterBar from "../components/FooterBar";
-import type { Category, Product, SiteData } from "../utils/types";
+import GlobalStyle, { createMuiTheme } from "../components/GlobalStyle";
+import { lightTheme, darkTheme } from "../components/themes";
+
+// Styles
+import "../styles.css";
 
 interface HomePageProps {
   setSelectedProduct: (Product: Product | null) => void;

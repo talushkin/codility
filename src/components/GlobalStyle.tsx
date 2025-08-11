@@ -1,5 +1,7 @@
-// src/GlobalStyle.ts
+// External modules
 import { CssBaseline, createTheme } from "@mui/material";
+
+// Types
 import type { AppTheme } from "./themes";
 
 // Instead of styled-components GlobalStyle, we'll use Material-UI's CssBaseline

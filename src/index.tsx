@@ -1,3 +1,4 @@
+// External modules
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import {
@@ -7,14 +8,22 @@ import {
   //useNavigate,
   useParams,
 } from "react-router-dom";
-import ProductDetail from "./pages/ProductDetail";
-import HomePage from "./pages/HomePage";
-import "./styles.css";
 import { CircularProgress, Box } from "@mui/material";
 import { Provider } from "react-redux";
+
+// Types
+import type { SiteData, Category, Product } from "./utils/types";
+
+// Utils/Store
 import * as storage from "./utils/storage";
 import store from "./store/store";
-import type { SiteData, Category, Product } from "./utils/types";
+
+// Pages
+import HomePage from "./pages/HomePage";
+import ProductDetail from "./pages/ProductDetail";
+
+// Styles
+import "./styles.css";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);

@@ -1,4 +1,7 @@
+// External modules
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+
+// Utils
 import * as storage from '../utils/storage';
 
 // Define types for state and payloads as needed

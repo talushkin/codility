@@ -1,10 +1,14 @@
+// External modules
 import React, { useState, useRef, useEffect } from "react";
-import { Autocomplete, TextField } from "@mui/material";
-// import ProductDialog from "./ProductDialog"; // unused
-import cardboardTexture from "../assets/cardboard-texture.jpg";
-import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import { Autocomplete, TextField } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+
+// Types
 import { Category, Product } from "../utils/types";
+
+// Assets
+import cardboardTexture from "../assets/cardboard-texture.jpg";
 
 interface HeaderBarProps {
   logo?: string;

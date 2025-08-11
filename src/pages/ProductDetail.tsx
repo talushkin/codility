@@ -1,7 +1,12 @@
+// External modules
 import React from "react";
 import { useParams } from "react-router-dom";
-import HomePage from "./HomePage";
+
+// Types
 import type { Category, Product, SiteData } from "../utils/types";
+
+// Pages
+import HomePage from "./HomePage";
 
 interface ProductDetailProps {
   Products: SiteData;

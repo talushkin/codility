@@ -1,3 +1,4 @@
+// External modules
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -9,8 +10,14 @@ import {
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import EditIcon from "@mui/icons-material/Edit";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
+
+// Types
 import type { Product } from "../utils/types";
+
+// Utils
 import { uploadImageToLocalStorage, validateImageFile, getImageFromLocalStorage, updateProduct } from "../utils/storage";
+
+// Components
 import { generateImage } from "./generateAI";
 
 interface ProductDetailsProps {
