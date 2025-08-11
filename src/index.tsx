@@ -21,6 +21,7 @@ import store from "./store/store";
 // Pages
 import HomePage from "./pages/HomePage";
 import ProductDetail from "./pages/ProductDetail";
+import Test from "./pages/Test";
 
 // Styles
 import "./styles.css";
@@ -143,6 +144,10 @@ function App() {
                 setSelectedProduct={setSelectedProduct}
               />
             }
+          />
+          <Route
+            path="/test"
+            element={<Test />}
           />
         </Routes>
       )}
